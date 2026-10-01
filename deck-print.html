@@ -2172,7 +2172,7 @@
         <div class="eyebrow-line">醫學工程概論 &middot; 第 2 週 &middot; 2026-10-01</div>
         <h1 class="vrmt-title">
           深度學習及生成式人工智慧簡介<br/>
-          <span class="main">及其於骨科學的應用 <span class="vrmt-ab">(Ortho AI)</span></span>
+          <span class="main">及其於骨科學的應用 <span class="vrmt-ab">（Ortho AI）</span></span>
         </h1>
         <div class="subtitle-line">Deep Learning &amp; Generative AI in Orthopaedics</div>
         <p class="pitch-line">
@@ -2209,7 +2209,7 @@
       </p>
       <div class="mt-grid" style="grid-template-columns:0.82fr 1fr">
         <div class="svg-panel">
-          <div class="sp-label"><span>手腕正面 X 光（示意）</span><span class="r">有沒有骨折？</span></div>
+          <div class="sp-label"><span>手腕正位 X 光（示意）</span><span class="r">有沒有骨折？</span></div>
           <svg viewBox="0 0 300 268" preserveAspectRatio="xMidYMid meet" style="background:#0F1115">
             <defs>
               <radialGradient id="xv" cx="50%" cy="45%" r="65%"><stop offset="0" stop-color="#2A2E36"/><stop offset="1" stop-color="#0F1115"/></radialGradient>
@@ -2258,12 +2258,16 @@
             <div class="mt-block-tag teal">AI 怎麼看</div>
             <ul>
               <li>從<b>十幾萬張</b>已標註 X 光中，自己學會「骨折長什麼樣」</li>
-              <li>輸出不是「是 / 否」，而是<b>一個機率</b>（＋位置框）</li>
+              <li>輸出不是「是 / 否」，而是<b>一個機率</b>（+ 位置框）</li>
             </ul>
           </div>
         </div>
       </div>
-      <p class="cite-line">圖：手腕 X 光示意圖（本演講自製，非病人影像；課堂可替換為公開資料集或去識別化影像並標註來源）。</p>
+      <div class="bottomline-strip" style="margin-top:14px">
+        <div class="bl-label">Bottom line</div>
+        <div class="bl-text">醫師靠系統性掃描 + 病史；AI 靠十幾萬張標註片。<b>兩種「看法」今天都會講。</b></div>
+      </div>
+      <p class="cite-line">圖：手腕 X 光示意圖（本演講自製，非病人影像）。</p>
     </div>
     <footer class="footer-ribbon">
     <div class="fl-left">
@@ -2287,7 +2291,7 @@
         <div class="card" style="padding:20px 26px 20px;gap:14px">
           <div class="tag"><span class="ico">&#9673;</span><span>五個學習目標</span></div>
           <ol class="goal-list">
-            <li>說出 <b>AI ⊃ 機器學習 ⊃ 深度學習 ⊃ 生成式 AI</b> 的包含關係，並舉一個骨科例子</li>
+            <li>說出 <b>AI ⊃ 機器學習 ⊃ 深度學習 ⊃ 生成式 AI</b>（⊃ = 包含）的關係，並舉一個骨科例子</li>
             <li>區分影像 AI 三種任務：<b>分類、偵測、分割</b>，並對應到骨科問題</li>
             <li>用<b>敏感度、特異度、AUC</b> 解讀一篇骨折 AI 論文的主要結果</li>
             <li>說明 LLM 如何運作（<b>預測下一個 token</b>），以及「幻覺」的來源與查證方法</li>
@@ -2305,7 +2309,7 @@
         <div class="why-item"><b>Part 1 &middot; 20′</b>深度學習入門</div>
         <div class="why-item"><b>Part 2 &middot; 17′</b>骨科影像 AI 證據</div>
         <div class="why-item"><b>Part 3 &middot; 17′</b>生成式 AI（休息後）</div>
-        <div class="why-item"><b>Part 4 &middot; 16′</b>從論文到病床＋分組</div>
+        <div class="why-item"><b>Part 4 &middot; 16′</b>從論文到病床 + 分組</div>
       </div>
     </div>
     <footer class="footer-ribbon">
@@ -2349,7 +2353,7 @@
     </header>
     <div class="content-body">
       <p class="concept-lead">
-        新聞把它們混著用，但其實是<span class="accent">由大到小的包含關係</span>——越裡層，越不需要人教規則。
+        新聞把它們混著用，但其實是<span class="accent">由大到小的包含關係</span>——越裡層，規則越是從資料學出來的；最裡層還能「產生」新內容。
       </p>
       <div class="mt-grid" style="grid-template-columns:0.9fr 1.1fr">
         <div class="svg-panel">
@@ -2368,11 +2372,11 @@
         <div class="mt-text">
           <div class="mt-block">
             <div class="mt-block-tag">AI &middot; 讓電腦做需要智慧的事</div>
-            <ul><li>包含人寫規則的系統。例：依 <b>Ottawa ankle rules</b> 跳出「建議照 X 光」的提示</li></ul>
+            <ul><li>包含人寫規則的系統（規則式）。例：把 <b>Ottawa ankle rules</b>（踝傷要不要照 X 光的臨床判斷規則）寫進系統，自動跳出提示</li></ul>
           </div>
           <div class="mt-block">
             <div class="mt-block-tag warn">ML &middot; 從資料自己學規則</div>
-            <ul><li>例：用年齡、骨密度、跌倒史等<b>表格資料</b>預測骨折風險</li></ul>
+            <ul><li>例：用年齡、骨密度、跌倒史等<b>表格資料</b>，讓模型自己找出高風險族群的規則</li></ul>
           </div>
           <div class="mt-block">
             <div class="mt-block-tag warn">DL &middot; 多層神經網路，直接看原始影像</div>
@@ -2433,9 +2437,9 @@
       </div>
       <div class="bottomline-strip">
         <div class="bl-label">Bottom line</div>
-        <div class="bl-text">答案從標註來，所以<b>標註的品質決定模型的上限</b>——Lindsey 2018 找了 18 位資深骨科醫師來標註，就是這個原因。</div>
+        <div class="bl-text">答案從標註來，所以<b>標註的品質決定模型的上限</b>——Lindsey 2018 的標註來自 18 位資深骨科醫師，標註者的程度決定了模型能學到什麼。</div>
       </div>
-      <p class="cite-line">資料來源：<b>Lindsey R</b> et al., PNAS 2018;115(45):11591–6。流程圖本演講自製。</p>
+      <p class="cite-line">資料來源：<b>Lindsey R</b> et al. PNAS 2018;115(45):11591–6。流程圖本演講自製。</p>
     </div>
     <footer class="footer-ribbon">
     <div class="fl-left">
@@ -2470,14 +2474,14 @@
           <div class="step-no">02 &middot; 對答案</div>
           <div class="step-icon"><svg viewBox="0 0 50 50" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10 26 L20 36 L40 14"/></svg></div>
           <h3>和醫師標註比對</h3>
-          <p>標註是「骨折」(= 1)，差了 0.70——這個差距叫<span class="hw">誤差（loss）</span></p>
+          <p>標註是「骨折」（= 1），差了 0.70——這個差距叫<span class="hw">誤差（loss）</span></p>
         </div>
         <div class="step-arrow"><svg viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 13 H19 M13 7 L20 13 L13 19"/></svg></div>
         <div class="step">
           <div class="step-no">03 &middot; 修正</div>
           <div class="step-icon"><svg viewBox="0 0 50 50" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M38 18 A15 15 0 1 0 40 30"/><path d="M38 8 L38 18 L28 18"/></svg></div>
           <h3>微調數百萬個權重</h3>
-          <p>每個權重往「誤差變小」的方向挪一點點，然後換下一張</p>
+          <p>權重 = 模型內部的可調參數（像旋鈕）；每個都往「誤差變小」的方向挪一點點，然後換下一張</p>
         </div>
       </div>
       <div class="why-strip">
@@ -2612,8 +2616,8 @@
             <div class="gen-icon"><svg viewBox="0 0 38 38" fill="none" stroke="currentColor" stroke-width="2.4"><rect x="4" y="6" width="22" height="26" rx="3"/><path d="M28 14 L34 14 M28 20 L34 20 M28 26 L32 26"/></svg></div>
             <h3>這張片「是什麼」？</h3>
           </div>
-          <div class="gen-specs" style="font-size:13.5px">輸出：標籤＋機率</div>
-          <div class="gen-method" style="font-size:16.5px;line-height:1.55">有無骨折；膝關節 OA 嚴重度 <b>Kellgren–Lawrence 0–4 級</b>（Tiulpin 2018）</div>
+          <div class="gen-specs" style="font-size:13.5px">輸出：標籤 + 機率</div>
+          <div class="gen-method" style="font-size:16.5px;line-height:1.55">有無骨折；膝關節退化性關節炎（OA）嚴重度 <b>0–4 級</b>（Kellgren–Lawrence 分級，Tiulpin 2018）</div>
           <div class="gen-refs" style="font-size:13px"><b>對應臨床</b>：篩檢、分流、分級</div>
         </div>
         <div class="gen-card amber">
@@ -2622,7 +2626,7 @@
             <div class="gen-icon"><svg viewBox="0 0 38 38" fill="none" stroke="currentColor" stroke-width="2.4"><rect x="4" y="4" width="30" height="30" rx="3" stroke-opacity=".35"/><rect x="12" y="13" width="14" height="11" rx="1" stroke-dasharray="3 2"/></svg></div>
             <h3>問題「在哪裡」？</h3>
           </div>
-          <div class="gen-specs" style="font-size:13.5px">輸出：位置框＋機率</div>
+          <div class="gen-specs" style="font-size:13.5px">輸出：位置框 + 機率</div>
           <div class="gen-method" style="font-size:16.5px;line-height:1.55">在 X 光上<b>框出骨折位置</b>，提醒醫師回頭看那一區</div>
           <div class="gen-refs" style="font-size:13px"><b>對應臨床</b>：急診判讀輔助（第二雙眼）</div>
         </div>
@@ -2633,7 +2637,7 @@
             <h3>精確「輪廓」在哪？</h3>
           </div>
           <div class="gen-specs" style="font-size:13.5px">輸出：逐像素遮罩（mask）</div>
-          <div class="gen-method" style="font-size:16.5px;line-height:1.55">描出<b>椎體、骨骼輪廓</b> → 3D 規劃與導航的基礎；MedSAM 以超過一百萬組影像–遮罩對訓練</div>
+          <div class="gen-method" style="font-size:16.5px;line-height:1.55">描出<b>椎體、骨骼輪廓</b> → 3D 規劃與導航的基礎；MedSAM（通用醫學影像分割模型）以超過一百萬組影像–遮罩對訓練</div>
           <div class="gen-refs" style="font-size:13px"><b>對應臨床</b>：術前規劃、量測、導航</div>
         </div>
       </div>
@@ -2641,7 +2645,7 @@
         <div class="bl-label">Bottom line</div>
         <div class="bl-text">後面幾週的<b>脊椎生物力學、導航手術</b>，第一步幾乎都是「分割」。</div>
       </div>
-      <p class="cite-line">資料來源：<b>Tiulpin A</b> et al., Sci Rep 2018;8:1727；<b>Ma J</b> et al., Nat Commun 2024;15:654（MedSAM）。圖示本演講自製。</p>
+      <p class="cite-line">資料來源：<b>Tiulpin A</b> et al. Sci Rep 2018;8:1727；<b>Ma J</b> et al. Nat Commun 2024;15:654（MedSAM）。圖示本演講自製。</p>
     </div>
     <footer class="footer-ribbon">
     <div class="fl-left">
@@ -2662,7 +2666,7 @@
     </header>
     <div class="content-body">
       <p class="concept-lead">
-        AI 給的是 0 到 1 的分數；<span class="accent">切在哪裡</span>才決定陽性 / 陰性——和篩檢試驗的 cut-off 完全相同。
+        AI 給的是 0 到 1 的分數；<span class="accent">切在哪裡</span>才決定陽性 / 陰性——和篩檢試驗的 cut-off 是同一個概念。
       </p>
       <div style="display:grid;grid-template-columns:1.2fr 1fr;gap:22px;flex:1;min-height:0">
         <div class="svg-panel">
@@ -2691,12 +2695,12 @@
             <li><b>B</b>　敏感度 &uarr;、特異度 &darr;</li>
             <li><b>C</b>　敏感度 &darr;、特異度 &uarr;</li>
           </ul>
-          <div class="footnote">提示：閾值往左移，紅色區塊漏掉的變少，灰色區塊被誤判的變多&hellip;</div>
+          <div class="footnote">提示：看圖——閾值往左移，紅色區塊和灰色區塊各有什麼變化？（投票後揭曉）</div>
         </div>
       </div>
       <div class="bottomline-strip" style="margin-top:14px">
         <div class="bl-label">Bottom line</div>
-        <div class="bl-text">把每個閾值的（1 − 特異度, 敏感度）連起來就是 <b>ROC 曲線</b>；曲線下面積 <b>AUC</b> 越接近 1，代表兩群分得越開。</div>
+        <div class="bl-text">把每個閾值的（1 − 特異度，敏感度）連起來就是 <b>ROC 曲線</b>；曲線下面積 <b>AUC</b> 越接近 1，代表兩群分得越開。</div>
       </div>
       <p class="cite-line">圖：分數分布示意（本演講自製，非真實資料）。</p>
     </div>
@@ -2755,37 +2759,37 @@
   <!-- ============ 里程碑 2017–2022 ============ -->
   <section class="slide content-chrome" id="s12">
     <header class="page-head">
-      <h2>骨折 AI 的六個里程碑<span class="page-subtitle">Milestones 2017 &ndash; 2022</span></h2>
+      <h2>骨折 AI 的六個里程碑<span class="page-subtitle">Milestones 2017&ndash;2022</span></h2>
     </header>
     <div class="content-body">
       <p class="concept-lead">
-        五年之內，從<span class="accent">「AI 能不能看片」</span>走到<span class="outcome">「醫師用了 AI 會不會更準」</span>。
+        從 2017 問<span class="accent">「AI 能不能看片」</span>，到 2018 之後問<span class="outcome">「醫師用了 AI 會不會更準」</span>。
       </p>
       <div class="journey-wrap tl-big" style="padding:0 20px">
         <div class="journey-list">
           <div class="journey-row">
             <div class="journey-year">2017</div><div class="journey-dot-cell"><span class="journey-dot"></span></div>
-            <div class="journey-content"><span class="j-title">Olczak 等 &middot; Acta Orthop</span><span class="j-sub">256,000 張手、腕、踝 X 光；最佳網路骨折判讀準確率 <b>83%</b>，與兩位資深骨科醫師相當</span></div>
+            <div class="journey-content"><span class="j-title">Olczak 等 &middot; Acta Orthop</span><span class="j-sub">25.6 萬張手、腕、踝 X 光；準確率 <b>83%</b>，與兩位資深骨科醫師相當</span></div>
           </div>
           <div class="journey-row">
             <div class="journey-year">2018</div><div class="journey-dot-cell"><span class="journey-dot"></span></div>
-            <div class="journey-content"><span class="j-title">Lindsey 等 &middot; PNAS</span><span class="j-sub">臨床醫師在 AI 輔助下，敏感度 <b>80.8% → 91.5%</b>、特異度 <b>87.5% → 93.9%</b></span></div>
+            <div class="journey-content"><span class="j-title">Lindsey 等 &middot; PNAS</span><span class="j-sub">醫師 + AI：敏感度 <b>80.8% → 91.5%</b>、特異度 <b>87.5% → 93.9%</b></span></div>
           </div>
           <div class="journey-row">
             <div class="journey-year">2018</div><div class="journey-dot-cell"><span class="journey-dot amber"></span></div>
-            <div class="journey-content"><span class="j-title"><b>FDA</b> 以 De Novo 核准 OsteoDetect</span><span class="j-sub">第一個獲 FDA 上市許可的骨折偵測 AI——限<b>成人手腕遠端橈骨骨折</b></span></div>
+            <div class="journey-content"><span class="j-title"><b>FDA</b> 核准 OsteoDetect（De Novo：無前例可比對的新型器材途徑）</span><span class="j-sub">第一個獲 FDA 上市許可的骨折偵測 AI——限<b>成人手腕遠端橈骨骨折</b></span></div>
           </div>
           <div class="journey-row">
             <div class="journey-year">2019</div><div class="journey-dot-cell"><span class="journey-dot"></span></div>
-            <div class="journey-content"><span class="j-title">Cheng 等（林口長庚）&middot; Eur Radiol</span><span class="j-sub">骨盆 X 光偵測髖部骨折：敏感度 <b>98%</b>、AUC <b>0.98</b>；Grad-CAM 熱圖定位</span></div>
+            <div class="journey-content"><span class="j-title">Cheng 等（林口長庚）&middot; Eur Radiol</span><span class="j-sub">骨盆 X 光找髖部骨折：敏感度 <b>98%</b>、AUC <b>0.98</b>；Grad-CAM 熱圖標出模型在看哪裡</span></div>
           </div>
           <div class="journey-row">
             <div class="journey-year">2019</div><div class="journey-dot-cell"><span class="journey-dot"></span></div>
-            <div class="journey-content"><span class="j-title">RSNA 兒童骨齡挑戰賽 &middot; Radiology</span><span class="j-sub">14,236 張手部 X 光；最佳模型平均絕對誤差 <b>4.2 個月</b></span></div>
+            <div class="journey-content"><span class="j-title">RSNA（北美放射學會）兒童骨齡挑戰賽 &middot; Radiology</span><span class="j-sub">14,236 張手部 X 光；最佳模型誤差 <b>4.2 個月</b></span></div>
           </div>
           <div class="journey-row now">
             <div class="journey-year">2022</div><div class="journey-dot-cell"><span class="journey-dot now"></span></div>
-            <div class="journey-content"><span class="j-title">Guermazi 等 &middot; Radiology（多讀者研究）</span><span class="j-sub">480 例、多部位；AI 輔助下每位病人敏感度 <b>64.8% → 75.2%</b>，判讀還更快</span></div>
+            <div class="journey-content"><span class="j-title">Guermazi 等 &middot; Radiology（多讀者研究）</span><span class="j-sub">480 例、多部位；醫師 + AI 敏感度 <b>64.8% → 75.2%</b>，判讀還更快</span></div>
           </div>
         </div>
       </div>
@@ -2818,7 +2822,7 @@
       </p>
       <div style="display:grid;grid-template-columns:1.45fr 1fr;gap:22px;flex:1;min-height:0">
         <div class="svg-panel">
-          <div class="sp-label"><span>臨床醫師判讀表現</span><span class="r">0 – 100% 全尺度</span></div>
+          <div class="sp-label"><span>臨床醫師判讀表現</span><span class="r">0&ndash;100% 全尺度</span></div>
           <svg viewBox="0 0 600 250" preserveAspectRatio="xMidYMid meet">
             <g font-family="Inter,Noto Sans TC,sans-serif">
               <text x="20" y="44" font-size="16" font-weight="700" fill="#1B2030">敏感度</text>
@@ -2853,7 +2857,7 @@
             <ul>
               <li>訓練資料：<b>135,409 張</b> X 光</li>
               <li>標註者：<b>18 位</b>資深骨科醫師</li>
-              <li>評估：臨床醫師有 / 無 AI 輔助各讀一次</li>
+              <li>評估：同一群臨床醫師，比較有 / 無 AI 輔助的判讀表現</li>
             </ul>
           </div>
         </div>
@@ -2862,7 +2866,7 @@
         <div class="bl-label">Bottom line</div>
         <div class="bl-text">敏感度與特異度<b>同時上升</b>——不是靠「多喊陽性」換來的。這就是「第二雙眼」的意思。</div>
       </div>
-      <p class="cite-line">資料來源：<b>Lindsey R</b>, Daluiski A, Chopra S, et al. PNAS 2018;115(45):11591–6。圖：依原文數據重繪（本演講自製）。</p>
+      <p class="cite-line">資料來源：<b>Lindsey R</b> et al. PNAS 2018;115(45):11591–6。圖：依原文資料重繪（本演講自製）。</p>
     </div>
     <footer class="footer-ribbon">
     <div class="fl-left">
@@ -2883,12 +2887,12 @@
     </header>
     <div class="content-body">
       <p class="concept-lead">
-        480 例、多個部位、多位讀者：AI 輔助下每位病人的<span class="accent">敏感度與特異度都上升</span>，判讀時間<span class="outcome">還縮短</span>。
+        480 例、多個部位、多位讀者：AI 輔助下，以病人為單位計算的<span class="accent">敏感度與特異度都上升</span>，判讀時間<span class="outcome">還縮短</span>。
       </p>
       <div style="display:grid;grid-template-columns:1.25fr 1fr;gap:22px;flex:1;min-height:0">
         <div class="case-col">
           <div class="svg-panel" style="flex:1">
-            <div class="sp-label"><span>每位病人層級（per-patient）</span><span class="r">0 – 100% 全尺度</span></div>
+            <div class="sp-label"><span>每位病人層級（per-patient）</span><span class="r">0&ndash;100% 全尺度</span></div>
             <svg viewBox="0 0 560 196" preserveAspectRatio="xMidYMid meet">
               <g font-family="Inter,Noto Sans TC,sans-serif">
                 <text x="16" y="36" font-size="16" font-weight="700" fill="#1B2030">敏感度</text>
@@ -2923,7 +2927,7 @@
         <div class="bl-label">Bottom line</div>
         <div class="bl-text">廠商資助不代表結果是假的，而是提醒你：<b>先看研究設計，再看數字</b>。</div>
       </div>
-      <p class="cite-line">資料來源：<b>Guermazi A</b>, Tannoury C, Kompel AJ, et al. Radiology 2022;302(3):627–36。圖：依原文數據重繪（本演講自製）。</p>
+      <p class="cite-line">資料來源：<b>Guermazi A</b> et al. Radiology 2022;302(3):627–36。圖：依原文資料重繪（本演講自製）。</p>
     </div>
     <footer class="footer-ribbon">
     <div class="fl-left">
@@ -2940,11 +2944,11 @@
   <!-- ============ 長庚髖部骨折 + 骨齡 ============ -->
   <section class="slide content-chrome" id="s15">
     <header class="page-head">
-      <h2>台灣例子與兒童骨齡<span class="page-subtitle">Hip Fracture &middot; Grad-CAM &middot; Bone Age</span></h2>
+      <h2>兩個真實案例：髖部骨折與兒童骨齡<span class="page-subtitle">Hip Fracture &middot; Grad-CAM &middot; Bone Age</span></h2>
     </header>
     <div class="content-body">
       <p class="concept-lead">
-        AI 不只要答對，還要<span class="accent">讓醫師看見它在看哪裡</span>——可解釋性是建立信任的第一步。
+        AI 不只要答對，還要<span class="accent">讓醫師看見它大概在看哪裡</span>——熱圖是檢查線索，不是證明。
       </p>
       <div class="vrmt-grid" style="height:auto;flex:1;min-height:0;gap:22px">
         <div class="card" style="padding:16px 22px;gap:10px;flex-direction:row;align-items:stretch">
@@ -2969,9 +2973,9 @@
           </svg>
           <div class="case-col">
             <div class="tag" style="font-size:14px"><span class="ico" style="width:30px;height:30px;font-size:15px">TW</span><span>林口長庚 &middot; 髖部骨折</span></div>
-            <div class="case-one">骨盆 X 光找髖部骨折，並用 <b>Grad-CAM 熱圖</b>標出模型「在看哪裡」。</div>
-            <div class="case-num">0.98<small>AUC</small></div>
-            <div class="case-meta">準確率 91%、敏感度 98%；熱圖定位正確率 95.9%</div>
+            <div class="case-one">骨盆 X 光找髖部骨折，並用 <b>Grad-CAM 熱圖</b>標出模型「在看哪裡」。（左圖為示意熱圖，非論文原圖）</div>
+            <div class="case-num"><small style="margin:0 6px 0 0">AUC</small>0.98</div>
+            <div class="case-meta">敏感度 98%；熱圖定位正確率 95.9%</div>
           </div>
         </div>
         <div class="card teal" style="padding:16px 22px;gap:10px">
@@ -2986,7 +2990,7 @@
         <div class="bl-label">Bottom line</div>
         <div class="bl-text">熱圖讓醫師能<b>檢查 AI 的理由</b>：如果它看的是影像角落的標記而不是骨頭，就該起疑（Part 4「捷徑學習」）。</div>
       </div>
-      <p class="cite-line">資料來源：<b>Cheng CT</b> et al., Eur Radiol 2019;29(10):5469–77；<b>Halabi SS</b> et al., Radiology 2019;290(2):498–503。左圖為熱圖概念示意（本演講自製）。</p>
+      <p class="cite-line">資料來源：<b>Cheng CT</b> et al. Eur Radiol 2019;29(10):5469–77；<b>Halabi SS</b> et al. Radiology 2019;290(2):498–503。左圖為熱圖概念示意（本演講自製）。</p>
     </div>
     <footer class="footer-ribbon">
     <div class="fl-left">
@@ -3098,7 +3102,7 @@
     </header>
     <div class="content-body">
       <p class="concept-lead">
-        大型語言模型依照前文，<span class="accent">預測下一個字（token）最可能是什麼</span>，一個接一個寫下去。
+        大型語言模型依照前文，<span class="accent">預測下一個詞元（token，約略是一個字或詞）最可能是什麼</span>，一個接一個寫下去。
       </p>
       <div class="svg-panel" style="flex:0 0 176px">
         <svg viewBox="0 0 1160 176" preserveAspectRatio="xMidYMid meet">
@@ -3130,15 +3134,15 @@
         </div>
         <div class="step-arrow"><svg viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 13 H19 M13 7 L20 13 L13 19"/></svg></div>
         <div class="step" style="padding:12px 18px;gap:4px">
-          <div class="step-no">03 &middot; 人類回饋對齊</div>
+          <div class="step-no">03 &middot; 人類打分數（對齊）</div>
           <p>人類替回答評分，讓它更有幫助、更安全</p>
         </div>
       </div>
       <div class="bottomline-strip" style="margin-top:14px">
         <div class="bl-label">Bottom line</div>
-        <div class="bl-text">核心架構是 <b>Transformer</b>（2017）。它學的是「<b>像</b>正確答案的文字」，不一定是正確答案——這就是幻覺的來源。</div>
+        <div class="bl-text">核心架構叫 <b>Transformer</b>（2017 年提出的神經網路架構）。它學的是「<b>像</b>正確答案的文字」，不一定是正確答案——這就是幻覺的來源。</div>
       </div>
-      <p class="cite-line">資料來源：<b>Vaswani A</b> et al., Attention Is All You Need, NeurIPS 2017。機率數值為教學示意（本演講自製）。</p>
+      <p class="cite-line">資料來源：<b>Vaswani A</b> et al. Attention is all you need. NeurIPS 2017。機率數值為教學示意（本演講自製）。</p>
     </div>
     <footer class="footer-ribbon">
     <div class="fl-left">
@@ -3164,23 +3168,23 @@
       <div class="stat-grid">
         <div class="stat-card" style="border-top-color:var(--muted)">
           <div class="stat-num">47<span class="unit">%</span></div>
-          <div class="stat-label">GPT-3.5 答對率</div>
-          <div class="stat-sub">約 PGY-1 第 40 百分位<br/>Lum, CORR 2023</div>
+          <div class="stat-label">GPT-3.5 &middot; Lum 題庫</div>
+          <div class="stat-sub">≈ PGY-1（第 40 百分位）<br/>Lum 2023</div>
         </div>
         <div class="stat-card" style="border-top-color:var(--muted)">
           <div class="stat-num">54.3<span class="unit">%</span></div>
-          <div class="stat-label">GPT-3.5 答對率</div>
-          <div class="stat-sub">約 PGY-1 水準<br/>Kung, JBJS OA 2023</div>
+          <div class="stat-label">GPT-3.5 &middot; Kung 題庫</div>
+          <div class="stat-sub">≈ PGY-1 平均<br/>Kung 2023</div>
         </div>
         <div class="stat-card red">
           <div class="stat-num">73.6<span class="unit">%</span></div>
-          <div class="stat-label">GPT-4 答對率</div>
-          <div class="stat-sub">約 PGY-5 平均；高於 ABOS Part I 67% 通過線<br/>Kung, JBJS OA 2023</div>
+          <div class="stat-label">GPT-4 &middot; Kung 題庫</div>
+          <div class="stat-sub">≈ PGY-5 平均；高於美國骨科專科考試（ABOS）第一階段 67% 通過線<br/>Kung 2023</div>
         </div>
         <div class="stat-card amber">
           <div class="stat-num">48<span class="unit">%</span></div>
           <div class="stat-label">題目因含影像被排除</div>
-          <div class="stat-sub">Lum 研究 400 題中；兩篇研究都只用純文字題</div>
+          <div class="stat-sub">Lum 的 400 題中有 48% 含影像，被排除；兩篇研究都只考純文字題</div>
         </div>
       </div>
       <div class="bottomline-strip">
@@ -3211,17 +3215,20 @@
       <h2>幻覺：一本正經地捏造文獻<span class="page-subtitle">Hallucination &middot; Fabricated Citations</span></h2>
     </header>
     <div class="content-body">
-      <div class="hero-stat-grid" style="height:auto;flex:1;gap:10px">
+      <p class="concept-lead">
+        它不是故意騙你——它只是寫出<span class="accent">「看起來像文獻」的文字</span>：作者是真的、期刊是真的，但那篇論文不存在。
+      </p>
+      <div class="hero-stat-grid" style="height:auto;flex:1;gap:8px">
         <div class="stat-eyebrow">請 ChatGPT 寫學術短文時，引用文獻中「捏造」的比例</div>
         <div class="stat-numbers">
           <div class="stat-col primary">
-            <div class="stat-num" style="color:var(--red);font-size:150px">55<span class="pct">%</span></div>
+            <div class="stat-num" style="color:var(--red);font-size:130px">55<span class="pct">%</span></div>
             <div class="stat-label" style="color:var(--red)">GPT-3.5</div>
             <div class="stat-detail">超過一半的引用不存在</div>
           </div>
           <div class="stat-divider"></div>
           <div class="stat-col secondary">
-            <div class="stat-num" style="font-size:110px">18<span class="pct">%</span></div>
+            <div class="stat-num" style="font-size:96px">18<span class="pct">%</span></div>
             <div class="stat-label">GPT-4</div>
             <div class="stat-detail">進步了，但不是零</div>
           </div>
@@ -3266,7 +3273,7 @@
         <div class="adv-card">
           <div class="adv-ico" style="font-family:'Crimson Pro',serif;font-size:26px;font-weight:700">2</div>
           <div class="adv-body">
-            <h3 style="font-size:19px">查：現場到 PubMed 核對 1–2 篇</h3>
+            <h3 style="font-size:19px">查：現場到 PubMed 核對 1&ndash;2 篇</h3>
             <p style="font-size:17px;line-height:1.5">作者、期刊、年份、DOI——四項<b>是否全部一致</b>？DOI 點得開嗎？</p>
           </div>
         </div>
@@ -3337,7 +3344,7 @@
         <div class="bl-label">Bottom line</div>
         <div class="bl-text"><b>起草可以交給 AI，判斷與簽名不行。</b></div>
       </div>
-      <p class="cite-line">應用清單為概念整理，非特定產品；幻覺數據見 <b>Walters WH, Wilder EI</b>, Sci Rep 2023。</p>
+      <p class="cite-line">應用清單為概念整理，非特定產品；幻覺資料見 <b>Walters WH, Wilder EI</b>. Sci Rep 2023。</p>
     </div>
     <footer class="footer-ribbon">
     <div class="fl-left">
@@ -3376,11 +3383,11 @@
   <!-- ============ 法規 ============ -->
   <section class="slide content-chrome" id="s25">
     <header class="page-head">
-      <h2>AI 就是醫療器材<span class="page-subtitle">Regulation &middot; <span style="color:var(--teal)">SaMD</span> &middot; FDA / TFDA</span></h2>
+      <h2>判讀 AI 就是醫療器材<span class="page-subtitle">Regulation &middot; <span style="color:var(--teal)">SaMD</span> &middot; FDA / TFDA</span></h2>
     </header>
     <div class="content-body">
       <p class="concept-lead">
-        AI 判讀軟體屬於<span class="accent">軟體醫療器材（SaMD）</span>：要經查驗登記，而且<span class="outcome">只能用在許可範圍內</span>。
+        AI 判讀軟體屬於<span class="accent">醫療器材軟體（SaMD）</span>：要經查驗登記，而且<span class="outcome">只能用在許可範圍內</span>。
       </p>
       <div class="sys-grid">
         <div class="sys-card">
@@ -3388,7 +3395,7 @@
           <div class="case-num" style="font-family:'Crimson Pro',serif;font-weight:700;font-size:46px;line-height:1;color:var(--ink)">&gt; 1,600<span style="font-size:20px;color:var(--ink-soft);margin-left:6px">項</span></div>
           <div class="sys-body" style="font-size:17px">已核准的 AI 醫療器材（截至 2026 年 9 月）</div>
           <ul class="sys-list">
-            <li style="font-size:17px;line-height:1.5"><b>2018 OsteoDetect</b>：以 De Novo 核准，第一個骨折偵測 AI</li>
+            <li style="font-size:17px;line-height:1.5"><b>2018 OsteoDetect</b>：以 De Novo（無前例可比對的新型器材途徑）核准，第一個骨折偵測 AI</li>
             <li style="font-size:17px;line-height:1.5">許可範圍：<b>成人、手腕遠端橈骨骨折</b></li>
           </ul>
         </div>
@@ -3403,7 +3410,7 @@
         </div>
         <div class="sys-results">
           <div class="res-label">許可範圍</div>
-          <div class="res-body" style="font-size:16px">把核准用於<b>成人手腕</b>的 AI 拿去判讀<b>兒童</b>或<b>髖部</b>，就是超出適應症——AI 沒驗證過，責任也落回使用者。</div>
+          <div class="res-body" style="font-size:16px">把核准用於<b>成人手腕</b>的 AI 拿去判讀<b>兒童</b>或<b>髖部</b>，就是超出許可範圍——這段使用沒有被驗證過，出了事也無法以「AI 說的」卸責。</div>
         </div>
       </div>
       <p class="cite-line">資料來源：<b>U.S. FDA</b>, AI-Enabled Medical Devices（頁面更新 2026-09-22）；FDA DEN180005；<b>TFDA</b> AI/ML 醫療器材軟體查驗登記技術指引、CADe 與 CADt 指引。</p>
@@ -3453,7 +3460,7 @@
         <div class="foa-card">
           <div class="foa-tag">05 &middot; 隱私與責任</div>
           <h3 style="font-size:22px">資料誰保護？出錯誰負責？</h3>
-          <div class="foa-body" style="font-size:17px;line-height:1.5">去識別化、資料外流；最終判斷與簽名仍在醫師</div>
+          <div class="foa-body" style="font-size:17px;line-height:1.5">資料要去識別化、防外流；最終判斷與簽名仍在醫師</div>
         </div>
         <div class="foa-card teal" style="background:#FAFCFD">
           <div class="foa-tag">對策</div>
@@ -3488,7 +3495,7 @@
         <div class="gen-card">
           <div class="gen-tag">情境 A<span class="gen-tag-sub">急診夜班</span></div>
           <h3 style="font-size:21px">AI 說「無骨折」，但&hellip;</h3>
-          <div class="gen-method" style="font-size:19px;line-height:1.6">AI 標示「無骨折」，但你摸到<b>鼻菸窩壓痛</b>。你怎麼做？<b>怎麼記錄</b>？</div>
+          <div class="gen-method" style="font-size:19px;line-height:1.6">AI 標示「無骨折」，但你摸到<b>鼻煙壺（anatomical snuffbox）壓痛</b>——舟狀骨骨折的典型徵象，初次 X 光可能看不到。你怎麼做？<b>怎麼記錄</b>？</div>
         </div>
         <div class="gen-card amber">
           <div class="gen-tag">情境 B<span class="gen-tag-sub">門診</span></div>
@@ -3614,7 +3621,7 @@
         <div class="card teal" style="padding:18px 24px;gap:12px">
           <div class="tag"><span class="ico">?</span><span>Q &amp; A</span></div>
           <p class="big-quote" style="font-size:24px">謝謝大家。<br/>有問題，現在問。</p>
-          <div class="qr-ph" style="flex:1">1 分鐘課後回饋<br/>【Slido / Mentimeter QR code 課前貼上】</div>
+          <div class="qr-ph" style="flex:1">請掃描 QR code<br/>填寫 1 分鐘課後回饋</div>
         </div>
       </div>
       <p class="cite-line">評量題對應本課五個學習目標。</p>
@@ -3645,16 +3652,16 @@
           <li><b>Cheng CT</b>, Ho TY, Lee TY, et al. Application of a deep learning algorithm for detection and visualization of hip fractures on plain pelvic radiographs. <i>Eur Radiol</i>. 2019;29(10):5469–77.</li>
           <li><b>Halabi SS</b>, Prevedello LM, Kalpathy-Cramer J, et al. The RSNA Pediatric Bone Age Machine Learning Challenge. <i>Radiology</i>. 2019;290(2):498–503. doi:10.1148/radiol.2018180736</li>
           <li><b>Guermazi A</b>, Tannoury C, Kompel AJ, et al. Improving radiographic fracture recognition performance and efficiency using artificial intelligence. <i>Radiology</i>. 2022;302(3):627–36. doi:10.1148/radiol.210937</li>
-          <li><b>Tiulpin A</b>, Thevenot J, Rahtu E, et al. Automatic knee osteoarthritis diagnosis from plain radiographs: a deep learning-based approach. <i>Sci Rep</i>. 2018;8:1727.</li>
+          <li><b>Tiulpin A</b>, Thevenot J, Rahtu E, Lehenkari P, Saarakkala S. Automatic knee osteoarthritis diagnosis from plain radiographs: a deep learning-based approach. <i>Sci Rep</i>. 2018;8:1727.</li>
           <li><b>Ma J</b>, He Y, Li F, et al. Segment anything in medical images. <i>Nat Commun</i>. 2024;15:654.</li>
           <li><b>Vaswani A</b>, Shazeer N, Parmar N, et al. Attention is all you need. <i>NeurIPS</i> 2017. arXiv:1706.03762</li>
           <li><b>Lum ZC</b>. Can artificial intelligence pass the American Board of Orthopaedic Surgery examination? Orthopaedic residents versus ChatGPT. <i>Clin Orthop Relat Res</i>. 2023;481(8):1623–30. doi:10.1097/CORR.0000000000002704</li>
           <li><b>Kung JE</b>, Marshall C, Gauthier C, et al. Evaluating ChatGPT performance on the Orthopaedic In-Training Examination. <i>JBJS Open Access</i>. 2023;8(3):e23.00056.</li>
           <li><b>Walters WH</b>, Wilder EI. Fabrication and errors in the bibliographic citations generated by ChatGPT. <i>Sci Rep</i>. 2023;13:14045.</li>
-          <li><b>U.S. FDA</b>. Artificial Intelligence-Enabled Medical Devices（頁面更新 2026-09-22）.</li>
-          <li><b>衛福部食品藥物管理署</b>. 人工智慧/機器學習技術之醫療器材軟體查驗登記技術指引.</li>
-          <li><b>衛福部食品藥物管理署</b>. 人工智慧/機器學習技術之電腦輔助分流（CADt）醫療器材軟體查驗登記技術指引.</li>
-          <li><b>IRPMA</b>. TFDA 公告「人工智慧/機器學習技術之電腦輔助偵測（CADe）醫療器材軟體查驗登記技術指引」.</li>
+          <li><b>U.S. FDA</b>. Artificial Intelligence-Enabled Medical Devices（頁面更新 2026-09-22）。</li>
+          <li><b>衛福部食品藥物管理署</b>. 人工智慧/機器學習技術之醫療器材軟體查驗登記技術指引。</li>
+          <li><b>衛福部食品藥物管理署</b>. 人工智慧/機器學習技術之電腦輔助分流（CADt）醫療器材軟體查驗登記技術指引。</li>
+          <li><b>IRPMA</b>. TFDA 公告「人工智慧/機器學習技術之電腦輔助偵測（CADe）醫療器材軟體查驗登記技術指引」摘要。</li>
         </ol>
       </div>
       <p class="cite-line">完整連結見講義。</p>

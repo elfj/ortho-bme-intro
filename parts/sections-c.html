@@ -56,7 +56,7 @@
     </header>
     <div class="content-body">
       <p class="concept-lead">
-        大型語言模型依照前文，<span class="accent">預測下一個字（token）最可能是什麼</span>，一個接一個寫下去。
+        大型語言模型依照前文，<span class="accent">預測下一個詞元（token，約略是一個字或詞）最可能是什麼</span>，一個接一個寫下去。
       </p>
       <div class="svg-panel" style="flex:0 0 176px">
         <svg viewBox="0 0 1160 176" preserveAspectRatio="xMidYMid meet">
@@ -88,15 +88,15 @@
         </div>
         <div class="step-arrow"><svg viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 13 H19 M13 7 L20 13 L13 19"/></svg></div>
         <div class="step" style="padding:12px 18px;gap:4px">
-          <div class="step-no">03 &middot; 人類回饋對齊</div>
+          <div class="step-no">03 &middot; 人類打分數（對齊）</div>
           <p>人類替回答評分，讓它更有幫助、更安全</p>
         </div>
       </div>
       <div class="bottomline-strip" style="margin-top:14px">
         <div class="bl-label">Bottom line</div>
-        <div class="bl-text">核心架構是 <b>Transformer</b>（2017）。它學的是「<b>像</b>正確答案的文字」，不一定是正確答案——這就是幻覺的來源。</div>
+        <div class="bl-text">核心架構叫 <b>Transformer</b>（2017 年提出的神經網路架構）。它學的是「<b>像</b>正確答案的文字」，不一定是正確答案——這就是幻覺的來源。</div>
       </div>
-      <p class="cite-line">資料來源：<b>Vaswani A</b> et al., Attention Is All You Need, NeurIPS 2017。機率數值為教學示意（本演講自製）。</p>
+      <p class="cite-line">資料來源：<b>Vaswani A</b> et al. Attention is all you need. NeurIPS 2017。機率數值為教學示意（本演講自製）。</p>
     </div>
   <!--F:19-->
   </section>
@@ -113,23 +113,23 @@
       <div class="stat-grid">
         <div class="stat-card" style="border-top-color:var(--muted)">
           <div class="stat-num">47<span class="unit">%</span></div>
-          <div class="stat-label">GPT-3.5 答對率</div>
-          <div class="stat-sub">約 PGY-1 第 40 百分位<br/>Lum, CORR 2023</div>
+          <div class="stat-label">GPT-3.5 &middot; Lum 題庫</div>
+          <div class="stat-sub">≈ PGY-1（第 40 百分位）<br/>Lum 2023</div>
         </div>
         <div class="stat-card" style="border-top-color:var(--muted)">
           <div class="stat-num">54.3<span class="unit">%</span></div>
-          <div class="stat-label">GPT-3.5 答對率</div>
-          <div class="stat-sub">約 PGY-1 水準<br/>Kung, JBJS OA 2023</div>
+          <div class="stat-label">GPT-3.5 &middot; Kung 題庫</div>
+          <div class="stat-sub">≈ PGY-1 平均<br/>Kung 2023</div>
         </div>
         <div class="stat-card red">
           <div class="stat-num">73.6<span class="unit">%</span></div>
-          <div class="stat-label">GPT-4 答對率</div>
-          <div class="stat-sub">約 PGY-5 平均；高於 ABOS Part I 67% 通過線<br/>Kung, JBJS OA 2023</div>
+          <div class="stat-label">GPT-4 &middot; Kung 題庫</div>
+          <div class="stat-sub">≈ PGY-5 平均；高於美國骨科專科考試（ABOS）第一階段 67% 通過線<br/>Kung 2023</div>
         </div>
         <div class="stat-card amber">
           <div class="stat-num">48<span class="unit">%</span></div>
           <div class="stat-label">題目因含影像被排除</div>
-          <div class="stat-sub">Lum 研究 400 題中；兩篇研究都只用純文字題</div>
+          <div class="stat-sub">Lum 的 400 題中有 48% 含影像，被排除；兩篇研究都只考純文字題</div>
         </div>
       </div>
       <div class="bottomline-strip">
@@ -151,17 +151,20 @@
       <h2>幻覺：一本正經地捏造文獻<span class="page-subtitle">Hallucination &middot; Fabricated Citations</span></h2>
     </header>
     <div class="content-body">
-      <div class="hero-stat-grid" style="height:auto;flex:1;gap:10px">
+      <p class="concept-lead">
+        它不是故意騙你——它只是寫出<span class="accent">「看起來像文獻」的文字</span>：作者是真的、期刊是真的，但那篇論文不存在。
+      </p>
+      <div class="hero-stat-grid" style="height:auto;flex:1;gap:8px">
         <div class="stat-eyebrow">請 ChatGPT 寫學術短文時，引用文獻中「捏造」的比例</div>
         <div class="stat-numbers">
           <div class="stat-col primary">
-            <div class="stat-num" style="color:var(--red);font-size:150px">55<span class="pct">%</span></div>
+            <div class="stat-num" style="color:var(--red);font-size:130px">55<span class="pct">%</span></div>
             <div class="stat-label" style="color:var(--red)">GPT-3.5</div>
             <div class="stat-detail">超過一半的引用不存在</div>
           </div>
           <div class="stat-divider"></div>
           <div class="stat-col secondary">
-            <div class="stat-num" style="font-size:110px">18<span class="pct">%</span></div>
+            <div class="stat-num" style="font-size:96px">18<span class="pct">%</span></div>
             <div class="stat-label">GPT-4</div>
             <div class="stat-detail">進步了，但不是零</div>
           </div>
@@ -197,7 +200,7 @@
         <div class="adv-card">
           <div class="adv-ico" style="font-family:'Crimson Pro',serif;font-size:26px;font-weight:700">2</div>
           <div class="adv-body">
-            <h3 style="font-size:19px">查：現場到 PubMed 核對 1–2 篇</h3>
+            <h3 style="font-size:19px">查：現場到 PubMed 核對 1&ndash;2 篇</h3>
             <p style="font-size:17px;line-height:1.5">作者、期刊、年份、DOI——四項<b>是否全部一致</b>？DOI 點得開嗎？</p>
           </div>
         </div>
@@ -259,7 +262,7 @@
         <div class="bl-label">Bottom line</div>
         <div class="bl-text"><b>起草可以交給 AI，判斷與簽名不行。</b></div>
       </div>
-      <p class="cite-line">應用清單為概念整理，非特定產品；幻覺數據見 <b>Walters WH, Wilder EI</b>, Sci Rep 2023。</p>
+      <p class="cite-line">應用清單為概念整理，非特定產品；幻覺資料見 <b>Walters WH, Wilder EI</b>. Sci Rep 2023。</p>
     </div>
   <!--F:23-->
   </section>

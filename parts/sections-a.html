@@ -42,7 +42,7 @@
         <div class="eyebrow-line">醫學工程概論 &middot; 第 2 週 &middot; 2026-10-01</div>
         <h1 class="vrmt-title">
           深度學習及生成式人工智慧簡介<br/>
-          <span class="main">及其於骨科學的應用 <span class="vrmt-ab">(Ortho AI)</span></span>
+          <span class="main">及其於骨科學的應用 <span class="vrmt-ab">（Ortho AI）</span></span>
         </h1>
         <div class="subtitle-line">Deep Learning &amp; Generative AI in Orthopaedics</div>
         <p class="pitch-line">
@@ -79,7 +79,7 @@
       </p>
       <div class="mt-grid" style="grid-template-columns:0.82fr 1fr">
         <div class="svg-panel">
-          <div class="sp-label"><span>手腕正面 X 光（示意）</span><span class="r">有沒有骨折？</span></div>
+          <div class="sp-label"><span>手腕正位 X 光（示意）</span><span class="r">有沒有骨折？</span></div>
           <svg viewBox="0 0 300 268" preserveAspectRatio="xMidYMid meet" style="background:#0F1115">
             <defs>
               <radialGradient id="xv" cx="50%" cy="45%" r="65%"><stop offset="0" stop-color="#2A2E36"/><stop offset="1" stop-color="#0F1115"/></radialGradient>
@@ -128,12 +128,16 @@
             <div class="mt-block-tag teal">AI 怎麼看</div>
             <ul>
               <li>從<b>十幾萬張</b>已標註 X 光中，自己學會「骨折長什麼樣」</li>
-              <li>輸出不是「是 / 否」，而是<b>一個機率</b>（＋位置框）</li>
+              <li>輸出不是「是 / 否」，而是<b>一個機率</b>（+ 位置框）</li>
             </ul>
           </div>
         </div>
       </div>
-      <p class="cite-line">圖：手腕 X 光示意圖（本演講自製，非病人影像；課堂可替換為公開資料集或去識別化影像並標註來源）。</p>
+      <div class="bottomline-strip" style="margin-top:14px">
+        <div class="bl-label">Bottom line</div>
+        <div class="bl-text">醫師靠系統性掃描 + 病史；AI 靠十幾萬張標註片。<b>兩種「看法」今天都會講。</b></div>
+      </div>
+      <p class="cite-line">圖：手腕 X 光示意圖（本演講自製，非病人影像）。</p>
     </div>
   <!--F:2-->
   </section>
@@ -148,7 +152,7 @@
         <div class="card" style="padding:20px 26px 20px;gap:14px">
           <div class="tag"><span class="ico">&#9673;</span><span>五個學習目標</span></div>
           <ol class="goal-list">
-            <li>說出 <b>AI ⊃ 機器學習 ⊃ 深度學習 ⊃ 生成式 AI</b> 的包含關係，並舉一個骨科例子</li>
+            <li>說出 <b>AI ⊃ 機器學習 ⊃ 深度學習 ⊃ 生成式 AI</b>（⊃ = 包含）的關係，並舉一個骨科例子</li>
             <li>區分影像 AI 三種任務：<b>分類、偵測、分割</b>，並對應到骨科問題</li>
             <li>用<b>敏感度、特異度、AUC</b> 解讀一篇骨折 AI 論文的主要結果</li>
             <li>說明 LLM 如何運作（<b>預測下一個 token</b>），以及「幻覺」的來源與查證方法</li>
@@ -166,7 +170,7 @@
         <div class="why-item"><b>Part 1 &middot; 20′</b>深度學習入門</div>
         <div class="why-item"><b>Part 2 &middot; 17′</b>骨科影像 AI 證據</div>
         <div class="why-item"><b>Part 3 &middot; 17′</b>生成式 AI（休息後）</div>
-        <div class="why-item"><b>Part 4 &middot; 16′</b>從論文到病床＋分組</div>
+        <div class="why-item"><b>Part 4 &middot; 16′</b>從論文到病床 + 分組</div>
       </div>
     </div>
   <!--F:3-->
@@ -192,7 +196,7 @@
     </header>
     <div class="content-body">
       <p class="concept-lead">
-        新聞把它們混著用，但其實是<span class="accent">由大到小的包含關係</span>——越裡層，越不需要人教規則。
+        新聞把它們混著用，但其實是<span class="accent">由大到小的包含關係</span>——越裡層，規則越是從資料學出來的；最裡層還能「產生」新內容。
       </p>
       <div class="mt-grid" style="grid-template-columns:0.9fr 1.1fr">
         <div class="svg-panel">
@@ -211,11 +215,11 @@
         <div class="mt-text">
           <div class="mt-block">
             <div class="mt-block-tag">AI &middot; 讓電腦做需要智慧的事</div>
-            <ul><li>包含人寫規則的系統。例：依 <b>Ottawa ankle rules</b> 跳出「建議照 X 光」的提示</li></ul>
+            <ul><li>包含人寫規則的系統（規則式）。例：把 <b>Ottawa ankle rules</b>（踝傷要不要照 X 光的臨床判斷規則）寫進系統，自動跳出提示</li></ul>
           </div>
           <div class="mt-block">
             <div class="mt-block-tag warn">ML &middot; 從資料自己學規則</div>
-            <ul><li>例：用年齡、骨密度、跌倒史等<b>表格資料</b>預測骨折風險</li></ul>
+            <ul><li>例：用年齡、骨密度、跌倒史等<b>表格資料</b>，讓模型自己找出高風險族群的規則</li></ul>
           </div>
           <div class="mt-block">
             <div class="mt-block-tag warn">DL &middot; 多層神經網路，直接看原始影像</div>
@@ -267,9 +271,9 @@
       </div>
       <div class="bottomline-strip">
         <div class="bl-label">Bottom line</div>
-        <div class="bl-text">答案從標註來，所以<b>標註的品質決定模型的上限</b>——Lindsey 2018 找了 18 位資深骨科醫師來標註，就是這個原因。</div>
+        <div class="bl-text">答案從標註來，所以<b>標註的品質決定模型的上限</b>——Lindsey 2018 的標註來自 18 位資深骨科醫師，標註者的程度決定了模型能學到什麼。</div>
       </div>
-      <p class="cite-line">資料來源：<b>Lindsey R</b> et al., PNAS 2018;115(45):11591–6。流程圖本演講自製。</p>
+      <p class="cite-line">資料來源：<b>Lindsey R</b> et al. PNAS 2018;115(45):11591–6。流程圖本演講自製。</p>
     </div>
   <!--F:6-->
   </section>
@@ -295,14 +299,14 @@
           <div class="step-no">02 &middot; 對答案</div>
           <div class="step-icon"><svg viewBox="0 0 50 50" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10 26 L20 36 L40 14"/></svg></div>
           <h3>和醫師標註比對</h3>
-          <p>標註是「骨折」(= 1)，差了 0.70——這個差距叫<span class="hw">誤差（loss）</span></p>
+          <p>標註是「骨折」（= 1），差了 0.70——這個差距叫<span class="hw">誤差（loss）</span></p>
         </div>
         <div class="step-arrow"><svg viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 13 H19 M13 7 L20 13 L13 19"/></svg></div>
         <div class="step">
           <div class="step-no">03 &middot; 修正</div>
           <div class="step-icon"><svg viewBox="0 0 50 50" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M38 18 A15 15 0 1 0 40 30"/><path d="M38 8 L38 18 L28 18"/></svg></div>
           <h3>微調數百萬個權重</h3>
-          <p>每個權重往「誤差變小」的方向挪一點點，然後換下一張</p>
+          <p>權重 = 模型內部的可調參數（像旋鈕）；每個都往「誤差變小」的方向挪一點點，然後換下一張</p>
         </div>
       </div>
       <div class="why-strip">
@@ -419,8 +423,8 @@
             <div class="gen-icon"><svg viewBox="0 0 38 38" fill="none" stroke="currentColor" stroke-width="2.4"><rect x="4" y="6" width="22" height="26" rx="3"/><path d="M28 14 L34 14 M28 20 L34 20 M28 26 L32 26"/></svg></div>
             <h3>這張片「是什麼」？</h3>
           </div>
-          <div class="gen-specs" style="font-size:13.5px">輸出：標籤＋機率</div>
-          <div class="gen-method" style="font-size:16.5px;line-height:1.55">有無骨折；膝關節 OA 嚴重度 <b>Kellgren–Lawrence 0–4 級</b>（Tiulpin 2018）</div>
+          <div class="gen-specs" style="font-size:13.5px">輸出：標籤 + 機率</div>
+          <div class="gen-method" style="font-size:16.5px;line-height:1.55">有無骨折；膝關節退化性關節炎（OA）嚴重度 <b>0–4 級</b>（Kellgren–Lawrence 分級，Tiulpin 2018）</div>
           <div class="gen-refs" style="font-size:13px"><b>對應臨床</b>：篩檢、分流、分級</div>
         </div>
         <div class="gen-card amber">
@@ -429,7 +433,7 @@
             <div class="gen-icon"><svg viewBox="0 0 38 38" fill="none" stroke="currentColor" stroke-width="2.4"><rect x="4" y="4" width="30" height="30" rx="3" stroke-opacity=".35"/><rect x="12" y="13" width="14" height="11" rx="1" stroke-dasharray="3 2"/></svg></div>
             <h3>問題「在哪裡」？</h3>
           </div>
-          <div class="gen-specs" style="font-size:13.5px">輸出：位置框＋機率</div>
+          <div class="gen-specs" style="font-size:13.5px">輸出：位置框 + 機率</div>
           <div class="gen-method" style="font-size:16.5px;line-height:1.55">在 X 光上<b>框出骨折位置</b>，提醒醫師回頭看那一區</div>
           <div class="gen-refs" style="font-size:13px"><b>對應臨床</b>：急診判讀輔助（第二雙眼）</div>
         </div>
@@ -440,7 +444,7 @@
             <h3>精確「輪廓」在哪？</h3>
           </div>
           <div class="gen-specs" style="font-size:13.5px">輸出：逐像素遮罩（mask）</div>
-          <div class="gen-method" style="font-size:16.5px;line-height:1.55">描出<b>椎體、骨骼輪廓</b> → 3D 規劃與導航的基礎；MedSAM 以超過一百萬組影像–遮罩對訓練</div>
+          <div class="gen-method" style="font-size:16.5px;line-height:1.55">描出<b>椎體、骨骼輪廓</b> → 3D 規劃與導航的基礎；MedSAM（通用醫學影像分割模型）以超過一百萬組影像–遮罩對訓練</div>
           <div class="gen-refs" style="font-size:13px"><b>對應臨床</b>：術前規劃、量測、導航</div>
         </div>
       </div>
@@ -448,7 +452,7 @@
         <div class="bl-label">Bottom line</div>
         <div class="bl-text">後面幾週的<b>脊椎生物力學、導航手術</b>，第一步幾乎都是「分割」。</div>
       </div>
-      <p class="cite-line">資料來源：<b>Tiulpin A</b> et al., Sci Rep 2018;8:1727；<b>Ma J</b> et al., Nat Commun 2024;15:654（MedSAM）。圖示本演講自製。</p>
+      <p class="cite-line">資料來源：<b>Tiulpin A</b> et al. Sci Rep 2018;8:1727；<b>Ma J</b> et al. Nat Commun 2024;15:654（MedSAM）。圖示本演講自製。</p>
     </div>
   <!--F:9-->
   </section>
@@ -460,7 +464,7 @@
     </header>
     <div class="content-body">
       <p class="concept-lead">
-        AI 給的是 0 到 1 的分數；<span class="accent">切在哪裡</span>才決定陽性 / 陰性——和篩檢試驗的 cut-off 完全相同。
+        AI 給的是 0 到 1 的分數；<span class="accent">切在哪裡</span>才決定陽性 / 陰性——和篩檢試驗的 cut-off 是同一個概念。
       </p>
       <div style="display:grid;grid-template-columns:1.2fr 1fr;gap:22px;flex:1;min-height:0">
         <div class="svg-panel">
@@ -489,12 +493,12 @@
             <li><b>B</b>　敏感度 &uarr;、特異度 &darr;</li>
             <li><b>C</b>　敏感度 &darr;、特異度 &uarr;</li>
           </ul>
-          <div class="footnote">提示：閾值往左移，紅色區塊漏掉的變少，灰色區塊被誤判的變多&hellip;</div>
+          <div class="footnote">提示：看圖——閾值往左移，紅色區塊和灰色區塊各有什麼變化？（投票後揭曉）</div>
         </div>
       </div>
       <div class="bottomline-strip" style="margin-top:14px">
         <div class="bl-label">Bottom line</div>
-        <div class="bl-text">把每個閾值的（1 − 特異度, 敏感度）連起來就是 <b>ROC 曲線</b>；曲線下面積 <b>AUC</b> 越接近 1，代表兩群分得越開。</div>
+        <div class="bl-text">把每個閾值的（1 − 特異度，敏感度）連起來就是 <b>ROC 曲線</b>；曲線下面積 <b>AUC</b> 越接近 1，代表兩群分得越開。</div>
       </div>
       <p class="cite-line">圖：分數分布示意（本演講自製，非真實資料）。</p>
     </div>
