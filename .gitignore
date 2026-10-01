@@ -1,0 +1,5 @@
+node_modules/
+tmp/
+.vercel/
+package-lock.json
+deck.pdf

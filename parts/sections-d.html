@@ -1,0 +1,247 @@
+  <!-- ============ Part 4 章節 ============ -->
+  <section class="slide chapter-break" id="s24">
+    <div class="ch-bg-art" aria-hidden="true">04</div>
+    <div class="ch-rule"></div>
+    <div class="ch-content">
+      <div class="ch-eyebrow">Part 4 &middot; From Paper to Bedside</div>
+      <h2 class="ch-title">從論文到病床</h2>
+      <p class="ch-lead">AI 要上病床，得先過三關：證據、法規許可，以及人工覆核與責任。</p>
+      <div class="ch-range">Slides 25 &mdash; 27</div>
+    </div>
+  <!--F:24-->
+  </section>
+
+  <!-- ============ 法規 ============ -->
+  <section class="slide content-chrome" id="s25">
+    <header class="page-head">
+      <h2>AI 就是醫療器材<span class="page-subtitle">Regulation &middot; <span style="color:var(--teal)">SaMD</span> &middot; FDA / TFDA</span></h2>
+    </header>
+    <div class="content-body">
+      <p class="concept-lead">
+        AI 判讀軟體屬於<span class="accent">軟體醫療器材（SaMD）</span>：要經查驗登記，而且<span class="outcome">只能用在許可範圍內</span>。
+      </p>
+      <div class="sys-grid">
+        <div class="sys-card">
+          <div class="sys-tag">美國 FDA</div>
+          <div class="case-num" style="font-family:'Crimson Pro',serif;font-weight:700;font-size:46px;line-height:1;color:var(--ink)">&gt; 1,600<span style="font-size:20px;color:var(--ink-soft);margin-left:6px">項</span></div>
+          <div class="sys-body" style="font-size:17px">已核准的 AI 醫療器材（截至 2026 年 9 月）</div>
+          <ul class="sys-list">
+            <li style="font-size:17px;line-height:1.5"><b>2018 OsteoDetect</b>：以 De Novo 核准，第一個骨折偵測 AI</li>
+            <li style="font-size:17px;line-height:1.5">許可範圍：<b>成人、手腕遠端橈骨骨折</b></li>
+          </ul>
+        </div>
+        <div class="sys-card teal">
+          <div class="sys-tag">台灣 TFDA</div>
+          <h3 style="font-size:23px">已發布 AI/ML 醫療器材軟體專屬指引</h3>
+          <ul class="sys-list">
+            <li style="font-size:17px;line-height:1.5">人工智慧 / 機器學習技術之醫療器材軟體<b>查驗登記技術指引</b></li>
+            <li style="font-size:17px;line-height:1.5">電腦輔助偵測（<b>CADe</b>）專屬指引：幫醫師「找」病灶</li>
+            <li style="font-size:17px;line-height:1.5">電腦輔助分流（<b>CADt</b>）專屬指引：幫醫院「排」優先順序</li>
+          </ul>
+        </div>
+        <div class="sys-results">
+          <div class="res-label">許可範圍</div>
+          <div class="res-body" style="font-size:16px">把核准用於<b>成人手腕</b>的 AI 拿去判讀<b>兒童</b>或<b>髖部</b>，就是超出適應症——AI 沒驗證過，責任也落回使用者。</div>
+        </div>
+      </div>
+      <p class="cite-line">資料來源：<b>U.S. FDA</b>, AI-Enabled Medical Devices（頁面更新 2026-09-22）；FDA DEN180005；<b>TFDA</b> AI/ML 醫療器材軟體查驗登記技術指引、CADe 與 CADt 指引。</p>
+    </div>
+  <!--F:25-->
+  </section>
+
+  <!-- ============ 風險 ============ -->
+  <section class="slide content-chrome" id="s26">
+    <header class="page-head">
+      <h2>論文裡很好，到你的醫院就一樣好嗎？<span class="page-subtitle">Bias &middot; Shift &middot; Shortcuts &middot; Over-trust</span></h2>
+    </header>
+    <div class="content-body">
+      <p class="concept-lead">
+        五個常見風險，<span class="accent">每一個都不會寫在 AUC 裡</span>。
+      </p>
+      <div class="foa-grid" style="grid-template-rows:1fr 1fr">
+        <div class="foa-card">
+          <div class="foa-tag">01 &middot; 資料偏差</div>
+          <h3 style="font-size:22px">訓練資料不像你的病人</h3>
+          <div class="foa-body" style="font-size:17px;line-height:1.5">單一醫院、單一機型、族群組成不同 → 對某些病人表現較差</div>
+        </div>
+        <div class="foa-card">
+          <div class="foa-tag">02 &middot; 分布偏移</div>
+          <h3 style="font-size:22px">換醫院、換設備就退步</h3>
+          <div class="foa-body" style="font-size:17px;line-height:1.5">影像參數、擺位、病人組成一變，表現就可能下降</div>
+        </div>
+        <div class="foa-card">
+          <div class="foa-tag">03 &middot; 捷徑學習</div>
+          <h3 style="font-size:22px">學到線索，不是病灶</h3>
+          <div class="foa-body" style="font-size:17px;line-height:1.5">例如影像上的標記或文字，剛好和「有骨折」有關</div>
+        </div>
+        <div class="foa-card">
+          <div class="foa-tag">04 &middot; 自動化偏誤</div>
+          <h3 style="font-size:22px">太相信 AI 的「無骨折」</h3>
+          <div class="foa-body" style="font-size:17px;line-height:1.5">AI 說陰性，醫師就少看一眼——第二雙眼變成唯一一雙眼</div>
+        </div>
+        <div class="foa-card">
+          <div class="foa-tag">05 &middot; 隱私與責任</div>
+          <h3 style="font-size:22px">資料誰保護？出錯誰負責？</h3>
+          <div class="foa-body" style="font-size:17px;line-height:1.5">去識別化、資料外流；最終判斷與簽名仍在醫師</div>
+        </div>
+        <div class="foa-card teal" style="background:#FAFCFD">
+          <div class="foa-tag">對策</div>
+          <h3 style="font-size:22px">驗證、監測、覆核</h3>
+          <div class="foa-body" style="font-size:17px;line-height:1.5"><b>外部驗證</b>、<b>上線後持續監測</b>、<b>保留人工覆核</b>並記錄</div>
+        </div>
+      </div>
+      <p class="cite-line">風險分類為概念整理（本演講自製）。</p>
+    </div>
+  <!--F:26-->
+  </section>
+
+  <!-- ============ 分組討論 ============ -->
+  <section class="slide content-chrome" id="s27">
+    <header class="page-head">
+      <h2>分組討論：換你做決定<span class="page-subtitle">3 per group &middot; 10 min discuss + 6 min share</span></h2>
+    </header>
+    <div class="content-body">
+      <p class="concept-lead">
+        三人一組，<span class="accent">選一個情境</span>：寫下你會怎麼做，以及為什麼。
+      </p>
+      <div class="gen-grid">
+        <div class="gen-card">
+          <div class="gen-tag">情境 A<span class="gen-tag-sub">急診夜班</span></div>
+          <h3 style="font-size:21px">AI 說「無骨折」，但&hellip;</h3>
+          <div class="gen-method" style="font-size:19px;line-height:1.6">AI 標示「無骨折」，但你摸到<b>鼻菸窩壓痛</b>。你怎麼做？<b>怎麼記錄</b>？</div>
+        </div>
+        <div class="gen-card amber">
+          <div class="gen-tag">情境 B<span class="gen-tag-sub">門診</span></div>
+          <h3 style="font-size:21px">病人帶著 ChatGPT 來</h3>
+          <div class="gen-method" style="font-size:19px;line-height:1.6">病人拿著 ChatGPT 的建議問：「我是不是<b>一定要開刀</b>？」你怎麼回應？</div>
+        </div>
+        <div class="gen-card teal">
+          <div class="gen-tag">情境 C<span class="gen-tag-sub">醫院採購</span></div>
+          <h3 style="font-size:21px">問廠商的 5 個問題</h3>
+          <div class="gen-method" style="font-size:19px;line-height:1.6">醫院要買骨折偵測 AI，列出你會問的 5 個問題。</div>
+          <div class="gen-refs" style="font-size:15px"><b>提示</b>：訓練資料來源、外部驗證、TFDA 許可範圍、錯誤案例、上線後監測</div>
+        </div>
+      </div>
+      <div class="why-strip" style="margin-top:14px">
+        <div class="why-label">評分<br/>參考</div>
+        <div class="why-item"><b>+1 指出覆核或查證步驟</b>人工覆核、查證來源</div>
+        <div class="why-item"><b>+1 提到資料或驗證限制</b>偏差、外部驗證、許可範圍</div>
+        <div class="why-item"><b>+1 提出具體行動</b>做什麼、怎麼記錄、問什麼</div>
+      </div>
+      <p class="cite-line">情境卡本演講自製。</p>
+    </div>
+  <!--F:27-->
+  </section>
+
+  <!-- ============ 總結 ============ -->
+  <section class="slide content-chrome" id="s28">
+    <header class="page-head">
+      <h2>帶走三件事<span class="page-subtitle">Take-home Messages</span></h2>
+    </header>
+    <div class="content-body">
+      <div class="gen-grid" style="flex:0 0 auto">
+        <div class="gen-card">
+          <div class="gen-tag">01 &middot; 深度學習</div>
+          <h3 style="font-size:23px">骨科影像的證據最成熟</h3>
+          <div class="gen-method" style="font-size:18px;line-height:1.6">主要角色是<b>提升醫師判讀的敏感度與效率</b>——醫師 + AI，而不是 AI 取代醫師。</div>
+        </div>
+        <div class="gen-card amber">
+          <div class="gen-tag">02 &middot; 生成式 AI</div>
+          <h3 style="font-size:23px">很會寫、會考試，但會捏造</h3>
+          <div class="gen-method" style="font-size:18px;line-height:1.6">看片能力<b>還沒被充分驗證</b>；它寫的事實與文獻，都要查過才能用。</div>
+        </div>
+        <div class="gen-card teal">
+          <div class="gen-tag">03 &middot; 臨床使用</div>
+          <h3 style="font-size:23px">證據、許可、覆核</h3>
+          <div class="gen-method" style="font-size:18px;line-height:1.6">看證據、確認<b>法規許可範圍</b>，並<b>保留人工覆核</b>與紀錄。</div>
+        </div>
+      </div>
+      <div class="pullquote-wrap" style="height:auto;flex:1;padding:10px 60px">
+        <p class="pullquote-text" style="font-size:32px">AI 是骨科的<b>第二雙眼</b>，不是取代醫師。<br/><span class="q-teal">會用之前，要先會驗證。</span></p>
+      </div>
+      <p class="cite-line">本演講整理。</p>
+    </div>
+  <!--F:28-->
+  </section>
+
+  <!-- ============ 後續週次 ============ -->
+  <section class="slide content-chrome" id="s29">
+    <header class="page-head">
+      <h2>這學期接下來，AI 會再出現在哪？<span class="page-subtitle">Links to Upcoming Weeks</span></h2>
+    </header>
+    <div class="content-body">
+      <p class="concept-lead">
+        今天的三個任務——<span class="accent">分類、偵測、分割</span>——會在後面的課一再出現。
+      </p>
+      <div class="wk-table">
+        <div class="h">日期</div><div class="h">主題</div><div class="h">AI 連結</div>
+        <div class="d">10/08</div><div class="t">兒童骨科步態分析</div><div>影像姿態估計、穿戴式感測分析</div>
+        <div class="d">10/29</div><div class="t">生醫材料在骨科的應用</div><div>材料設計與性質預測</div>
+        <div class="d">11/19</div><div class="t">脊椎生物力學</div><div>影像分割 → 建模與模擬</div>
+        <div class="d">11/26</div><div class="t">小兒骨科診斷與治療</div><div>骨齡評估、脊椎側彎角度量測</div>
+        <div class="d">12/03</div><div class="t">骨科導航手術</div><div>術中影像配準、分割、機器人</div>
+        <div class="d last">12/10</div><div class="t last">骨科微創手術</div><div class="last">術中影像與內視鏡影像辨識</div>
+      </div>
+      <p class="cite-line">依本學期「醫學工程概論」課程表整理。</p>
+    </div>
+  <!--F:29-->
+  </section>
+
+  <!-- ============ 評量 + Q&A ============ -->
+  <section class="slide content-chrome" id="s30">
+    <header class="page-head">
+      <h2>課後 5 題 &amp; Q&amp;A<span class="page-subtitle">Quick Check &middot; ~5 min</span></h2>
+    </header>
+    <div class="content-body">
+      <div style="display:grid;grid-template-columns:1.6fr 1fr;gap:22px;flex:1;min-height:0">
+        <div class="card" style="padding:18px 24px;gap:12px">
+          <div class="tag"><span class="ico">&#10003;</span><span>課後評量</span></div>
+          <ol class="goal-list" style="gap:22px">
+            <li style="font-size:19px">某骨折 AI <b>敏感度很高、特異度偏低</b>，臨床上最可能出現什麼問題？</li>
+            <li style="font-size:19px">「<b>分割</b>」任務在骨科可以用在哪裡？舉一例。</li>
+            <li style="font-size:19px">為什麼 LLM 在 <b>OITE</b> 的高分不能直接推論到臨床看片？</li>
+            <li style="font-size:19px">列出一種<b>查證 LLM 引用文獻</b>的方法。</li>
+            <li style="font-size:19px">AI 標示「無骨折」但<b>臨床懷疑骨折</b>時，你的處置原則是？</li>
+          </ol>
+        </div>
+        <div class="card teal" style="padding:18px 24px;gap:12px">
+          <div class="tag"><span class="ico">?</span><span>Q &amp; A</span></div>
+          <p class="big-quote" style="font-size:24px">謝謝大家。<br/>有問題，現在問。</p>
+          <div class="qr-ph" style="flex:1">1 分鐘課後回饋<br/>【Slido / Mentimeter QR code 課前貼上】</div>
+        </div>
+      </div>
+      <p class="cite-line">評量題對應本課五個學習目標。</p>
+    </div>
+  <!--F:30-->
+  </section>
+
+  <!-- ============ References ============ -->
+  <section class="slide content-chrome" id="s31">
+    <header class="page-head">
+      <h2>參考文獻<span class="page-subtitle">References</span></h2>
+    </header>
+    <div class="content-body">
+      <div class="ref-cols">
+        <ol>
+          <li><b>Olczak J</b>, Fahlberg N, Maki A, et al. Artificial intelligence for analyzing orthopedic trauma radiographs. <i>Acta Orthop</i>. 2017;88(6):581–6. doi:10.1080/17453674.2017.1344459</li>
+          <li><b>Lindsey R</b>, Daluiski A, Chopra S, et al. Deep neural network improves fracture detection by clinicians. <i>PNAS</i>. 2018;115(45):11591–6. doi:10.1073/pnas.1806905115</li>
+          <li><b>U.S. FDA</b>. De Novo classification request for OsteoDetect (DEN180005). 2018.</li>
+          <li><b>Cheng CT</b>, Ho TY, Lee TY, et al. Application of a deep learning algorithm for detection and visualization of hip fractures on plain pelvic radiographs. <i>Eur Radiol</i>. 2019;29(10):5469–77.</li>
+          <li><b>Halabi SS</b>, Prevedello LM, Kalpathy-Cramer J, et al. The RSNA Pediatric Bone Age Machine Learning Challenge. <i>Radiology</i>. 2019;290(2):498–503. doi:10.1148/radiol.2018180736</li>
+          <li><b>Guermazi A</b>, Tannoury C, Kompel AJ, et al. Improving radiographic fracture recognition performance and efficiency using artificial intelligence. <i>Radiology</i>. 2022;302(3):627–36. doi:10.1148/radiol.210937</li>
+          <li><b>Tiulpin A</b>, Thevenot J, Rahtu E, et al. Automatic knee osteoarthritis diagnosis from plain radiographs: a deep learning-based approach. <i>Sci Rep</i>. 2018;8:1727.</li>
+          <li><b>Ma J</b>, He Y, Li F, et al. Segment anything in medical images. <i>Nat Commun</i>. 2024;15:654.</li>
+          <li><b>Vaswani A</b>, Shazeer N, Parmar N, et al. Attention is all you need. <i>NeurIPS</i> 2017. arXiv:1706.03762</li>
+          <li><b>Lum ZC</b>. Can artificial intelligence pass the American Board of Orthopaedic Surgery examination? Orthopaedic residents versus ChatGPT. <i>Clin Orthop Relat Res</i>. 2023;481(8):1623–30. doi:10.1097/CORR.0000000000002704</li>
+          <li><b>Kung JE</b>, Marshall C, Gauthier C, et al. Evaluating ChatGPT performance on the Orthopaedic In-Training Examination. <i>JBJS Open Access</i>. 2023;8(3):e23.00056.</li>
+          <li><b>Walters WH</b>, Wilder EI. Fabrication and errors in the bibliographic citations generated by ChatGPT. <i>Sci Rep</i>. 2023;13:14045.</li>
+          <li><b>U.S. FDA</b>. Artificial Intelligence-Enabled Medical Devices（頁面更新 2026-09-22）.</li>
+          <li><b>衛福部食品藥物管理署</b>. 人工智慧/機器學習技術之醫療器材軟體查驗登記技術指引.</li>
+          <li><b>衛福部食品藥物管理署</b>. 人工智慧/機器學習技術之電腦輔助分流（CADt）醫療器材軟體查驗登記技術指引.</li>
+          <li><b>IRPMA</b>. TFDA 公告「人工智慧/機器學習技術之電腦輔助偵測（CADe）醫療器材軟體查驗登記技術指引」.</li>
+        </ol>
+      </div>
+      <p class="cite-line">完整連結見講義。</p>
+    </div>
+  <!--F:31-->
+  </section>

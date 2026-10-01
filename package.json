@@ -1,0 +1,7 @@
+{
+  "name": "wtmh-talk",
+  "private": true,
+  "devDependencies": {
+    "playwright-chromium": "latest"
+  }
+}

@@ -1,0 +1,265 @@
+  <!-- ============ Part 3 章節 ============ -->
+  <section class="slide chapter-break" id="s17">
+    <div class="ch-bg-art" aria-hidden="true">03</div>
+    <div class="ch-rule"></div>
+    <div class="ch-content">
+      <div class="ch-eyebrow">Part 3 &middot; Generative AI</div>
+      <h2 class="ch-title">生成式 AI</h2>
+      <p class="ch-lead">判別式模型回答「是不是」；生成式模型「產生新內容」——很會寫、很會考，但會捏造。</p>
+      <div class="ch-range">Slides 18 &mdash; 23</div>
+    </div>
+  <!--F:17-->
+  </section>
+
+  <!-- ============ 判別式 vs 生成式 ============ -->
+  <section class="slide content-chrome" id="s18">
+    <header class="page-head">
+      <h2>判別式 vs 生成式<span class="page-subtitle">Discriminative vs Generative</span></h2>
+    </header>
+    <div class="content-body">
+      <p class="concept-lead">
+        Part 2 的骨折 AI 都是<span class="accent">判別式</span>：輸入影像，回答「是不是」。生成式則是<span class="outcome">產生原本不存在的內容</span>。
+      </p>
+      <div class="compare-grid" style="flex:1;min-height:0">
+        <div class="compare-card classical">
+          <div class="tag"><span class="ico">&#10003;</span><span>判別式 &middot; 回答「是不是」</span></div>
+          <div class="flow"><span class="chip">X 光</span><span class="op">&rarr;</span><span class="chip">模型</span><span class="op">&rarr;</span><span class="chip">骨折 0.91</span></div>
+          <ul>
+            <li>骨折偵測、OA 分級、骨齡估計</li>
+            <li>答案空間<b>有限</b>：可以算敏感度、特異度、AUC</li>
+          </ul>
+          <div class="footnote">答錯時：機率不準，但你知道它在回答哪個問題。</div>
+        </div>
+        <div class="compare-card vrmt">
+          <div class="tag"><span class="ico">&#10022;</span><span>生成式 &middot; 產生新內容</span></div>
+          <div class="flow"><span class="chip">「請寫術後衛教」</span><span class="op">&rarr;</span><span class="chip">LLM</span><span class="op">&rarr;</span><span class="chip cool">一段新文字</span></div>
+          <ul>
+            <li>衛教文字、病歷摘要、報告草稿、合成影像</li>
+            <li>答案空間<b>無限</b>：很難用單一數字評估「對不對」</li>
+          </ul>
+          <div class="footnote">答錯時：說得流暢又有自信，看起來很像真的。</div>
+        </div>
+      </div>
+      <div class="bottomline-strip">
+        <div class="bl-label">Bottom line</div>
+        <div class="bl-text">評估方式不同，風險也不同：生成式 AI 最大的問題不是「不準」，而是<b>錯得很有說服力</b>。</div>
+      </div>
+      <p class="cite-line">圖解本演講自製。</p>
+    </div>
+  <!--F:18-->
+  </section>
+
+  <!-- ============ LLM = 預測下一個 token ============ -->
+  <section class="slide content-chrome" id="s19">
+    <header class="page-head">
+      <h2><span class="ab">LLM</span> 其實只做一件事<span class="page-subtitle">Predict the Next Token &middot; Transformer</span></h2>
+    </header>
+    <div class="content-body">
+      <p class="concept-lead">
+        大型語言模型依照前文，<span class="accent">預測下一個字（token）最可能是什麼</span>，一個接一個寫下去。
+      </p>
+      <div class="svg-panel" style="flex:0 0 176px">
+        <svg viewBox="0 0 1160 176" preserveAspectRatio="xMidYMid meet">
+          <g font-family="Inter,Noto Sans TC,sans-serif">
+            <rect x="24" y="22" width="500" height="54" rx="8" fill="#FAFBFC" stroke="#E2E5EC"/>
+            <text x="44" y="56" font-size="20" fill="#1B2030">遠端橈骨骨折常見的受傷機轉是跌倒時</text>
+            <rect x="436" y="34" width="72" height="30" rx="5" fill="#fff" stroke="#B7282E" stroke-width="2" stroke-dasharray="5 4"/>
+            <text x="472" y="55" text-anchor="middle" font-size="18" font-weight="700" fill="#B7282E">？</text>
+            <text x="44" y="110" font-size="14" fill="#6B7388">前文（prompt）</text>
+            <path d="M540 49 L600 49" stroke="#9AA1B2" stroke-width="2.5"/><path d="M596 42 L606 49 L596 56" fill="none" stroke="#9AA1B2" stroke-width="2.5"/>
+            <text x="640" y="30" font-size="13" font-weight="700" fill="#6B7388" letter-spacing="1.5">下一個 TOKEN 的機率（示意）</text>
+            <text x="640" y="62" font-size="16" fill="#1B2030">手撐地</text><rect x="730" y="48" width="290" height="18" rx="4" fill="#B7282E"/><text x="1030" y="62" font-size="14" font-weight="700" fill="#B7282E">0.58</text>
+            <text x="640" y="92" font-size="16" fill="#1B2030">伸手</text><rect x="730" y="78" width="110" height="18" rx="4" fill="#C9787C"/><text x="850" y="92" font-size="14" fill="#3C4253">0.22</text>
+            <text x="640" y="122" font-size="16" fill="#1B2030">滑倒</text><rect x="730" y="108" width="45" height="18" rx="4" fill="#DDB3B5"/><text x="785" y="122" font-size="14" fill="#3C4253">0.09</text>
+            <text x="640" y="152" font-size="16" fill="#1B2030">&hellip;</text><rect x="730" y="138" width="20" height="18" rx="4" fill="#EEDADB"/><text x="760" y="152" font-size="14" fill="#3C4253">其他</text>
+            <text x="44" y="150" font-size="14" fill="#3C4253">選中一個 → 接到句尾 → 再預測下一個，直到寫完</text>
+          </g>
+        </svg>
+      </div>
+      <div class="pipeline" style="margin-top:14px;margin-bottom:0">
+        <div class="step" style="padding:12px 18px;gap:4px">
+          <div class="step-no">01 &middot; 預訓練</div>
+          <p>讀進海量文字，練習「文字接龍」</p>
+        </div>
+        <div class="step-arrow"><svg viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 13 H19 M13 7 L20 13 L13 19"/></svg></div>
+        <div class="step" style="padding:12px 18px;gap:4px">
+          <div class="step-no">02 &middot; 微調</div>
+          <p>用「問題—好答案」範例，學會<span class="hw">回答指令</span></p>
+        </div>
+        <div class="step-arrow"><svg viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 13 H19 M13 7 L20 13 L13 19"/></svg></div>
+        <div class="step" style="padding:12px 18px;gap:4px">
+          <div class="step-no">03 &middot; 人類回饋對齊</div>
+          <p>人類替回答評分，讓它更有幫助、更安全</p>
+        </div>
+      </div>
+      <div class="bottomline-strip" style="margin-top:14px">
+        <div class="bl-label">Bottom line</div>
+        <div class="bl-text">核心架構是 <b>Transformer</b>（2017）。它學的是「<b>像</b>正確答案的文字」，不一定是正確答案——這就是幻覺的來源。</div>
+      </div>
+      <p class="cite-line">資料來源：<b>Vaswani A</b> et al., Attention Is All You Need, NeurIPS 2017。機率數值為教學示意（本演講自製）。</p>
+    </div>
+  <!--F:19-->
+  </section>
+
+  <!-- ============ LLM 考 OITE ============ -->
+  <section class="slide content-chrome" id="s20">
+    <header class="page-head">
+      <h2><span class="ab">LLM</span> 考骨科住院醫師年度考試<span class="page-subtitle">Orthopaedic In-Training Examination &middot; <span style="color:var(--teal)">OITE</span></span></h2>
+    </header>
+    <div class="content-body">
+      <p class="concept-lead">
+        GPT-4 的分數已接近資深住院醫師——但<span class="accent">請先看它考的是哪些題目</span>。
+      </p>
+      <div class="stat-grid">
+        <div class="stat-card" style="border-top-color:var(--muted)">
+          <div class="stat-num">47<span class="unit">%</span></div>
+          <div class="stat-label">GPT-3.5 答對率</div>
+          <div class="stat-sub">約 PGY-1 第 40 百分位<br/>Lum, CORR 2023</div>
+        </div>
+        <div class="stat-card" style="border-top-color:var(--muted)">
+          <div class="stat-num">54.3<span class="unit">%</span></div>
+          <div class="stat-label">GPT-3.5 答對率</div>
+          <div class="stat-sub">約 PGY-1 水準<br/>Kung, JBJS OA 2023</div>
+        </div>
+        <div class="stat-card red">
+          <div class="stat-num">73.6<span class="unit">%</span></div>
+          <div class="stat-label">GPT-4 答對率</div>
+          <div class="stat-sub">約 PGY-5 平均；高於 ABOS Part I 67% 通過線<br/>Kung, JBJS OA 2023</div>
+        </div>
+        <div class="stat-card amber">
+          <div class="stat-num">48<span class="unit">%</span></div>
+          <div class="stat-label">題目因含影像被排除</div>
+          <div class="stat-sub">Lum 研究 400 題中；兩篇研究都只用純文字題</div>
+        </div>
+      </div>
+      <div class="bottomline-strip">
+        <div class="bl-label">Bottom line</div>
+        <div class="bl-text"><b>會考試 ≠ 會看片 ≠ 會照顧病人。</b>骨科大量依賴影像，而這些研究剛好把影像題排除了。</div>
+      </div>
+      <div class="why-strip" style="grid-template-columns:auto 1fr">
+        <div class="why-label">想一想</div>
+        <div class="why-item">如果把那 48% 的影像題放回去，你覺得分數會怎麼變？這告訴你該怎麼讀「AI 通過考試」的新聞？</div>
+      </div>
+      <p class="cite-line">資料來源：<b>Lum ZC</b>. Clin Orthop Relat Res 2023;481(8):1623–30；<b>Kung JE</b> et al. JBJS Open Access 2023;8(3):e23.00056。</p>
+    </div>
+  <!--F:20-->
+  </section>
+
+  <!-- ============ 幻覺：假文獻 ============ -->
+  <section class="slide content-chrome" id="s21">
+    <header class="page-head">
+      <h2>幻覺：一本正經地捏造文獻<span class="page-subtitle">Hallucination &middot; Fabricated Citations</span></h2>
+    </header>
+    <div class="content-body">
+      <div class="hero-stat-grid" style="height:auto;flex:1;gap:10px">
+        <div class="stat-eyebrow">請 ChatGPT 寫學術短文時，引用文獻中「捏造」的比例</div>
+        <div class="stat-numbers">
+          <div class="stat-col primary">
+            <div class="stat-num" style="color:var(--red);font-size:150px">55<span class="pct">%</span></div>
+            <div class="stat-label" style="color:var(--red)">GPT-3.5</div>
+            <div class="stat-detail">超過一半的引用不存在</div>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-col secondary">
+            <div class="stat-num" style="font-size:110px">18<span class="pct">%</span></div>
+            <div class="stat-label">GPT-4</div>
+            <div class="stat-detail">進步了，但不是零</div>
+          </div>
+        </div>
+        <p class="stat-context">捏造的文獻有作者、有期刊、有年份，<b>格式完美</b>——所以只能靠<span class="hl-teal">逐篇查證</span>：到 PubMed 或用 DOI 核對作者、期刊、年份是否一致。</p>
+      </div>
+      <div class="bottomline-strip" style="margin-top:8px">
+        <div class="bl-label">Bottom line</div>
+        <div class="bl-text">LLM 寫的參考文獻，<b>沒查過就等於沒有</b>。報告、作業、病歷都一樣。</div>
+      </div>
+      <p class="cite-line">資料來源：<b>Walters WH, Wilder EI</b>. Fabrication and errors in the bibliographic citations generated by ChatGPT. Sci Rep 2023;13:14045。</p>
+    </div>
+  <!--F:21-->
+  </section>
+
+  <!-- ============ 現場展示 ============ -->
+  <section class="slide content-chrome" id="s22">
+    <header class="page-head">
+      <h2>現場展示：問它，然後查它<span class="page-subtitle">Live Demo &middot; ~5 min</span></h2>
+    </header>
+    <div class="content-body">
+      <p class="concept-lead">
+        兩個問題，一個考<span class="accent">文獻查證</span>，一個考<span class="accent">臨床判斷</span>。你的任務是當審稿人。
+      </p>
+      <div class="adv-grid">
+        <div class="adv-card">
+          <div class="adv-ico" style="font-family:'Crimson Pro',serif;font-size:26px;font-weight:700">1</div>
+          <div class="adv-body">
+            <h3 style="font-size:19px">問：列出文獻</h3>
+            <p class="eng-badge" style="margin-top:6px;font-size:16px">請列出 3 篇關於深度學習偵測髖部骨折的論文，附 DOI。</p>
+          </div>
+        </div>
+        <div class="adv-card">
+          <div class="adv-ico" style="font-family:'Crimson Pro',serif;font-size:26px;font-weight:700">2</div>
+          <div class="adv-body">
+            <h3 style="font-size:19px">查：現場到 PubMed 核對 1–2 篇</h3>
+            <p style="font-size:17px;line-height:1.5">作者、期刊、年份、DOI——四項<b>是否全部一致</b>？DOI 點得開嗎？</p>
+          </div>
+        </div>
+        <div class="adv-card amber">
+          <div class="adv-ico" style="font-family:'Crimson Pro',serif;font-size:26px;font-weight:700">3</div>
+          <div class="adv-body">
+            <h3 style="font-size:19px">問：一個臨床情境</h3>
+            <p class="eng-badge" style="margin-top:6px;font-size:16px">80 歲跌倒的病人，骨盆 X 光看不出骨折但無法負重，下一步？</p>
+          </div>
+        </div>
+        <div class="adv-card amber">
+          <div class="adv-ico" style="font-family:'Crimson Pro',serif;font-size:26px;font-weight:700">4</div>
+          <div class="adv-body">
+            <h3 style="font-size:19px">評：你來當審稿人</h3>
+            <p style="font-size:17px;line-height:1.5">哪裡合理？它<b>缺了哪些病人資訊</b>才能下判斷？它有沒有說「不確定」？</p>
+          </div>
+        </div>
+      </div>
+      <div class="bottomline-strip">
+        <div class="bl-label">Bottom line</div>
+        <div class="bl-text">LLM 適合<b>起草與整理</b>；事實與臨床決策，<b>必須查證</b>。</div>
+      </div>
+      <p class="cite-line">展示腳本本演講自製；LLM 回應每次不同，課堂結果僅供討論。</p>
+    </div>
+  <!--F:22-->
+  </section>
+
+  <!-- ============ 骨科生成式 AI 應用 + 誠實邊界 ============ -->
+  <section class="slide content-chrome" id="s23">
+    <header class="page-head">
+      <h2>骨科生成式 AI 可以做什麼？<span class="page-subtitle">Possible Uses &middot; and Honest Limits</span></h2>
+    </header>
+    <div class="content-body">
+      <p class="concept-lead">
+        可能的應用很多，但<span class="accent">多數仍在研究或試行階段</span>——講應用，一定要同時講邊界。
+      </p>
+      <div class="mt-grid" style="grid-template-columns:1.1fr 1fr">
+        <div class="mt-block" style="border-left-color:var(--teal)">
+          <div class="mt-block-tag teal">可能的應用<span class="status">多數仍在研究或試行</span></div>
+          <ul style="gap:9px">
+            <li style="font-size:16.5px"><b>衛教與手術說明文字</b>：改寫成病人看得懂的版本</li>
+            <li style="font-size:16.5px"><b>病歷及手術紀錄摘要</b></li>
+            <li style="font-size:16.5px"><b>影像報告草稿</b></li>
+            <li style="font-size:16.5px"><b>合成影像</b>：擴增罕見骨折的訓練資料</li>
+            <li style="font-size:16.5px"><b>復健衛教與追蹤</b>：提醒、問答</li>
+          </ul>
+        </div>
+        <div class="mt-block">
+          <div class="mt-block-tag warn">誠實邊界</div>
+          <ul style="gap:9px">
+            <li style="font-size:16.5px"><b>會捏造</b>：GPT-4 引用仍有 18% 是假的</li>
+            <li style="font-size:16.5px"><b>看片能力未被充分驗證</b>：考試研究排除了影像題</li>
+            <li style="font-size:16.5px"><b>隱私</b>：病人資料不能貼到公開的聊天機器人</li>
+            <li style="font-size:16.5px"><b>責任</b>：病歷上簽名的是醫師，不是 AI</li>
+          </ul>
+        </div>
+      </div>
+      <div class="bottomline-strip" style="margin-top:14px">
+        <div class="bl-label">Bottom line</div>
+        <div class="bl-text"><b>起草可以交給 AI，判斷與簽名不行。</b></div>
+      </div>
+      <p class="cite-line">應用清單為概念整理，非特定產品；幻覺數據見 <b>Walters WH, Wilder EI</b>, Sci Rep 2023。</p>
+    </div>
+  <!--F:23-->
+  </section>

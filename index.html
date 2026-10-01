@@ -1,0 +1,3711 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>深度學習及生成式 AI 於骨科學的應用｜醫學工程概論 2026-10-01</title>
+<meta name="viewport" content="width=1280" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,600;0,700;1,500&family=Inter:wght@300;400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@500;700&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --red:        #B7282E;
+    --red-deep:   #8E1A20;
+    --ink:        #1B2030;
+    --ink-soft:   #3C4253;
+    --muted:      #6B7388;
+    --line:       #E2E5EC;
+    --teal:       #0E9FBA;
+    --amber:      #D96A18;
+  }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html,body{
+    background:#3A3D45;
+    font-family:'Inter','Noto Sans TC',-apple-system,'Segoe UI',Roboto,sans-serif;
+    color:var(--ink);
+  }
+  body{ padding:40px 0; }
+  .deck{
+    width:1280px; margin:0 auto;
+    display:flex; flex-direction:column; gap:32px;
+  }
+  .slide{
+    width:1280px; height:720px;
+    background:#fff;
+    position:relative; overflow:hidden;
+    box-shadow:0 30px 60px -25px rgba(0,0,0,.55), 0 2px 6px rgba(0,0,0,.18);
+    border-radius:6px;
+  }
+
+  /* ===== Shared top header (single full-width, original artwork preserved) ===== */
+  .top-deco{
+    position:absolute; top:0; left:0; right:0;
+    z-index:5; pointer-events:none;
+  }
+  .top-deco img{ width:100%; height:auto; display:block; }
+
+  /* ===== Slide 1 — Title ===== */
+  .slide-title{
+    background:
+      radial-gradient(circle at 92% 110%, rgba(183,40,46,.06), transparent 55%),
+      radial-gradient(circle at 5% -10%, rgba(14,159,186,.05), transparent 55%),
+      linear-gradient(180deg,#FFFFFF 0%, #F7F8FA 100%);
+  }
+  .hero{
+    position:absolute;
+    top:145px; left:60px; right:60px; bottom:160px;
+    display:grid;
+    grid-template-columns: 360px 1fr;
+    gap:42px;
+    align-items:center;
+  }
+  .hero-art{
+    position:relative; height:380px;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .hero-art .ring{
+    position:absolute;
+    width:300px; height:300px; border-radius:50%;
+    background:
+      radial-gradient(circle at 30% 30%, rgba(14,159,186,.10), transparent 60%),
+      radial-gradient(circle at 70% 70%, rgba(183,40,46,.08), transparent 60%);
+    border:1px dashed rgba(14,159,186,.18);
+  }
+  .hero-art .ring::before{
+    content:""; position:absolute; inset:18px;
+    border-radius:50%; background:#FFFFFF;
+    box-shadow:0 18px 40px -20px rgba(20,30,60,.14);
+  }
+  .hero-art .brain{
+    position:relative; width:240px; height:240px;
+    object-fit:contain;
+    z-index:2;
+    filter:drop-shadow(0 8px 18px rgba(20,30,60,.15));
+  }
+
+  .hero-text{
+    padding-top:4px;
+    align-self:stretch;
+    display:flex; flex-direction:column;
+  }
+
+  .hero-text .eyebrow-line{
+    font-family:'Inter','Noto Sans TC',sans-serif;
+    font-weight:600;
+    font-size:14px;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    color:var(--muted);
+    margin-bottom:14px;
+  }
+  .hero-text h1.vrmt-title{
+    font-family:'Crimson Pro','Noto Serif TC',Georgia,serif;
+    font-weight:700;
+    font-size:50px;
+    line-height:1.1;
+    color:#22202A;
+    letter-spacing:-.5px;
+    margin-bottom:8px;
+  }
+  .hero-text h1.vrmt-title .main{ display:inline; }
+  .hero-text h1.vrmt-title .vrmt-ab{
+    color:var(--red);
+    font-style:italic;
+    font-weight:600;
+  }
+  .hero-text .subtitle-line{
+    font-family:'Crimson Pro','Noto Serif TC',Georgia,serif;
+    font-style:italic;
+    font-size:26px;
+    line-height:1.2;
+    color:var(--ink-soft);
+    font-weight:500;
+  }
+  .hero-text .pitch-line{
+    margin-top:14px;
+    font-family:'Inter','Noto Sans TC',sans-serif;
+    font-size:15px;
+    line-height:1.45;
+    color:var(--ink);
+    font-weight:500;
+    max-width:680px;
+    border-left:3px solid var(--red);
+    padding-left:14px;
+  }
+  .hero-text .pitch-line b{ color:var(--red); font-weight:700; }
+  .hero-text .pitch-line .teal{ color:var(--teal); font-weight:700; }
+
+  .affiliation{
+    margin-top:28px;
+    display:flex; flex-direction:column; gap:8px;
+    font-size:18px;
+    color:var(--ink-soft);
+  }
+  .affiliation .line{ display:flex; align-items:baseline; gap:16px; }
+  .affiliation .ab{
+    color:var(--red); font-weight:700;
+    background:rgba(183,40,46,.10);
+    padding:4px 0; border-radius:5px;
+    font-size:14.5px;
+    letter-spacing:.04em;
+    flex:0 0 72px;
+    text-align:center;
+    display:inline-block;
+  }
+
+  .presenter-card{
+    position:absolute;
+    left:462px; right:60px; bottom:44px;
+    z-index:3;
+    background:#FFFFFF;
+    border:1px solid var(--line);
+    border-left:6px solid var(--red);
+    border-radius:6px;
+    padding:16px 22px 14px;
+    box-shadow:0 8px 22px -16px rgba(20,30,60,.18);
+    display:grid;
+    grid-template-columns:1fr auto;
+    gap:22px; align-items:center;
+  }
+  .presenter-card .pl-label{
+    font-size:12.5px; font-weight:700; letter-spacing:.18em; text-transform:uppercase;
+    color:var(--muted); margin-bottom:6px;
+  }
+  .presenter-card .pl-name{
+    font-family:'Crimson Pro',Georgia,serif;
+    font-size:24px; font-weight:600; color:var(--ink);
+    line-height:1.2;
+    white-space:nowrap;
+  }
+  .presenter-card .pl-name .cn{ font-family:'Noto Serif TC',serif; margin-right:8px; }
+  .presenter-card .pl-role{
+    font-size:14px; color:var(--ink-soft); margin-top:6px;
+    white-space:nowrap;
+  }
+  .presenter-card .pl-meta{
+    text-align:right;
+    font-size:13.5px; color:var(--muted);
+    border-left:1px solid var(--line); padding-left:20px;
+    line-height:1.55;
+  }
+  .presenter-card .pl-meta b{ color:var(--red); font-weight:700; letter-spacing:.04em; }
+  .presenter-card .pl-meta .date{
+    display:inline-block; margin-top:6px;
+    background:var(--ink); color:#fff;
+    padding:4px 12px; border-radius:14px;
+    font-size:12.5px; letter-spacing:.06em;
+    font-variant-numeric:tabular-nums;
+  }
+
+  /* Title slide bottom — partner logos stacked (label above, logos below) */
+  .title-foot{
+    position:absolute; left:60px; bottom:44px;
+    display:flex; flex-direction:column; align-items:flex-start; gap:8px;
+    z-index:2;
+  }
+  .title-foot .pf-label{
+    font-size:10.5px; font-weight:700; letter-spacing:.22em; text-transform:uppercase;
+    color:var(--ink-soft);
+    opacity:.7;
+    line-height:1.2;
+  }
+  .title-foot .pf-row{ display:flex; align-items:flex-end; gap:34px; }
+  .title-foot img{ height:50px; width:auto; }
+  .title-foot .ifmbe{ height:52px; }
+  .title-foot .ncku-seal{ height:56px; }
+
+  /* ===== Content slide chrome ===== */
+  .content-chrome{
+    background:
+      radial-gradient(circle at 100% 50%, rgba(183,40,46,.03), transparent 55%),
+      #FFFFFF;
+  }
+  .content-chrome::before{
+    content:""; position:absolute;
+    top:0; left:0; width:170px; height:14px;
+    background:var(--red); z-index:6;
+  }
+  .vr-bg{
+    position:absolute; right:-80px; top:90px;
+    width:520px; height:560px;
+    opacity:.05;
+    pointer-events:none;
+    z-index:1; color:#1B2030;
+  }
+  .vr-bg svg{ width:100%; height:100%; }
+
+  .content-chrome .page-head{
+    position:absolute; top:34px; left:60px; right:60px;
+    display:flex; align-items:flex-end; justify-content:space-between;
+    z-index:7;
+  }
+  .content-chrome .page-head h2{
+    font-family:'Crimson Pro','Noto Serif TC',Georgia,serif;
+    font-weight:700;
+    font-size:40px;
+    line-height:1.1;
+    color:var(--ink);
+    letter-spacing:-.3px;
+    padding-left:20px;
+    border-left:6px solid var(--red);
+  }
+  .content-chrome .page-head h2 .ab{ color:var(--teal); font-weight:700; }
+  .content-chrome .page-head h2 .page-subtitle{
+    display:block;
+    font-family:'Inter','Noto Sans TC',sans-serif;
+    font-size:13.5px; font-weight:600;
+    letter-spacing:.18em; text-transform:uppercase;
+    color:var(--muted);
+    margin-top:6px;
+    border-left:none;
+    padding-left:0;
+  }
+
+  .content-body{
+    position:absolute; top:138px; left:60px; right:60px; bottom:108px;
+    z-index:3;
+    display:flex; flex-direction:column;
+    overflow:hidden;
+  }
+  .content-body > .cite-line{
+    margin-top:auto;
+    padding-top:12px;
+    flex-shrink:0;
+  }
+
+  /* ===== Content footer ===== */
+  .footer-ribbon{
+    position:absolute; left:0; right:0; bottom:0; height:60px;
+    z-index:8; display:flex; align-items:center;
+  }
+  .footer-ribbon .fl-left{
+    height:60px; display:flex; align-items:center; gap:16px;
+    padding:0 22px 0 22px; background:#fff;
+    z-index:2;
+  }
+  .footer-ribbon .fl-left img.ncku-logo{
+    height:40px; width:auto;
+    display:block;
+  }
+  .footer-ribbon .fl-left img.wtmh-logo{
+    height:34px; width:34px;
+    display:block;
+    /* logo PNG is already circular w/ transparent corners; no border-radius needed */
+  }
+  .footer-ribbon .ribbon-bar{
+    flex:1; height:60px;
+    background:linear-gradient(95deg, var(--red) 0%, var(--red-deep) 100%);
+    clip-path: polygon(36px 0, 100% 0, 100% 100%, 0 100%);
+    display:flex; align-items:center; justify-content:space-between;
+    padding:0 32px 0 62px;
+    color:#fff;
+    margin-left:-18px;
+  }
+  .footer-ribbon .ribbon-bar .lab-name{
+    font-size:15px; font-weight:600; letter-spacing:.05em;
+  }
+  .footer-ribbon .ribbon-bar .lab-name .tw{
+    font-family:'Noto Sans TC','Inter',sans-serif;
+    font-weight:500;
+    margin-right:14px; padding-right:14px;
+    border-right:1px solid rgba(255,255,255,.4);
+  }
+  .footer-ribbon .ribbon-bar .pageno{
+    font-family:'Crimson Pro',Georgia,serif;
+    font-size:22px; font-weight:600;
+    background:#fff; color:var(--red);
+    width:38px; height:38px;
+    border-radius:50%;
+    display:inline-flex; align-items:center; justify-content:center;
+    box-shadow:0 2px 6px rgba(0,0,0,.15);
+  }
+
+  /* ===== Slide 2 ===== */
+  .vrmt-grid{
+    height:100%;
+    display:grid;
+    grid-template-columns:1.05fr 1fr;
+    gap:28px;
+    align-items:stretch;
+  }
+  .card{
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:26px 30px 28px;
+    box-shadow:0 14px 32px -22px rgba(20,30,60,.22);
+    display:flex; flex-direction:column; gap:16px;
+    position:relative;
+  }
+  .card .tag{
+    display:inline-flex; align-items:center; gap:12px;
+    font-weight:700; font-size:17px; letter-spacing:.04em;
+    color:var(--red); text-transform:uppercase;
+  }
+  .card .tag .ico{
+    width:38px; height:38px; border-radius:10px;
+    background:rgba(183,40,46,.10); color:var(--red);
+    display:inline-flex; align-items:center; justify-content:center;
+    font-size:20px;
+  }
+  .card.amber .tag{ color:var(--amber); }
+  .card.amber .tag .ico{ background:rgba(217,106,24,.12); color:var(--amber); }
+  .card.teal .tag{ color:var(--teal); }
+  .card.teal .tag .ico{ background:rgba(14,159,186,.12); color:var(--teal); }
+  .card h3{
+    font-family:'Crimson Pro','Noto Serif TC',Georgia,serif;
+    font-weight:700; font-size:26px; color:var(--ink); line-height:1.2;
+  }
+  .card ul{
+    list-style:none; padding:0; margin:0;
+    display:flex; flex-direction:column; gap:12px;
+  }
+  .card ul li{
+    position:relative;
+    padding-left:20px;
+    font-size:17.5px; line-height:1.55;
+    color:var(--ink-soft);
+  }
+  .card ul li::before{
+    content:""; position:absolute; left:0; top:11px;
+    width:8px; height:8px; border-radius:50%;
+    background:currentColor; opacity:.5;
+  }
+  .card .footnote{
+    margin-top:auto;
+    font-size:13.5px; color:var(--muted);
+    border-top:1px dashed var(--line); padding-top:10px;
+  }
+  .vrmt-grid .col-l, .vrmt-grid .col-r{ display:flex; flex-direction:column; gap:18px; }
+
+  /* ===== Slide 3 ===== */
+  .fda-grid{
+    height:100%;
+    display:grid;
+    grid-template-columns:1.1fr 1fr;
+    grid-template-rows:auto auto;
+    gap:22px;
+  }
+  .photo-frame{
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:10px;
+    overflow:hidden;
+    box-shadow:0 14px 32px -22px rgba(20,30,60,.22);
+    position:relative;
+    display:flex; flex-direction:column;
+  }
+  .photo-frame .ph-label{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:12px 18px;
+    font-size:14px; color:var(--muted);
+    letter-spacing:.06em; text-transform:uppercase; font-weight:700;
+    background:#FAFBFC; border-bottom:1px solid var(--line);
+  }
+  .photo-frame .ph-label .tagline{
+    font-family:'Crimson Pro',Georgia,serif; text-transform:none;
+    font-size:16px; font-weight:600; color:var(--ink); letter-spacing:0;
+  }
+  .photo-frame .ph-label .stat{
+    display:inline-flex; align-items:center; gap:6px;
+    color:var(--red); font-weight:700;
+  }
+  .photo-frame .ph-img{
+    flex:1; background:#fff;
+    display:flex; align-items:center; justify-content:center;
+    min-height:0; overflow:hidden;
+  }
+  .photo-frame .ph-img img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .photo-frame.fda .ph-img img{ object-fit:contain; }
+  .photo-frame .ph-caption{
+    padding:12px 18px;
+    font-size:14.5px; color:var(--ink-soft);
+    border-top:1px solid var(--line); background:#FAFBFC;
+  }
+  .fda-grid .photo-fda{ grid-column:1; grid-row:1/3; }
+  .fda-grid .photo-ar { grid-column:2; grid-row:1; }
+  .fda-grid .inventor{ grid-column:2; grid-row:2; }
+
+  .inventor{
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:10px 20px 12px;
+    box-shadow:0 14px 32px -22px rgba(20,30,60,.22);
+    display:flex; flex-direction:column; gap:5px;
+    position:relative;
+  }
+  .inventor::before{
+    content:""; position:absolute; left:0; top:14px; bottom:14px; width:5px;
+    background:var(--red); border-radius:0 2px 2px 0;
+  }
+  .inventor .tag{
+    font-size:13px; font-weight:700; letter-spacing:.18em;
+    color:var(--red); text-transform:uppercase;
+    margin-bottom:2px;
+  }
+  .inventor .name{
+    font-family:'Crimson Pro','Noto Serif TC',Georgia,serif;
+    font-weight:600; font-size:17px; color:var(--ink); line-height:1.2;
+  }
+  .inventor .name .dept{ color:var(--ink-soft); font-weight:400; font-size:13px; display:block; margin-top:1px; line-height:1.25; }
+
+  /* ===== Slide 6 — FDA Details card (typed registration info) ===== */
+  .fda-details{
+    background:#fff;
+    border:1px solid var(--line);
+    border-left:5px solid var(--red);
+    border-radius:10px;
+    padding:14px 20px 14px;
+    box-shadow:0 14px 32px -22px rgba(20,30,60,.22);
+    display:flex; flex-direction:column; gap:6px;
+    position:relative;
+  }
+  .fda-details .fda-tag{
+    display:flex; align-items:center; gap:10px;
+    font-size:13px; font-weight:700; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--red);
+    padding-bottom:6px;
+    border-bottom:1px solid var(--line);
+    margin-bottom:4px;
+  }
+  .fda-details .fda-tag-ico{
+    width:26px; height:26px; border-radius:6px;
+    background:rgba(183,40,46,.10); color:var(--red);
+    display:inline-flex; align-items:center; justify-content:center;
+  }
+  .fda-details .fda-tag-ico svg{ width:14px; height:14px; }
+  .fda-details .fda-fields{
+    display:flex; flex-direction:column;
+    gap:2px;
+    margin:0; padding:0;
+  }
+  .fda-details .field{
+    display:grid;
+    grid-template-columns:140px 1fr;
+    gap:14px;
+    padding:3px 0;
+    line-height:1.35;
+    border-bottom:1px dashed var(--line);
+  }
+  .fda-details .field:last-of-type{ border-bottom:none; padding-bottom:2px; }
+  .fda-details .field dt{
+    font-size:10.5px;
+    font-weight:700; letter-spacing:.1em; text-transform:uppercase;
+    color:var(--muted);
+    align-self:center;
+  }
+  .fda-details .field dd{
+    margin:0;
+    color:var(--ink);
+    font-weight:500;
+    font-size:13.5px;
+  }
+  .fda-details .field dd b{ color:var(--red); font-weight:700; font-size:14.5px; letter-spacing:.02em; }
+  .fda-details .fda-source{
+    font-size:10.5px; color:var(--muted);
+    border-top:1px solid var(--line);
+    padding-top:8px;
+    margin-top:2px;
+    font-style:italic;
+    line-height:1.55;
+  }
+  .fda-details .fda-source .src-link{
+    color:var(--red);
+    text-decoration:none;
+    font-style:normal;
+    font-weight:500;
+    border-bottom:1px dotted var(--red);
+  }
+
+  /* ===== Slide 2 — What VRMT Does ===== */
+  .concept-lead{
+    font-family:'Crimson Pro','Noto Serif TC',Georgia,serif;
+    font-style:italic;
+    font-size:21px;
+    line-height:1.45;
+    color:var(--ink-soft);
+    margin-bottom:14px;
+    max-width:1100px;
+    flex-shrink:0;
+  }
+  .concept-lead .accent{ font-style:normal; color:var(--red); font-weight:600; }
+  .concept-lead .outcome{
+    font-style:normal; color:var(--teal); font-weight:600;
+    background:linear-gradient(transparent 65%, rgba(14,159,186,.20) 65%, rgba(14,159,186,.20) 92%, transparent 92%);
+    padding:0 2px;
+  }
+
+  .pipeline{
+    display:grid;
+    grid-template-columns:1fr 28px 1fr 28px 1fr;
+    align-items:stretch;
+    gap:14px;
+    margin-bottom:12px;
+  }
+  .pipeline .step{
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:18px 22px 18px;
+    box-shadow:0 12px 28px -22px rgba(20,30,60,.22);
+    display:flex; flex-direction:column; gap:10px;
+  }
+  .pipeline .step .step-no{
+    font-size:11px; font-weight:700; letter-spacing:.22em;
+    color:var(--red);
+  }
+  .pipeline .step .step-icon{
+    color:var(--ink); width:50px; height:50px;
+  }
+  .pipeline .step .step-icon svg{ width:100%; height:100%; }
+  .pipeline .step h3{
+    font-family:'Crimson Pro','Noto Serif TC',Georgia,serif;
+    font-weight:700; font-size:22px; color:var(--ink); line-height:1.15;
+  }
+  .pipeline .step p{
+    font-size:15.5px; line-height:1.5; color:var(--ink-soft);
+  }
+  .pipeline .step p .hw{ color:var(--teal); font-weight:600; }
+  .pipeline .step-arrow{
+    align-self:center;
+    color:var(--muted);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .pipeline .step-arrow svg{ width:26px; height:26px; }
+
+  .why-strip{
+    display:grid;
+    grid-template-columns:auto repeat(3, 1fr);
+    align-items:center;
+    gap:18px;
+    background:#FAFBFC;
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:10px 18px;
+    margin-bottom:4px;
+  }
+  .why-strip .why-label{
+    font-size:11px; font-weight:700; letter-spacing:.22em; text-transform:uppercase;
+    color:var(--red);
+    border-right:1px solid var(--line);
+    padding-right:22px;
+    line-height:1.2;
+    white-space:nowrap;
+  }
+  .why-strip .why-item{
+    font-size:14.5px;
+    color:var(--ink-soft); line-height:1.45;
+  }
+  .why-strip .why-item b{ color:var(--ink); display:block; font-size:14.5px; margin-bottom:2px; }
+  .why-strip .why-item .why-ref{
+    display:block; margin-top:3px;
+    font-size:11px; color:var(--muted);
+    font-style:italic;
+    letter-spacing:.01em;
+    line-height:1.35;
+  }
+
+  .cite-line{
+    font-size:12.5px;
+    color:var(--muted);
+    letter-spacing:.02em;
+  }
+  .cite-line b{ color:var(--ink-soft); font-weight:600; }
+
+  /* ===== Slide 2 — Stroke Burden ===== */
+  .stat-grid{
+    display:grid;
+    grid-template-columns:repeat(4, 1fr);
+    gap:18px;
+    margin-bottom:18px;
+  }
+  .stat-card{
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:22px 22px 20px;
+    box-shadow:0 14px 32px -22px rgba(20,30,60,.22);
+    border-top:4px solid var(--red);
+    display:flex; flex-direction:column; gap:8px;
+    min-height:172px;
+  }
+  .stat-card.amber{ border-top-color:var(--amber); }
+  .stat-card.teal{  border-top-color:var(--teal); }
+  .stat-card.red{   border-top-color:var(--red); }
+  .stat-card .stat-num{
+    font-family:'Crimson Pro','Noto Serif TC',Georgia,serif;
+    font-size:54px; font-weight:700;
+    color:var(--ink); line-height:1;
+    letter-spacing:-1px;
+    margin-bottom:4px;
+  }
+  .stat-card .stat-num .unit{
+    font-size:30px; color:var(--ink-soft);
+    margin-left:3px; font-weight:600;
+  }
+  .stat-card .stat-label{
+    font-size:16px; font-weight:600;
+    color:var(--ink); line-height:1.3;
+  }
+  .stat-card .stat-sub{
+    font-size:13px; color:var(--muted);
+    line-height:1.45;
+    margin-top:auto;
+  }
+
+  .bottomline-strip{
+    display:grid;
+    grid-template-columns:auto 1fr;
+    align-items:center;
+    gap:22px;
+    background:#FAFBFC;
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:14px 22px;
+    margin-bottom:14px;
+  }
+  .bottomline-strip .bl-label{
+    font-size:11px; font-weight:700; letter-spacing:.22em; text-transform:uppercase;
+    color:var(--red);
+    border-right:1px solid var(--line);
+    padding-right:22px;
+    line-height:1.2;
+    white-space:nowrap;
+  }
+  .bottomline-strip .bl-text{
+    font-size:15.5px;
+    color:var(--ink-soft); line-height:1.5;
+  }
+  .bottomline-strip .bl-text b{ color:var(--ink); font-weight:600; }
+
+  /* ===== Slide 2 — Paralysis Diagram ===== */
+  .paralysis-diagram{
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:14px 24px 16px;
+    box-shadow:0 14px 32px -22px rgba(20,30,60,.22);
+    margin-bottom:14px;
+  }
+  .paralysis-diagram .pd-title{
+    font-size:11px; font-weight:700; letter-spacing:.22em; text-transform:uppercase;
+    color:var(--muted);
+    margin-bottom:6px;
+  }
+  .paralysis-diagram .pd-figures{
+    display:grid;
+    grid-template-columns:repeat(5, 1fr);
+    gap:14px;
+    align-items:end;
+    padding:6px 0 10px;
+  }
+  .paralysis-fig{
+    display:flex; flex-direction:column;
+    align-items:center; gap:10px;
+    padding:6px 4px 8px;
+    border-radius:8px;
+    position:relative;
+  }
+  .paralysis-fig.target{
+    border:2px dashed var(--red);
+    background:rgba(183,40,46,.04);
+  }
+  .paralysis-svg{
+    width:78px; height:156px;
+    display:block;
+  }
+  .paralysis-svg .part{
+    fill:none;
+    stroke:var(--ink-soft);
+    stroke-width:1.7;
+    stroke-linejoin:round;
+    stroke-linecap:round;
+  }
+  .paralysis-svg .part.filled{
+    fill:var(--ink-soft);
+    stroke:var(--ink-soft);
+  }
+  .paralysis-fig.target .paralysis-svg .part.filled{
+    fill:var(--red);
+    stroke:var(--red);
+  }
+  .paralysis-label{
+    font-size:11.5px; font-weight:700; letter-spacing:.12em;
+    text-transform:uppercase;
+    color:#fff;
+    background:var(--ink);
+    padding:4px 9px;
+    border-radius:4px;
+    white-space:nowrap;
+  }
+  .paralysis-fig.target .paralysis-label{
+    background:var(--red);
+  }
+  .paralysis-diagram .pd-callout{
+    font-size:14.5px; color:var(--ink-soft); line-height:1.5;
+    border-top:1px dashed var(--line);
+    padding-top:10px;
+    text-align:center;
+  }
+  .paralysis-diagram .pd-callout b{ color:var(--ink); font-weight:600; }
+
+  /* ===== Slides 3 & 4 — MT / VRMT (text + image, 2-col layout) ===== */
+  .mt-grid{
+    display:grid;
+    grid-template-columns:1.2fr 1fr;
+    gap:22px;
+    flex:1;
+    min-height:0;
+  }
+  .mt-text{
+    display:flex; flex-direction:column;
+    gap:9px;
+  }
+  .mt-block{
+    background:#fff;
+    border:1px solid var(--line);
+    border-left:4px solid var(--ink-soft);
+    border-radius:8px;
+    padding:10px 16px 12px;
+    box-shadow:0 8px 22px -18px rgba(20,30,60,.18);
+  }
+  .mt-block .mt-block-tag{
+    font-size:11px; font-weight:700; letter-spacing:.18em; text-transform:uppercase;
+    color:var(--ink-soft);
+    margin-bottom:4px;
+  }
+  .mt-block .mt-block-tag.warn{ color:var(--red); }
+  .mt-block .mt-block-tag.teal{ color:var(--teal); }
+  .mt-block .mt-block-tag.good{ color:var(--amber); }
+  .mt-block:has(.mt-block-tag.warn){ border-left-color:var(--red); }
+  .mt-block:has(.mt-block-tag.teal){ border-left-color:var(--teal); }
+  .mt-block:has(.mt-block-tag.good){ border-left-color:var(--amber); }
+  .mt-block ul{
+    list-style:none; padding:0; margin:0;
+    display:flex; flex-direction:column; gap:4px;
+  }
+  .mt-block ul li{
+    position:relative; padding-left:15px;
+    font-size:15px; line-height:1.45;
+    color:var(--ink-soft);
+  }
+  .mt-block ul li::before{
+    content:""; position:absolute; left:0; top:8px;
+    width:6px; height:6px; border-radius:50%;
+    background:currentColor; opacity:.45;
+  }
+  .mt-block ul li b{ color:var(--ink); font-weight:600; }
+
+  .mt-image{
+    background:#FAFBFC;
+    border:1px solid var(--line);
+    border-radius:10px;
+    overflow:hidden;
+    box-shadow:0 14px 32px -22px rgba(20,30,60,.22);
+    position:relative;
+    display:flex; flex-direction:column;
+  }
+  .mt-image > svg.mt-illust-svg,
+  .mt-image > img.mt-photo{
+    width:100%;
+    flex:1;
+    min-height:0;
+    max-height:100%;
+    object-fit:cover;
+    display:block;
+  }
+  .mt-image > svg.mt-illust-svg{ object-fit:contain; padding:8px; height:0; }
+  .mt-image .mt-image-label{
+    position:absolute;
+    top:12px; left:12px;
+    background:var(--red);
+    color:#fff;
+    padding:5px 11px;
+    border-radius:5px;
+    font-size:11px; font-weight:700; letter-spacing:.14em;
+    box-shadow:0 4px 12px rgba(0,0,0,.18);
+  }
+
+  /* ===== Slide (legacy) — Classical MT vs VRMT compare-grid ===== */
+  .compare-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:24px;
+    margin-bottom:16px;
+  }
+  .compare-card{
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:22px 26px 22px;
+    box-shadow:0 14px 32px -22px rgba(20,30,60,.22);
+    display:flex; flex-direction:column; gap:12px;
+    position:relative;
+  }
+  .compare-card.classical{ border-left:6px solid var(--muted); }
+  .compare-card.vrmt{      border-left:6px solid var(--red); }
+  .compare-card .tag{
+    display:inline-flex; align-items:center; gap:12px;
+    font-weight:700; font-size:15px; letter-spacing:.04em;
+    text-transform:uppercase;
+    color:var(--muted);
+  }
+  .compare-card.vrmt .tag{ color:var(--red); }
+  .compare-card .tag .ico{
+    width:34px; height:34px; border-radius:9px;
+    background:rgba(20,30,60,.05); color:var(--ink-soft);
+    display:inline-flex; align-items:center; justify-content:center;
+    font-size:17px;
+  }
+  .compare-card.vrmt .tag .ico{ background:rgba(183,40,46,.10); color:var(--red); }
+  .compare-card .tag .ico svg{ width:20px; height:20px; }
+  .compare-card h3{
+    font-family:'Crimson Pro','Noto Serif TC',Georgia,serif;
+    font-weight:700; font-size:22px; color:var(--ink); line-height:1.2;
+  }
+  .compare-card ul{
+    list-style:none; padding:0; margin:0;
+    display:flex; flex-direction:column; gap:9px;
+  }
+  .compare-card ul li{
+    position:relative; padding-left:18px;
+    font-size:17px; line-height:1.5;
+    color:var(--ink-soft);
+  }
+  .compare-card ul li::before{
+    content:""; position:absolute; left:0; top:9px;
+    width:7px; height:7px; border-radius:50%;
+    background:currentColor; opacity:.4;
+  }
+  .compare-card .footnote{
+    margin-top:auto;
+    font-size:13px; color:var(--muted);
+    border-top:1px dashed var(--line); padding-top:10px;
+    font-style:italic;
+  }
+
+  /* ===== Slide 3 — Stroke Hemiplegia ===== */
+  .hemi-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:22px;
+    margin-bottom:14px;
+  }
+  .hemi-card{
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:16px 22px 18px;
+    box-shadow:0 14px 32px -22px rgba(20,30,60,.22);
+    display:flex; flex-direction:column; gap:10px;
+    position:relative;
+  }
+  .hemi-card.unaffected{ border-left:6px solid var(--teal); }
+  .hemi-card.affected  { border-left:6px solid var(--red); }
+  .hemi-card .hemi-tag{
+    font-size:13px; font-weight:700; letter-spacing:.18em; text-transform:uppercase;
+    color:var(--muted);
+  }
+  .hemi-card.unaffected .hemi-tag{ color:var(--teal); }
+  .hemi-card.affected   .hemi-tag{ color:var(--red); }
+  .hemi-card .hemi-body{
+    display:grid;
+    grid-template-columns:120px 1fr;
+    gap:18px;
+    align-items:center;
+  }
+  .hemi-svg{
+    width:110px; height:140px;
+    display:block;
+  }
+  .hemi-svg .skin    { fill:#FFE6D2; stroke:#3C4253; stroke-width:1.6; stroke-linejoin:round; stroke-linecap:round; }
+  .hemi-svg .skin-pa { fill:#E0E4EC; stroke:#3C4253; stroke-width:1.6; stroke-linejoin:round; stroke-linecap:round; }
+  .hemi-svg .crease  { fill:none; stroke:#9CA1AE; stroke-width:1; stroke-linecap:round; }
+  .hemi-svg .cuff    { fill:#FFFFFF; stroke:#3C4253; stroke-width:1.4; }
+  .hemi-card .hemi-detail h3{
+    font-family:'Crimson Pro','Noto Serif TC',Georgia,serif;
+    font-weight:700; font-size:20px; color:var(--ink); line-height:1.2;
+    margin-bottom:6px;
+  }
+  .hemi-card .hemi-detail ul{
+    list-style:none; padding:0; margin:0;
+    display:flex; flex-direction:column; gap:5px;
+  }
+  .hemi-card .hemi-detail ul li{
+    position:relative; padding-left:14px;
+    font-size:15.5px; line-height:1.5;
+    color:var(--ink-soft);
+  }
+  .hemi-card .hemi-detail ul li::before{
+    content:""; position:absolute; left:0; top:8px;
+    width:6px; height:6px; border-radius:50%;
+    background:currentColor; opacity:.45;
+  }
+  .hemi-card .hemi-detail ul li b{ color:var(--ink); font-weight:600; }
+
+  /* ===== Slide 5 — Traditional MT · Clinical Advantages ===== */
+  .adv-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    grid-template-rows:1fr 1fr;
+    gap:16px;
+    flex:1;
+    min-height:0;
+    margin-bottom:12px;
+  }
+  .adv-card{
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:14px 20px 14px;
+    box-shadow:0 12px 28px -22px rgba(20,30,60,.22);
+    display:grid;
+    grid-template-columns:52px 1fr;
+    gap:14px;
+    align-items:start;
+    position:relative;
+    border-top:4px solid var(--red);
+    overflow:hidden;
+    min-height:0;
+  }
+  .adv-card.amber{ border-top-color:var(--amber); }
+  .adv-card.teal { border-top-color:var(--teal); }
+  .adv-card.deep { border-top-color:var(--red-deep); }
+  .adv-card .adv-ico{
+    width:52px; height:52px; border-radius:12px;
+    background:rgba(183,40,46,.10); color:var(--red);
+    display:inline-flex; align-items:center; justify-content:center;
+    margin-top:4px;
+  }
+  .adv-card.amber .adv-ico{ background:rgba(217,106,24,.12); color:var(--amber); }
+  .adv-card.teal  .adv-ico{ background:rgba(14,159,186,.12); color:var(--teal); }
+  .adv-card.deep  .adv-ico{ background:rgba(142,26,32,.10); color:var(--red-deep); }
+  .adv-card .adv-ico svg{ width:28px; height:28px; }
+  .adv-card .adv-ico.topo-ico{ background:#fff; padding:2px; border:1px solid var(--line); }
+  .adv-card .adv-ico.topo-ico svg{ width:46px; height:46px; }
+  .adv-card .adv-ico img{
+    width:46px; height:46px;
+    object-fit:contain;
+    border-radius:6px;
+  }
+  .adv-card .adv-body h3{
+    font-family:'Crimson Pro','Noto Serif TC',Georgia,serif;
+    font-weight:700; font-size:18px; color:var(--ink); line-height:1.2;
+    margin-bottom:5px;
+  }
+  .adv-card .adv-body p{
+    font-size:14.5px; color:var(--ink-soft); line-height:1.45;
+    margin-bottom:6px;
+  }
+  .adv-card .adv-refs{
+    font-size:11.5px; color:var(--muted); font-style:italic; line-height:1.4;
+    border-top:1px dashed var(--line); padding-top:5px;
+  }
+  .adv-card .adv-refs b{ color:var(--ink-soft); font-weight:600; font-style:normal; }
+
+  /* ===== Slide 6 — Traditional MT · Limitations & VR Fix ===== */
+  .limit-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr;
+    grid-template-rows:auto 28px auto;
+    gap:14px 18px;
+    margin-bottom:12px;
+  }
+  .limit-card{
+    background:#fff;
+    border:1px solid var(--line);
+    border-top:4px solid var(--red);
+    border-radius:10px;
+    padding:14px 18px 14px;
+    box-shadow:0 12px 28px -22px rgba(20,30,60,.22);
+    display:flex; flex-direction:column; gap:6px;
+  }
+  .limit-card .limit-tag{
+    font-size:11px; font-weight:700; letter-spacing:.2em; text-transform:uppercase;
+    color:var(--red);
+  }
+  .limit-card h3{
+    font-family:'Crimson Pro','Noto Serif TC',Georgia,serif;
+    font-weight:700; font-size:18px; color:var(--ink); line-height:1.2;
+  }
+  .limit-card p{
+    font-size:14.5px; color:var(--ink-soft); line-height:1.5;
+  }
+  .limit-card .limit-ref{
+    margin-top:auto; padding-top:6px;
+    font-size:11px; color:var(--muted); font-style:italic; line-height:1.4;
+    border-top:1px dashed var(--line);
+  }
+  .fix-card{
+    background:#FAFCFD;
+    border:1px solid var(--line);
+    border-top:4px solid var(--teal);
+    border-radius:10px;
+    padding:14px 18px 14px;
+    box-shadow:0 12px 28px -22px rgba(20,30,60,.22);
+    display:flex; flex-direction:column; gap:6px;
+  }
+  .fix-card .fix-tag{
+    font-size:11px; font-weight:700; letter-spacing:.2em; text-transform:uppercase;
+    color:var(--teal);
+  }
+  .fix-card h3{
+    font-family:'Crimson Pro','Noto Serif TC',Georgia,serif;
+    font-weight:700; font-size:18px; color:var(--ink); line-height:1.2;
+  }
+  .fix-card p{
+    font-size:14.5px; color:var(--ink-soft); line-height:1.5;
+  }
+  .fix-card p b{ color:var(--ink); font-weight:600; }
+  .limit-arrow{
+    display:flex; align-items:center; justify-content:center;
+    color:var(--muted);
+  }
+  .limit-arrow svg{ width:22px; height:22px; }
+  .bridge-strip{
+    display:grid;
+    grid-template-columns:auto 1fr;
+    align-items:center;
+    gap:22px;
+    background:linear-gradient(95deg, rgba(183,40,46,.06) 0%, rgba(14,159,186,.06) 100%);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:12px 22px;
+    margin-bottom:10px;
+  }
+  .bridge-strip .br-label{
+    font-size:11px; font-weight:700; letter-spacing:.22em; text-transform:uppercase;
+    color:var(--red);
+    border-right:1px solid var(--line);
+    padding-right:22px;
+    line-height:1.2;
+    white-space:nowrap;
+  }
+  .bridge-strip .br-text{
+    font-size:15px;
+    color:var(--ink-soft); line-height:1.45;
+  }
+  .bridge-strip .br-text b{ color:var(--ink); font-weight:600; }
+  .bridge-strip .br-text .bridge-out{
+    color:var(--teal); font-weight:700;
+    background:linear-gradient(transparent 65%, rgba(14,159,186,.20) 65%, rgba(14,159,186,.20) 92%, transparent 92%);
+    padding:0 2px;
+  }
+
+  /* ===== Pipeline integrated SVG (s10 What VRMT Does) ===== */
+  .pipeline-svg-wrap{
+    margin-bottom:14px;
+    display:flex; flex-direction:column;
+    flex-shrink:0;
+  }
+  .pipeline-svg{
+    width:100%; height:240px;
+    display:block;
+    flex-shrink:0;
+  }
+
+  /* ===== Roadmap timeline SVG (s24 Regulatory) =====
+     pinned to content-body bottom so it's never covered by tall gen-grid
+     content above. content-body has overflow:hidden so the absolute
+     positioning stays inside the slide. */
+  .roadmap-wrap{
+    position:absolute;
+    left:0; right:0; bottom:0;
+    display:flex; flex-direction:column; gap:2px;
+    background:#FFFFFF;
+    padding-top:6px;
+    z-index:4;
+  }
+  .roadmap-timeline{
+    width:100%; height:120px;
+    display:block;
+  }
+  .roadmap-note{
+    font-size:11.5px; color:var(--muted); font-style:italic;
+    text-align:center;
+    padding:0 12px;
+    line-height:1.4;
+  }
+  .roadmap-note b{ color:var(--ink-soft); font-weight:600; font-style:normal; }
+
+  /* FaceMirror competitor differentiation strip (sits above regulatory roadmap SVG) */
+  .roadmap-wrap .comp-strip{
+    font-size:10.5px; line-height:1.3;
+    color:var(--muted); font-style:italic;
+    text-align:center;
+    padding:2px 12px 0;
+  }
+  .roadmap-wrap .comp-strip b{ color:var(--ink-soft); font-weight:600; font-style:normal; }
+  .roadmap-wrap .comp-strip .comp-label{
+    font-size:9px; font-weight:700; letter-spacing:.20em;
+    text-transform:uppercase; color:var(--teal);
+    margin-right:6px;
+    font-style:normal;
+  }
+
+  /* s24 — Citation Reception: tighten concept-lead spacing */
+
+  /* ===== Slide 11 — Hand Motion Capture · Three Generations ===== */
+  .gen-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr;
+    gap:16px;
+    flex:1;
+    min-height:0;
+  }
+  .gen-card{
+    background:#fff;
+    border:1px solid var(--line);
+    border-top:5px solid var(--red);
+    border-radius:10px;
+    padding:14px 18px 14px;
+    box-shadow:0 14px 32px -22px rgba(20,30,60,.22);
+    display:flex; flex-direction:column; gap:8px;
+    position:relative;
+    min-width:0;
+  }
+  .gen-card.amber{ border-top-color:var(--amber); }
+  .gen-card.teal { border-top-color:var(--teal); }
+  .gen-card .gen-tag{
+    font-size:11px; font-weight:700; letter-spacing:.2em; text-transform:uppercase;
+    color:var(--red);
+  }
+  .gen-card.amber .gen-tag{ color:var(--amber); }
+  .gen-card.teal  .gen-tag{ color:var(--teal); }
+  .gen-card .gen-tag .gen-tag-sub{
+    color:var(--muted); letter-spacing:.16em; font-weight:600; margin-left:6px;
+  }
+  .gen-card h3{
+    font-family:'Crimson Pro','Noto Serif TC',Georgia,serif;
+    font-weight:700; font-size:20px; color:var(--ink); line-height:1.2;
+  }
+  .gen-card .gen-icon-row{
+    display:flex; align-items:center; gap:14px;
+    padding:4px 0 2px;
+  }
+  .gen-card .gen-icon{
+    width:62px; height:62px; flex-shrink:0;
+    background:rgba(183,40,46,.07);
+    border-radius:14px;
+    display:inline-flex; align-items:center; justify-content:center;
+    color:var(--red);
+  }
+  .gen-card.amber .gen-icon{ background:rgba(217,106,24,.10); color:var(--amber); }
+  .gen-card.teal  .gen-icon{ background:rgba(14,159,186,.10); color:var(--teal); }
+  .gen-card .gen-icon svg{ width:38px; height:38px; }
+  .gen-card .gen-method{
+    font-size:13.5px; color:var(--ink-soft); line-height:1.45;
+  }
+  .gen-card .gen-specs{
+    font-size:12px; font-weight:600;
+    color:var(--ink);
+    background:#FAFBFC;
+    border:1px dashed var(--line);
+    border-radius:6px;
+    padding:5px 10px;
+    letter-spacing:.02em;
+  }
+  .gen-card .gen-points{
+    list-style:none; padding:0; margin:0;
+    display:flex; flex-direction:column; gap:4px;
+  }
+  .gen-card .gen-points li{
+    position:relative; padding-left:18px;
+    font-size:12.5px; color:var(--ink-soft); line-height:1.4;
+  }
+  .gen-card .gen-points li.pro::before{
+    content:"+"; position:absolute; left:0; top:0;
+    color:var(--teal); font-weight:700; font-size:14px;
+  }
+  .gen-card .gen-points li.con::before{
+    content:"\2212"; position:absolute; left:0; top:0;
+    color:var(--red); font-weight:700; font-size:14px;
+  }
+  .gen-card .gen-points li b{ color:var(--ink); font-weight:600; }
+  .gen-card .gen-refs{
+    margin-top:auto;
+    padding-top:6px;
+    border-top:1px dashed var(--line);
+    font-size:11px; font-style:italic; color:var(--muted);
+    line-height:1.4;
+  }
+  .gen-card .gen-refs b{ color:var(--ink-soft); font-weight:600; font-style:normal; }
+
+  /* ===== Slide 12 — Mirroring · Sagittal-Plane Reflection ===== */
+  .mirror-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:18px;
+    flex:1;
+    min-height:0;
+  }
+  .mirror-card{
+    background:#fff;
+    border:1px solid var(--line);
+    border-top:5px solid var(--red);
+    border-radius:10px;
+    padding:14px 20px 14px;
+    box-shadow:0 14px 32px -22px rgba(20,30,60,.22);
+    display:flex; flex-direction:column; gap:8px;
+    min-width:0;
+  }
+  .mirror-card.teal{ border-top-color:var(--teal); }
+  .mirror-card .mc-tag{
+    font-size:11px; font-weight:700; letter-spacing:.2em; text-transform:uppercase;
+    color:var(--red);
+  }
+  .mirror-card.teal .mc-tag{ color:var(--teal); }
+  .mirror-card h3{
+    font-family:'Crimson Pro','Noto Serif TC',Georgia,serif;
+    font-weight:700; font-size:20px; color:var(--ink); line-height:1.2;
+  }
+  .mirror-card .mc-method{
+    font-size:14.5px; color:var(--ink-soft); line-height:1.5;
+  }
+  .mirror-card .mc-method b{ color:var(--ink); font-weight:600; }
+  .mirror-card ul{
+    list-style:none; padding:0; margin:0;
+    display:flex; flex-direction:column; gap:5px;
+  }
+  .mirror-card ul li{
+    position:relative; padding-left:16px;
+    font-size:13.5px; line-height:1.5; color:var(--ink-soft);
+  }
+  .mirror-card ul li::before{
+    content:""; position:absolute; left:0; top:9px;
+    width:6px; height:6px; border-radius:50%;
+    background:currentColor; opacity:.45;
+  }
+  .mirror-card ul li b{ color:var(--ink); font-weight:600; }
+  .mirror-card ul li i{ color:var(--ink-soft); }
+  .mirror-card .mc-refs{
+    margin-top:auto;
+    padding-top:6px;
+    border-top:1px dashed var(--line);
+    font-size:11.5px; font-style:italic; color:var(--muted);
+    line-height:1.4;
+  }
+  .mirror-card .mc-refs b{ color:var(--ink-soft); font-weight:600; font-style:normal; }
+
+  .math-strip{
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr;
+    gap:14px;
+    margin-top:28px;
+    padding-top:8px;
+    border-top:1px dashed var(--line);
+    flex-shrink:0;
+  }
+  .math-card{
+    background:linear-gradient(0deg, rgba(14,159,186,.06) 0%, rgba(14,159,186,.02) 100%);
+    border:1px solid var(--line);
+    border-left:4px solid var(--teal);
+    border-radius:8px;
+    padding:10px 14px 11px;
+    display:flex; flex-direction:column; gap:3px;
+  }
+  .math-card .math-label{
+    font-size:10.5px; letter-spacing:.22em; text-transform:uppercase;
+    color:var(--teal); font-weight:700;
+  }
+  .math-card .math-formula{
+    font-family:'JetBrains Mono','Consolas','Courier New',monospace;
+    font-size:14px; color:var(--ink); font-weight:600;
+    letter-spacing:0;
+    margin:2px 0 2px;
+  }
+  .math-card .math-meaning{
+    font-size:11.5px; color:var(--ink-soft); font-style:italic;
+    line-height:1.4;
+  }
+
+  /* ===== Slide 13 — VRMT-FOA · Focused Objective Attention ===== */
+  .foa-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr;
+    grid-template-rows:auto auto;
+    gap:14px 14px;
+    flex:1;
+    min-height:0;
+  }
+  .foa-card{
+    background:#fff;
+    border:1px solid var(--line);
+    border-top:5px solid var(--red);
+    border-radius:10px;
+    padding:12px 18px 12px;
+    box-shadow:0 12px 28px -22px rgba(20,30,60,.22);
+    display:flex; flex-direction:column; gap:6px;
+    min-width:0;
+  }
+  .foa-card.teal { border-top-color:var(--teal); }
+  .foa-card.amber{ border-top-color:var(--amber); }
+  .foa-card .foa-tag{
+    font-size:10.5px; font-weight:700; letter-spacing:.2em; text-transform:uppercase;
+    color:var(--red);
+  }
+  .foa-card.teal  .foa-tag{ color:var(--teal); }
+  .foa-card.amber .foa-tag{ color:var(--amber); }
+  .foa-card h3{
+    font-family:'Crimson Pro','Noto Serif TC',Georgia,serif;
+    font-weight:700; font-size:18px; color:var(--ink); line-height:1.2;
+  }
+  .foa-card .foa-body{
+    font-size:13px; color:var(--ink-soft); line-height:1.45;
+  }
+  .foa-card .foa-body b{ color:var(--ink); font-weight:600; }
+  .foa-card ul{
+    list-style:none; padding:0; margin:0;
+    display:flex; flex-direction:column; gap:4px;
+  }
+  .foa-card ul li{
+    position:relative; padding-left:14px;
+    font-size:12.5px; line-height:1.45; color:var(--ink-soft);
+  }
+  .foa-card ul li::before{
+    content:""; position:absolute; left:0; top:8px;
+    width:5px; height:5px; border-radius:50%;
+    background:currentColor; opacity:.5;
+  }
+  .foa-card ul li b{ color:var(--ink); font-weight:600; }
+  .foa-card ul li code{
+    font-family:'Consolas','JetBrains Mono',monospace;
+    font-size:11.5px; background:rgba(20,30,60,.04);
+    padding:1px 4px; border-radius:3px;
+    color:var(--ink);
+  }
+
+  .foa-results{
+    grid-column:1 / span 3;
+    background:linear-gradient(95deg, rgba(14,159,186,.06) 0%, rgba(217,106,24,.05) 100%);
+    border:1px solid var(--line);
+    border-left:5px solid var(--teal);
+    border-radius:10px;
+    padding:12px 20px;
+    display:grid;
+    grid-template-columns:auto 1fr 1fr;
+    gap:24px;
+    align-items:center;
+  }
+  .foa-results .res-label{
+    font-size:11px; font-weight:700; letter-spacing:.22em; text-transform:uppercase;
+    color:var(--red);
+    border-right:1px solid var(--line);
+    padding-right:20px;
+    line-height:1.2;
+    white-space:nowrap;
+  }
+  .foa-results .res-stat{
+    display:flex; flex-direction:column; gap:2px;
+  }
+  .foa-results .res-stat .stat-title{
+    font-size:10.5px; font-weight:700; letter-spacing:.16em; text-transform:uppercase;
+    color:var(--muted);
+  }
+  .foa-results .res-stat .stat-headline{
+    font-family:'Crimson Pro','Noto Serif TC',Georgia,serif;
+    font-weight:700; font-size:24px; color:var(--ink); line-height:1.1;
+    letter-spacing:-.3px;
+  }
+  .foa-results .res-stat .stat-headline .pct{ color:var(--teal); }
+  .foa-results .res-stat .stat-detail{
+    font-size:12px; color:var(--ink-soft); line-height:1.4;
+    margin-top:2px;
+  }
+  .foa-results .res-stat .stat-detail b{ color:var(--ink); font-weight:600; }
+
+  /* ===== Slide 13 — Rendering · Unity Family ===== */
+  .render-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr;
+    gap:16px;
+    flex:1;
+    min-height:0;
+  }
+  .render-card{
+    background:#fff;
+    border:1px solid var(--line);
+    border-top:4px solid var(--red);
+    border-radius:10px;
+    padding:11px 14px 12px;
+    display:flex; flex-direction:column; gap:5px;
+    box-shadow:0 12px 28px -22px rgba(20,30,60,.22);
+    min-width:0;
+  }
+  .render-card.v2{ border-top-color:var(--amber); }
+  .render-card.v3{ border-top-color:var(--red-deep); }
+  .render-card.v4{ border-top-color:var(--teal); }
+  .render-card.v5{ border-top-color:var(--ink-soft); }
+  .render-card .render-tag{
+    font-size:10px; font-weight:700; letter-spacing:.2em; text-transform:uppercase;
+    color:var(--red);
+  }
+  .render-card.v2 .render-tag{ color:var(--amber); }
+  .render-card.v3 .render-tag{ color:var(--red-deep); }
+  .render-card.v4 .render-tag{ color:var(--teal); }
+  .render-card.v5 .render-tag{ color:var(--ink-soft); }
+  .render-card h3{
+    font-family:'Crimson Pro','Noto Serif TC',Georgia,serif;
+    font-weight:700; font-size:16px; color:var(--ink); line-height:1.15;
+  }
+  .render-card .render-engine{
+    font-family:'Consolas','JetBrains Mono',monospace;
+    font-size:10.5px; color:var(--ink); font-weight:600;
+    background:rgba(20,30,60,.04);
+    padding:4px 8px; border-radius:4px;
+    line-height:1.4;
+  }
+  .render-card .render-body{
+    font-size:12px; color:var(--ink-soft); line-height:1.45;
+  }
+  .render-card .render-body b{ color:var(--ink); font-weight:600; }
+  .render-card .render-list{
+    list-style:none; padding:0; margin:0;
+    display:flex; flex-direction:column; gap:3px;
+  }
+  .render-card .render-list li{
+    position:relative; padding-left:12px;
+    font-size:11.5px; color:var(--ink-soft); line-height:1.4;
+  }
+  .render-card .render-list li::before{
+    content:""; position:absolute; left:0; top:7px;
+    width:4px; height:4px; border-radius:50%;
+    background:currentColor; opacity:.55;
+  }
+  .render-card .render-list li b{ color:var(--ink); font-weight:600; }
+  .render-card .render-list li code{
+    font-family:'Consolas',monospace; font-size:10.5px;
+    background:rgba(20,30,60,.05); padding:1px 3px; border-radius:3px;
+    color:var(--ink);
+  }
+  .render-card .render-refs{
+    margin-top:auto; padding-top:5px;
+    border-top:1px dashed var(--line);
+    font-size:10.5px; font-style:italic; color:var(--muted);
+    line-height:1.3;
+  }
+  .render-card .render-refs b{ color:var(--ink-soft); font-weight:600; font-style:normal; }
+
+  .render-pipe{
+    background:linear-gradient(95deg, rgba(14,159,186,.06), rgba(217,106,24,.04));
+    border:1px solid var(--line);
+    border-left:4px solid var(--teal);
+    border-radius:8px;
+    padding:9px 18px;
+    margin-top:10px;
+    display:grid;
+    grid-template-columns:auto 1fr;
+    gap:18px;
+    align-items:center;
+  }
+  .render-pipe .pipe-label{
+    font-size:10px; font-weight:700; letter-spacing:.22em; text-transform:uppercase;
+    color:var(--teal);
+    border-right:1px solid var(--line);
+    padding-right:16px;
+    white-space:nowrap;
+    line-height:1.2;
+  }
+  .render-pipe .pipe-body{
+    font-size:12.5px; color:var(--ink-soft); line-height:1.5;
+  }
+  .render-pipe .pipe-body code{
+    font-family:'Consolas','JetBrains Mono',monospace;
+    font-size:11.5px;
+    background:rgba(20,30,60,.05); padding:1px 5px; border-radius:3px;
+    color:var(--ink); font-weight:600;
+  }
+  .render-pipe .pipe-body b{ color:var(--ink); font-weight:600; }
+
+  /* ===== Slide 14 — VRMT & ARMT Family Overview ===== */
+  .fam-table{
+    display:grid;
+    grid-template-columns:96px repeat(6, 1fr);
+    grid-template-rows:auto auto auto auto;
+    gap:1px;
+    background:var(--line);
+    border:1px solid var(--line);
+    border-radius:10px;
+    overflow:hidden;
+    flex:1;
+    min-height:0;
+  }
+  .fam-table .lbl{
+    background:#FAFBFC;
+    font-size:10.5px; font-weight:700; letter-spacing:.16em; text-transform:uppercase;
+    color:var(--muted);
+    display:flex; align-items:center;
+    padding:8px 12px;
+  }
+  .fam-table .cell{
+    background:#fff;
+    padding:8px 12px;
+    display:flex; flex-direction:column; gap:3px;
+    justify-content:center; align-items:center;
+    text-align:center;
+    font-size:11.5px; color:var(--ink-soft); line-height:1.4;
+  }
+  .fam-table .cell b{ color:var(--ink); font-weight:600; }
+  .fam-table .head-cell{
+    background:linear-gradient(0deg, rgba(183,40,46,.05), rgba(183,40,46,.01));
+    border-top:4px solid var(--red);
+    padding:10px 8px;
+  }
+  .fam-table .head-cell.v2{ border-top-color:var(--amber); background:linear-gradient(0deg, rgba(217,106,24,.06), rgba(217,106,24,.01)); }
+  .fam-table .head-cell.v3{ border-top-color:var(--red-deep); background:linear-gradient(0deg, rgba(142,26,32,.06), rgba(142,26,32,.01)); }
+  .fam-table .head-cell.v4{ border-top-color:var(--teal); background:linear-gradient(0deg, rgba(14,159,186,.06), rgba(14,159,186,.01)); }
+  .fam-table .head-cell.v5{ border-top-color:var(--ink-soft); background:linear-gradient(0deg, rgba(60,66,83,.06), rgba(60,66,83,.01)); }
+  .fam-table .head-cell.v6{ border-top-color:#6E3FA3; background:linear-gradient(0deg, rgba(110,63,163,.06), rgba(110,63,163,.01)); }
+  .fam-table .head-cell .acro{
+    font-family:'Crimson Pro','Noto Serif TC',Georgia,serif;
+    font-size:17px; font-weight:700; color:var(--ink); line-height:1.1;
+    letter-spacing:-.2px;
+  }
+  .fam-table .head-cell .acro .clr{ color:var(--red); }
+  .fam-table .head-cell.v2 .acro .clr{ color:var(--amber); }
+  .fam-table .head-cell.v3 .acro .clr{ color:var(--red-deep); }
+  .fam-table .head-cell.v4 .acro .clr{ color:var(--teal); }
+  .fam-table .head-cell.v5 .acro .clr{ color:var(--ink-soft); }
+  .fam-table .head-cell.v6 .acro .clr{ color:#6E3FA3; }
+  .fam-table .head-cell .desc{
+    font-size:10.5px; color:var(--muted); font-weight:600;
+    line-height:1.3;
+  }
+  .fam-table .icon-cell{
+    background:#FAFCFD;
+    padding:5px;
+  }
+  .fam-table .icon-cell svg{ width:46px; height:46px; color:var(--ink-soft); }
+  .fam-table .icon-cell img{
+    max-width:100%; max-height:64px;
+    object-fit:cover;
+    border-radius:5px;
+    border:1px solid var(--line);
+    display:block;
+  }
+
+  /* ===== Layout B — Vertical Journey Timeline ===== */
+  .journey-wrap{
+    flex:1;
+    display:flex; flex-direction:column;
+    justify-content:center;
+    padding:8px 40px 4px;
+    position:relative;
+  }
+  .journey-list{
+    display:flex; flex-direction:column;
+    position:relative;
+    gap:0;
+  }
+  .journey-list::before{
+    content:"";
+    position:absolute;
+    left:110px;
+    top:18px; bottom:18px;
+    width:2px;
+    background:linear-gradient(180deg, var(--red) 0%, var(--red) 30%, var(--amber) 55%, var(--teal) 85%, var(--muted) 100%);
+    z-index:0;
+  }
+  .journey-row{
+    display:grid;
+    grid-template-columns:96px 28px 1fr;
+    gap:14px;
+    align-items:center;
+    padding:6px 0;
+    position:relative;
+  }
+  .journey-year{
+    text-align:right;
+    font-family:'Crimson Pro','Noto Serif TC',Georgia,serif;
+    font-size:22px; font-weight:700;
+    color:var(--ink);
+    letter-spacing:-.5px;
+  }
+  .journey-dot-cell{
+    display:flex; justify-content:center; align-items:center;
+    position:relative; z-index:1;
+  }
+  .journey-dot{
+    width:14px; height:14px;
+    border-radius:50%;
+    background:var(--red);
+    box-shadow:0 0 0 4px #FFFFFF;
+  }
+  .journey-dot.amber{ background:var(--amber); }
+  .journey-dot.teal{ background:var(--teal); }
+  .journey-dot.now{
+    width:18px; height:18px;
+    background:var(--teal);
+    box-shadow:0 0 0 4px #FFFFFF, 0 0 0 7px rgba(14,159,186,.22);
+  }
+  .journey-dot.future{
+    width:12px; height:12px;
+    background:#FFFFFF;
+    border:2px solid var(--muted);
+    box-shadow:0 0 0 4px #FFFFFF;
+  }
+  .journey-content{
+    display:flex; flex-direction:column;
+    line-height:1.25;
+  }
+  .journey-content .j-title{
+    font-family:'Inter','Noto Sans TC',sans-serif;
+    font-size:15.5px; font-weight:700;
+    color:var(--ink);
+  }
+  .journey-content .j-title b{ color:var(--red); }
+  .journey-content .j-sub{
+    font-size:12px; color:var(--muted);
+    line-height:1.4;
+    margin-top:2px;
+  }
+  .journey-content .j-sub b{ color:var(--ink-soft); font-weight:600; }
+  .journey-content .j-sub i{ font-style:italic; }
+  .journey-row.now .j-title{ color:var(--teal); }
+  .journey-row.future .j-title{ color:var(--muted); font-weight:600; }
+  .journey-row.future .j-sub{ color:var(--muted); }
+
+  /* ===== Layout C — Magazine Editorial ===== */
+  .editorial-grid{
+    display:grid;
+    grid-template-columns:1.7fr 1fr;
+    gap:22px;
+    flex:1;
+    min-height:0;
+  }
+  .editorial-image{
+    position:relative;
+    border-radius:10px;
+    overflow:hidden;
+    border:1px solid var(--line);
+    box-shadow:0 14px 32px -22px rgba(20,30,60,.22);
+    background:#FAFBFC;
+  }
+  .editorial-image img{
+    width:100%; height:100%;
+    object-fit:cover;
+    display:block;
+  }
+  .editorial-image .ed-tag{
+    position:absolute;
+    top:14px; left:14px;
+    background:var(--red);
+    color:#FFFFFF;
+    padding:5px 12px;
+    font-size:11px; font-weight:700;
+    letter-spacing:.16em;
+    border-radius:4px;
+    box-shadow:0 4px 12px rgba(0,0,0,.18);
+  }
+  .editorial-text{
+    display:flex; flex-direction:column;
+    gap:8px;
+    padding-top:2px;
+    min-width:0;
+  }
+  .editorial-text .ed-eyebrow{
+    font-size:11px; font-weight:700;
+    letter-spacing:.2em; text-transform:uppercase;
+    color:var(--red);
+  }
+  .editorial-text h3{
+    font-family:'Crimson Pro','Noto Serif TC',Georgia,serif;
+    font-size:26px; font-weight:700;
+    color:var(--ink); line-height:1.2;
+    letter-spacing:-.3px;
+  }
+  .editorial-text .ed-body{
+    font-size:14px; color:var(--ink-soft); line-height:1.5;
+  }
+  .editorial-text .ed-body b{ color:var(--ink); font-weight:600; }
+  .editorial-text ul.ed-list{
+    list-style:none; padding:0; margin:0;
+    display:flex; flex-direction:column; gap:5px;
+  }
+  .editorial-text ul.ed-list li{
+    position:relative; padding-left:16px;
+    font-size:13px; line-height:1.45;
+    color:var(--ink-soft);
+  }
+  .editorial-text ul.ed-list li::before{
+    content:""; position:absolute; left:0; top:8px;
+    width:6px; height:6px; border-radius:50%;
+    background:var(--teal);
+  }
+  .editorial-text ul.ed-list li b{ color:var(--ink); font-weight:600; }
+
+  /* ===== Layout A — Hero Stat (s25) ===== */
+  .hero-stat-grid{
+    height:100%;
+    display:flex; flex-direction:column;
+    justify-content:center;
+    gap:18px;
+  }
+  .hero-stat-grid .stat-eyebrow{
+    text-align:center;
+    font-family:'Inter','Noto Sans TC',sans-serif;
+    font-size:12.5px; font-weight:700; letter-spacing:.24em;
+    text-transform:uppercase;
+    color:var(--muted);
+  }
+  .hero-stat-grid .stat-numbers{
+    display:grid;
+    grid-template-columns:1fr 1px 1fr;
+    gap:50px;
+    align-items:center;
+    justify-items:center;
+    padding:0 40px;
+  }
+  .hero-stat-grid .stat-divider{
+    width:1px; height:140px; background:var(--line);
+  }
+  .hero-stat-grid .stat-col{ text-align:center; }
+  .hero-stat-grid .stat-num{
+    font-family:'Crimson Pro','Noto Serif TC',Georgia,serif;
+    font-weight:700; line-height:.95;
+    letter-spacing:-3px;
+  }
+  .hero-stat-grid .stat-col.primary .stat-num{
+    font-size:178px; color:var(--teal);
+  }
+  .hero-stat-grid .stat-col.secondary .stat-num{
+    font-size:128px; color:var(--ink-soft);
+  }
+  .hero-stat-grid .stat-num .pct{
+    font-size:.55em; font-weight:600; letter-spacing:-1px;
+  }
+  .hero-stat-grid .stat-col .stat-label{
+    margin-top:6px;
+    font-family:'Inter','Noto Sans TC',sans-serif;
+    font-size:13px; font-weight:700; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--ink);
+  }
+  .hero-stat-grid .stat-col.primary .stat-label{ color:var(--teal); }
+  .hero-stat-grid .stat-col .stat-detail{
+    margin-top:4px;
+    font-family:'Crimson Pro',Georgia,serif; font-style:italic;
+    font-size:14px; color:var(--muted);
+  }
+  .hero-stat-grid .stat-context{
+    font-family:'Crimson Pro','Noto Serif TC',Georgia,serif;
+    font-style:italic; font-weight:500;
+    font-size:20px; line-height:1.45;
+    color:var(--ink-soft);
+    text-align:center;
+    max-width:940px;
+    margin:8px auto 0;
+    padding:0 30px;
+  }
+  .hero-stat-grid .stat-context b{
+    color:var(--ink); font-style:normal; font-weight:600;
+  }
+  .hero-stat-grid .stat-context .hl-teal{ color:var(--teal); font-weight:600; }
+
+  /* ===== Layout E — Slope / Divergence Chart (s28) ===== */
+  .hero-stat-grid .slope-svg-wrap{
+    width:100%;
+    max-width:940px;
+    margin:0 auto;
+  }
+  .hero-stat-grid .slope-svg-wrap svg{
+    width:100%; height:auto; display:block;
+  }
+
+  /* ===== Layout D — Pull Quote (s26) ===== */
+  .pullquote-wrap{
+    height:100%;
+    display:flex; flex-direction:column;
+    justify-content:center; align-items:center;
+    text-align:center;
+    position:relative;
+    padding:20px 80px;
+  }
+  .pullquote-mark{
+    position:absolute;
+    font-family:'Crimson Pro','Noto Serif TC',Georgia,serif;
+    font-size:240px; font-weight:700; line-height:.8;
+    color:var(--red); opacity:.14;
+    pointer-events:none;
+    user-select:none;
+  }
+  .pullquote-mark.open{ top:-12px; left:30px; }
+  .pullquote-mark.close{ bottom:0; right:30px; transform:rotate(180deg); }
+  .pullquote-text{
+    font-family:'Crimson Pro','Noto Serif TC',Georgia,serif;
+    font-style:italic; font-weight:500;
+    font-size:38px; line-height:1.42;
+    color:var(--ink);
+    max-width:980px;
+    letter-spacing:-.3px;
+    position:relative; z-index:1;
+  }
+  .pullquote-text b{
+    color:var(--red); font-weight:600; font-style:normal;
+  }
+  .pullquote-text .q-teal{
+    color:var(--teal); font-weight:500;
+    background:linear-gradient(transparent 70%, rgba(14,159,186,.20) 70%, rgba(14,159,186,.20) 92%, transparent 92%);
+    padding:0 4px;
+  }
+  .pullquote-attribution{
+    margin-top:34px;
+    font-family:'Inter','Noto Sans TC',sans-serif;
+    font-size:12.5px; font-weight:700; letter-spacing:.22em;
+    text-transform:uppercase;
+    color:var(--muted);
+    display:flex; align-items:center; gap:14px;
+  }
+  .pullquote-attribution::before,
+  .pullquote-attribution::after{
+    content:""; display:inline-block;
+    width:36px; height:1px;
+    background:var(--line);
+  }
+
+  /* CONSORT flowchart — full-width on s16 (replaces sys-grid) */
+  .consort-full{
+    width:100%; height:auto;
+    display:block;
+    margin:6px 0 8px;
+    flex-shrink:0;
+  }
+  .sm-summary{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+    flex-shrink:0;
+  }
+  .sm-summary .col{
+    background:#FAFBFC;
+    border:1px solid var(--line);
+    border-left:4px solid var(--red);
+    border-radius:8px;
+    padding:8px 14px 9px;
+    font-size:13px; line-height:1.5; color:var(--ink-soft);
+  }
+  .sm-summary .col.teal{ border-left-color:var(--teal); }
+  .sm-summary .col b{ color:var(--ink); font-weight:600; }
+  .sm-summary .col .lbl{
+    display:block;
+    font-size:10.5px; font-weight:700; letter-spacing:.2em; text-transform:uppercase;
+    color:var(--red);
+    margin-bottom:2px;
+  }
+  .sm-summary .col.teal .lbl{ color:var(--teal); }
+
+  /* Scene preview floated on deep-dive slides (s16-s20) */
+  .scene-preview{
+    float:right;
+    width:200px; height:118px;
+    object-fit:cover;
+    margin:0 0 8px 20px;
+    border-radius:8px;
+    border:1px solid var(--line);
+    box-shadow:0 10px 24px -18px rgba(20,30,60,.22);
+  }
+  .fam-table .fb-cell{
+    font-size:11.5px; font-weight:700; color:var(--teal);
+    letter-spacing:.02em;
+    line-height:1.4;
+  }
+  .fam-table .fb-cell .add{ color:var(--amber); font-weight:700; }
+  .fam-table .hw-cell{
+    font-size:10.5px; color:var(--ink-soft); line-height:1.4;
+  }
+  .fam-table .hw-cell b{ color:var(--ink); font-weight:600; }
+  .fam-table .go-cell{
+    font-size:11px; font-weight:700; color:var(--red);
+    letter-spacing:.16em; text-transform:uppercase;
+  }
+  .fam-table .go-cell.v2{ color:var(--amber); }
+  .fam-table .go-cell.v3{ color:var(--red-deep); }
+  .fam-table .go-cell.v4{ color:var(--teal); }
+  .fam-table .go-cell.v5{ color:var(--ink-soft); }
+  .fam-table .go-cell.v6{ color:#6E3FA3; }
+
+  /* ===== System Deep-Dive Slides (s14-s18) ===== */
+  .sys-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    grid-template-rows:1fr auto;
+    gap:14px;
+    flex:1;
+    min-height:0;
+  }
+  .sys-card{
+    background:#fff;
+    border:1px solid var(--line);
+    border-top:4px solid var(--red);
+    border-radius:10px;
+    padding:12px 18px 14px;
+    box-shadow:0 14px 32px -22px rgba(20,30,60,.22);
+    display:flex; flex-direction:column; gap:7px;
+    min-width:0;
+  }
+  .sys-card.teal{ border-top-color:var(--teal); }
+  .sys-card .sys-tag{
+    font-size:11px; font-weight:700; letter-spacing:.2em; text-transform:uppercase;
+    color:var(--red);
+  }
+  .sys-card.teal .sys-tag{ color:var(--teal); }
+  .sys-card h3{
+    font-family:'Crimson Pro','Noto Serif TC',Georgia,serif;
+    font-weight:700; font-size:18px; color:var(--ink); line-height:1.2;
+  }
+  .sys-card .sys-body{
+    font-size:13.5px; color:var(--ink-soft); line-height:1.5;
+  }
+  .sys-card .sys-body b{ color:var(--ink); font-weight:600; }
+  .sys-card .sys-list{
+    list-style:none; padding:0; margin:0;
+    display:flex; flex-direction:column; gap:4px;
+  }
+  .sys-card .sys-list li{
+    position:relative; padding-left:16px;
+    font-size:13px; line-height:1.45; color:var(--ink-soft);
+  }
+  .sys-card .sys-list li::before{
+    content:""; position:absolute; left:0; top:8px;
+    width:5px; height:5px; border-radius:50%;
+    background:currentColor; opacity:.5;
+  }
+  .sys-card .sys-list li b{ color:var(--ink); font-weight:600; }
+  .sys-card .sys-list li i{ color:var(--ink-soft); }
+  .sys-card .sys-list li code{
+    font-family:'Consolas','JetBrains Mono',monospace;
+    font-size:11.5px; background:rgba(20,30,60,.05);
+    padding:1px 4px; border-radius:3px; color:var(--ink);
+  }
+  .sys-results{
+    grid-column:1 / span 2;
+    background:linear-gradient(95deg, rgba(14,159,186,.06) 0%, rgba(217,106,24,.05) 100%);
+    border:1px solid var(--line);
+    border-left:5px solid var(--teal);
+    border-radius:10px;
+    padding:10px 20px;
+    display:grid;
+    grid-template-columns:auto 1fr;
+    gap:22px;
+    align-items:center;
+  }
+  .sys-results .res-label{
+    font-size:11px; font-weight:700; letter-spacing:.22em; text-transform:uppercase;
+    color:var(--red);
+    border-right:1px solid var(--line);
+    padding-right:22px;
+    line-height:1.2;
+    white-space:nowrap;
+  }
+  .sys-results .res-body{
+    font-size:13.5px; color:var(--ink-soft); line-height:1.5;
+  }
+  .sys-results .res-body b{ color:var(--ink); font-weight:600; }
+  .sys-results .res-body .stat{ color:var(--teal); font-weight:700; }
+
+  .eng-badge{
+    font-family:'Consolas','JetBrains Mono',monospace;
+    font-size:12.5px; line-height:1.5;
+    color:var(--ink-soft);
+    background:rgba(14,159,186,.06);
+    border-left:3px solid var(--teal);
+    padding:6px 12px;
+    margin-top:8px;
+    border-radius:4px;
+  }
+  .eng-badge b{ color:var(--ink); font-weight:600; }
+  .eng-badge .label{
+    color:var(--teal); font-weight:700;
+    letter-spacing:.18em; text-transform:uppercase;
+    font-size:10.5px; margin-right:10px;
+    font-family:'Inter','Noto Sans TC',sans-serif;
+  }
+
+  /* Generic bottom-pinned footer wrapper: opaque white strip stacked on top of overflowing sys-grid.
+     Use when adding an .eng-badge above .cite-line on slides where sys-grid is flex:1 and may overflow. */
+  .foot-stack{
+    position:absolute; left:60px; right:60px; bottom:0;
+    background:#fff;
+    display:flex; flex-direction:column; gap:6px;
+    padding-top:6px;
+    z-index:2;
+  }
+  .foot-stack .eng-badge{ margin-top:0; }
+  .foot-stack .cite-line{ margin-top:0; padding-top:0; }
+
+  /* s18 — reserve bottom strip for eng-badge + cite-line so sys-grid overflow doesn't collide */
+
+  /* s14 — Mobile AR engineering pivot badge */
+
+  /* s19 — MD-VRMT pipeline + caveats eng-badge */
+
+  /* s26 — Cortical Network coherence */
+
+  /* s22 — VRMT-FOA crossover protocol eng-badge */
+
+  /* s20 — RH-VRMT caveats eng-badge */
+
+  /* s21 — SM-ARMT mobile-pipeline eng-badge */
+
+
+  /* ===== Chapter break slides ===== */
+  .slide.chapter-break{
+    background:linear-gradient(135deg, #FFFFFF 0%, #FAF5F5 55%, #F4E5E6 100%);
+    position:relative; overflow:hidden;
+  }
+  .slide.chapter-break .ch-bg-art{
+    position:absolute; right:-40px; top:50%; transform:translateY(-50%);
+    font-family:'Crimson Pro','Noto Serif TC',Georgia,serif;
+    font-weight:700; font-size:420px; line-height:1; letter-spacing:-20px;
+    color:rgba(183,40,46,0.07); user-select:none; pointer-events:none;
+    z-index:0;
+  }
+  .slide.chapter-break .ch-content{
+    position:absolute; top:50%; left:120px; transform:translateY(-50%);
+    z-index:2; max-width:880px;
+  }
+  .slide.chapter-break .ch-eyebrow{
+    font-family:'Inter','Noto Sans TC',sans-serif;
+    font-size:13px; font-weight:700; letter-spacing:.32em; text-transform:uppercase;
+    color:var(--red); margin-bottom:14px;
+  }
+  .slide.chapter-break .ch-title{
+    font-family:'Crimson Pro','Noto Serif TC',Georgia,serif;
+    font-size:88px; font-weight:700; line-height:1.02; color:var(--ink);
+    margin:0 0 22px; letter-spacing:-1.4px;
+  }
+  .slide.chapter-break .ch-title .accent{ color:var(--red); }
+  .slide.chapter-break .ch-lead{
+    font-family:'Crimson Pro','Noto Serif TC',Georgia,serif;
+    font-style:italic; font-size:24px; line-height:1.45;
+    color:var(--ink-soft); max-width:760px; font-weight:500;
+    margin:0 0 32px;
+  }
+  .slide.chapter-break .ch-range{
+    display:inline-block;
+    font-family:'Inter','Noto Sans TC',sans-serif;
+    font-size:12.5px; font-weight:700; letter-spacing:.28em; text-transform:uppercase;
+    color:var(--muted); padding:9px 18px;
+    border:1.5px solid var(--line); border-radius:4px;
+    background:rgba(255,255,255,.7);
+  }
+  .slide.chapter-break .ch-rule{
+    position:absolute; left:88px; top:50%;
+    width:6px; height:140px; margin-top:-70px;
+    background:linear-gradient(180deg, var(--red) 0%, var(--amber) 100%);
+    border-radius:3px; z-index:1;
+  }
+</style>
+</head>
+<body>
+
+<!-- =====================================================================
+  WTMH LAB DECK TEMPLATE  (design system originally from the VRMT deck)
+  ---------------------------------------------------------------------
+  用法：
+   1. 每一個 <section class="slide ..."> 是一張投影片（1280×720）。
+   2. 複製你要的 section、改 id 成連續號 s1 s2 s3 ...，
+      footer 裡的 <span class="pageno"> 要跟著改。
+   3. <head> 裡是完整的 design system CSS，不要動。
+   4. 裝飾圖（vr-bg SVG、主視覺圖、logo）要換成跟你主題相關的。
+   5. 詳細規格見 DESIGN-SYSTEM.md。
+  ---------------------------------------------------------------------
+  可用版型（本檔各示範一張）：
+   s1 封面        slide-title
+   s2 章節分頁    chapter-break
+   s3 雙欄卡片    content-chrome + vrmt-grid
+   s4 三步流程    content-chrome + pipeline
+   s5 四格數字    content-chrome + stat-grid
+   s6 結語        content-chrome + 單卡片
+====================================================================== -->
+
+<div class="deck">
+
+  <!-- 本演講專用的少量輔助樣式：只用設計系統 token，不改既有元件外觀 -->
+  <style>
+    .flow{ display:flex; align-items:center; gap:10px; flex-wrap:nowrap; }
+    .flow .chip{ border:1.5px solid var(--line); border-radius:8px; padding:8px 14px; font-size:16px; font-weight:600; color:var(--ink); background:#fff; white-space:nowrap; }
+    .flow .chip.hot{ border-color:var(--red); color:var(--red); background:rgba(183,40,46,.06); }
+    .flow .chip.cool{ border-color:var(--teal); color:var(--teal); background:rgba(14,159,186,.07); }
+    .flow .op{ font-size:20px; font-weight:700; color:var(--muted); }
+    .goal-list{ list-style:none; counter-reset:g; display:flex; flex-direction:column; gap:17px; }
+    .goal-list li{ counter-increment:g; position:relative; padding-left:44px; font-size:18.5px; line-height:1.45; color:var(--ink-soft); }
+    .goal-list li::before{ content:counter(g); position:absolute; left:0; top:0; width:30px; height:30px; border-radius:8px; background:rgba(183,40,46,.10); color:var(--red); font-family:'Crimson Pro',Georgia,serif; font-weight:700; font-size:19px; display:flex; align-items:center; justify-content:center; }
+    .goal-list li b{ color:var(--ink); font-weight:600; }
+    .big-quote{ font-family:'Crimson Pro','Noto Serif TC',Georgia,serif; font-style:italic; font-weight:500; font-size:25px; line-height:1.5; color:var(--ink); }
+    .big-quote b{ font-style:normal; color:var(--red); font-weight:700; }
+    .big-quote .t{ font-style:normal; color:var(--teal); font-weight:700; }
+    .svg-panel{ background:#fff; border:1px solid var(--line); border-radius:10px; box-shadow:0 14px 32px -22px rgba(20,30,60,.22); display:flex; flex-direction:column; min-height:0; overflow:hidden; }
+    .svg-panel .sp-label{ padding:9px 16px; font-size:12.5px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); background:#FAFBFC; border-bottom:1px solid var(--line); display:flex; justify-content:space-between; }
+    .svg-panel .sp-label .r{ color:var(--red); }
+    .svg-panel svg{ display:block; width:100%; flex:1; min-height:0; }
+    .wk-table{ display:grid; grid-template-columns:92px 1fr 1.25fr; border:1px solid var(--line); border-radius:10px; overflow:hidden; }
+    .wk-table > div{ padding:10px 16px; font-size:16.5px; line-height:1.35; color:var(--ink-soft); border-bottom:1px solid var(--line); background:#fff; display:flex; align-items:center; }
+    .wk-table > div.h{ background:#FAFBFC; font-size:11.5px; font-weight:700; letter-spacing:.18em; text-transform:uppercase; color:var(--muted); padding:8px 16px; }
+    .wk-table > div.d{ font-family:'Crimson Pro',Georgia,serif; font-weight:700; font-size:19px; color:var(--red); }
+    .wk-table > div.t{ color:var(--ink); font-weight:600; }
+    .wk-table > div.last{ border-bottom:none; }
+    .ref-cols{ columns:2; column-gap:36px; font-size:13.5px; line-height:1.45; color:var(--ink-soft); }
+    .ref-cols ol{ padding-left:22px; }
+    .ref-cols li{ break-inside:avoid; margin-bottom:9px; }
+    .ref-cols li b{ color:var(--ink); font-weight:600; }
+    .status{ display:inline-block; font-size:11px; font-weight:700; letter-spacing:.12em; padding:2px 8px; border-radius:4px; margin-left:6px; vertical-align:2px; background:rgba(217,106,24,.12); color:var(--amber); }
+    .qr-ph{ border:2px dashed var(--line); border-radius:10px; display:flex; align-items:center; justify-content:center; text-align:center; color:var(--muted); font-size:14px; line-height:1.5; padding:12px; }
+  </style>
+
+  <!-- ============ 封面 ============ -->
+  <section class="slide slide-title" id="s1">
+    <div class="top-deco"><img src="wtmh-design-kit/assets/headers/header-full.png" alt="" /></div>
+    <div class="hero">
+      <div class="hero-art">
+        <div class="ring"></div>
+        <img src="wtmh-design-kit/assets/brand/logo-ncku-seal.png" alt="NCKU" style="width:225px;position:relative;z-index:2;filter:drop-shadow(0 14px 28px rgba(0,0,0,.18))" />
+      </div>
+      <div class="hero-text">
+        <div class="eyebrow-line">醫學工程概論 &middot; 第 2 週 &middot; 2026-10-01</div>
+        <h1 class="vrmt-title">
+          深度學習及生成式人工智慧簡介<br/>
+          <span class="main">及其於骨科學的應用 <span class="vrmt-ab">(Ortho AI)</span></span>
+        </h1>
+        <div class="subtitle-line">Deep Learning &amp; Generative AI in Orthopaedics</div>
+        <p class="pitch-line">
+          AI 在骨科最成熟的角色是<b>「第二雙眼」</b>，不是取代醫師；<span class="teal">會用之前，要先會驗證</span>。
+        </p>
+        <div class="affiliation">
+          <div class="line"><span class="ab">BME</span><span>國立成功大學 生物醫學工程學系</span></div>
+          <div class="line"><span class="ab">MDIC</span><span>醫療器材科技創新研究中心</span></div>
+          <div class="line"><span class="ab">WTMH</span><span>NCKU BME WTMH Lab</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="presenter-card">
+      <div>
+        <div class="pl-label">Presenter</div>
+        <div class="pl-name">林哲偉 教授</div>
+        <div class="pl-role">國立成功大學 生物醫學工程學系 &middot; 醫療器材科技創新研究中心</div>
+      </div>
+      <div class="pl-meta">
+        <b>醫學工程概論 &middot; 醫學院 303D</b><br/>
+        <span class="date">2026 / 10 / 01</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 開場：你怎麼找骨折？ ============ -->
+  <section class="slide content-chrome" id="s2">
+    <header class="page-head">
+      <h2>你怎麼找骨折？AI 又怎麼找？<span class="page-subtitle">Opening &middot; Same X-ray, Two Readers</span></h2>
+    </header>
+    <div class="content-body">
+      <p class="concept-lead">
+        上週談 osteosynthesis——怎麼固定。但在固定之前，<span class="accent">先要診斷對</span>。
+      </p>
+      <div class="mt-grid" style="grid-template-columns:0.82fr 1fr">
+        <div class="svg-panel">
+          <div class="sp-label"><span>手腕正面 X 光（示意）</span><span class="r">有沒有骨折？</span></div>
+          <svg viewBox="0 0 300 268" preserveAspectRatio="xMidYMid meet" style="background:#0F1115">
+            <defs>
+              <radialGradient id="xv" cx="50%" cy="45%" r="65%"><stop offset="0" stop-color="#2A2E36"/><stop offset="1" stop-color="#0F1115"/></radialGradient>
+              <filter id="xb"><feGaussianBlur stdDeviation="1.1"/></filter>
+            </defs>
+            <rect width="300" height="268" fill="url(#xv)"/>
+            <g fill="#D8DCE2" fill-opacity=".82" filter="url(#xb)">
+              <!-- metacarpals -->
+              <path d="M96 118 L84 22 L96 20 L108 116 Z"/>
+              <path d="M118 112 L114 10 L127 10 L131 112 Z"/>
+              <path d="M140 112 L144 8 L157 9 L152 113 Z"/>
+              <path d="M161 116 L174 16 L186 19 L172 119 Z"/>
+              <path d="M180 124 L204 40 L215 45 L190 128 Z"/>
+              <!-- carpals -->
+              <ellipse cx="102" cy="132" rx="15" ry="11"/><ellipse cx="126" cy="128" rx="13" ry="12"/>
+              <ellipse cx="149" cy="128" rx="13" ry="12"/><ellipse cx="173" cy="134" rx="14" ry="12"/>
+              <ellipse cx="110" cy="156" rx="17" ry="12"/><ellipse cx="137" cy="154" rx="14" ry="12"/>
+              <ellipse cx="160" cy="157" rx="12" ry="11"/><ellipse cx="181" cy="158" rx="10" ry="10"/>
+              <!-- radius (distal end with fracture gap) -->
+              <path d="M88 178 Q118 168 156 176 L150 196 Q122 192 94 197 Z"/>
+              <path d="M95 204 Q122 199 149 203 L141 268 L104 268 Z"/>
+              <!-- ulna -->
+              <path d="M170 182 Q186 174 196 184 L190 268 L170 268 Z"/>
+            </g>
+            <!-- fracture line -->
+            <path d="M92 199 L104 197 L112 202 L122 196 L133 201 L143 197 L151 200" stroke="#0F1115" stroke-width="3" fill="none"/>
+            <text x="292" y="14" text-anchor="end" font-size="9" fill="#8A93A6" font-family="Inter,sans-serif">schematic · not a patient image</text>
+          </svg>
+        </div>
+        <div class="mt-text">
+          <div class="mt-block">
+            <div class="mt-block-tag warn">課堂投票 &middot; 30 秒</div>
+            <ul>
+              <li>這張 X 光有沒有骨折？<b>A 有</b>　<b>B 沒有</b>　<b>C 不確定</b></li>
+              <li>如果有，在哪裡？你是<b>先看哪裡</b>才發現的？</li>
+            </ul>
+          </div>
+          <div class="mt-block">
+            <div class="mt-block-tag">醫師怎麼看</div>
+            <ul>
+              <li>系統性掃描：<b>皮質連續性</b>、骨小樑、關節面、軟組織腫脹</li>
+              <li>結合病史與理學檢查（壓痛點、能否負重）</li>
+            </ul>
+          </div>
+          <div class="mt-block">
+            <div class="mt-block-tag teal">AI 怎麼看</div>
+            <ul>
+              <li>從<b>十幾萬張</b>已標註 X 光中，自己學會「骨折長什麼樣」</li>
+              <li>輸出不是「是 / 否」，而是<b>一個機率</b>（＋位置框）</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <p class="cite-line">圖：手腕 X 光示意圖（本演講自製，非病人影像；課堂可替換為公開資料集或去識別化影像並標註來源）。</p>
+    </div>
+    <footer class="footer-ribbon">
+    <div class="fl-left">
+      <img class="ncku-logo" src="wtmh-design-kit/assets/brand/logo-ncku-h-small.png" alt="NCKU" />
+      <img class="wtmh-logo" src="wtmh-design-kit/assets/brand/logo-wtmh-new-small.png" alt="WTMH Lab" />
+    </div>
+    <div class="ribbon-bar">
+      <span class="lab-name">NCKU BME WTMH Lab</span>
+      <span class="pageno">2</span>
+    </div>
+  </footer>
+  </section>
+
+  <!-- ============ 學習目標 ============ -->
+  <section class="slide content-chrome" id="s3">
+    <header class="page-head">
+      <h2>今天下課前，你應該能夠&hellip;<span class="page-subtitle">Learning Objectives &middot; 100 min</span></h2>
+    </header>
+    <div class="content-body">
+      <div style="display:grid;grid-template-columns:1.5fr 1fr;gap:22px;flex:1;min-height:0">
+        <div class="card" style="padding:20px 26px 20px;gap:14px">
+          <div class="tag"><span class="ico">&#9673;</span><span>五個學習目標</span></div>
+          <ol class="goal-list">
+            <li>說出 <b>AI ⊃ 機器學習 ⊃ 深度學習 ⊃ 生成式 AI</b> 的包含關係，並舉一個骨科例子</li>
+            <li>區分影像 AI 三種任務：<b>分類、偵測、分割</b>，並對應到骨科問題</li>
+            <li>用<b>敏感度、特異度、AUC</b> 解讀一篇骨折 AI 論文的主要結果</li>
+            <li>說明 LLM 如何運作（<b>預測下一個 token</b>），以及「幻覺」的來源與查證方法</li>
+            <li>列出 AI 進入臨床前的三關：<b>證據、法規（SaMD）、人工覆核與責任</b></li>
+          </ol>
+        </div>
+        <div class="card teal" style="padding:20px 26px 20px;gap:14px">
+          <div class="tag"><span class="ico">&#10077;</span><span>一句話核心訊息</span></div>
+          <p class="big-quote">AI 在骨科最成熟的角色是<b>「第二雙眼」</b>，不是取代醫師。<br/><span class="t">會用之前，要先會驗證。</span></p>
+          <div class="footnote">下課前 5 題小評量，就是這五個目標。</div>
+        </div>
+      </div>
+      <div class="why-strip" style="grid-template-columns:auto repeat(4,1fr);margin-top:14px">
+        <div class="why-label">今日<br/>流程</div>
+        <div class="why-item"><b>Part 1 &middot; 20′</b>深度學習入門</div>
+        <div class="why-item"><b>Part 2 &middot; 17′</b>骨科影像 AI 證據</div>
+        <div class="why-item"><b>Part 3 &middot; 17′</b>生成式 AI（休息後）</div>
+        <div class="why-item"><b>Part 4 &middot; 16′</b>從論文到病床＋分組</div>
+      </div>
+    </div>
+    <footer class="footer-ribbon">
+    <div class="fl-left">
+      <img class="ncku-logo" src="wtmh-design-kit/assets/brand/logo-ncku-h-small.png" alt="NCKU" />
+      <img class="wtmh-logo" src="wtmh-design-kit/assets/brand/logo-wtmh-new-small.png" alt="WTMH Lab" />
+    </div>
+    <div class="ribbon-bar">
+      <span class="lab-name">NCKU BME WTMH Lab</span>
+      <span class="pageno">3</span>
+    </div>
+  </footer>
+  </section>
+
+  <!-- ============ Part 1 章節 ============ -->
+  <section class="slide chapter-break" id="s4">
+    <div class="ch-bg-art" aria-hidden="true">01</div>
+    <div class="ch-rule"></div>
+    <div class="ch-content">
+      <div class="ch-eyebrow">Part 1 &middot; Deep Learning 101</div>
+      <h2 class="ch-title">深度學習入門</h2>
+      <p class="ch-lead">不放公式。模型的輸出其實就是一個機率——和你學過的篩檢試驗，是同一件事。</p>
+      <div class="ch-range">Slides 5 &mdash; 10</div>
+    </div>
+    <footer class="footer-ribbon">
+    <div class="fl-left">
+      <img class="ncku-logo" src="wtmh-design-kit/assets/brand/logo-ncku-h-small.png" alt="NCKU" />
+      <img class="wtmh-logo" src="wtmh-design-kit/assets/brand/logo-wtmh-new-small.png" alt="WTMH Lab" />
+    </div>
+    <div class="ribbon-bar">
+      <span class="lab-name">NCKU BME WTMH Lab</span>
+      <span class="pageno">4</span>
+    </div>
+  </footer>
+  </section>
+
+  <!-- ============ AI ⊃ ML ⊃ DL ⊃ GenAI ============ -->
+  <section class="slide content-chrome" id="s5">
+    <header class="page-head">
+      <h2>四個名詞，一層包一層<span class="page-subtitle">AI &sup; ML &sup; DL &sup; Generative AI</span></h2>
+    </header>
+    <div class="content-body">
+      <p class="concept-lead">
+        新聞把它們混著用，但其實是<span class="accent">由大到小的包含關係</span>——越裡層，越不需要人教規則。
+      </p>
+      <div class="mt-grid" style="grid-template-columns:0.9fr 1.1fr">
+        <div class="svg-panel">
+          <svg viewBox="0 0 460 330" preserveAspectRatio="xMidYMid meet">
+            <ellipse cx="230" cy="168" rx="218" ry="152" fill="rgba(60,66,83,.04)" stroke="#9AA1B2" stroke-width="1.5"/>
+            <ellipse cx="258" cy="192" rx="168" ry="118" fill="rgba(183,40,46,.05)" stroke="#C9787C" stroke-width="1.5"/>
+            <ellipse cx="282" cy="216" rx="116" ry="84" fill="rgba(183,40,46,.10)" stroke="#B7282E" stroke-width="1.8"/>
+            <ellipse cx="302" cy="238" rx="64" ry="48" fill="rgba(14,159,186,.16)" stroke="#0E9FBA" stroke-width="2"/>
+            <text x="72" y="72" font-family="Crimson Pro,Noto Serif TC,serif" font-weight="700" font-size="22" fill="#3C4253">AI 人工智慧</text>
+            <text x="128" y="118" font-family="Crimson Pro,Noto Serif TC,serif" font-weight="700" font-size="21" fill="#8E1A20">ML 機器學習</text>
+            <text x="200" y="166" font-family="Crimson Pro,Noto Serif TC,serif" font-weight="700" font-size="21" fill="#B7282E">DL 深度學習</text>
+            <text x="302" y="236" text-anchor="middle" font-family="Crimson Pro,Noto Serif TC,serif" font-weight="700" font-size="19" fill="#0E9FBA">生成式</text>
+            <text x="302" y="258" text-anchor="middle" font-family="Inter,sans-serif" font-weight="700" font-size="14" fill="#0E9FBA">Gen AI</text>
+          </svg>
+        </div>
+        <div class="mt-text">
+          <div class="mt-block">
+            <div class="mt-block-tag">AI &middot; 讓電腦做需要智慧的事</div>
+            <ul><li>包含人寫規則的系統。例：依 <b>Ottawa ankle rules</b> 跳出「建議照 X 光」的提示</li></ul>
+          </div>
+          <div class="mt-block">
+            <div class="mt-block-tag warn">ML &middot; 從資料自己學規則</div>
+            <ul><li>例：用年齡、骨密度、跌倒史等<b>表格資料</b>預測骨折風險</li></ul>
+          </div>
+          <div class="mt-block">
+            <div class="mt-block-tag warn">DL &middot; 多層神經網路，直接看原始影像</div>
+            <ul><li>例：輸入整張 X 光，輸出<b>「骨折機率」</b>與位置（Part 2 的主角）</li></ul>
+          </div>
+          <div class="mt-block">
+            <div class="mt-block-tag teal">生成式 AI &middot; 產生新內容</div>
+            <ul><li>例：LLM 起草<b>手術說明與衛教文字</b>（Part 3 的主角）</li></ul>
+          </div>
+        </div>
+      </div>
+      <div class="bottomline-strip" style="margin-top:14px">
+        <div class="bl-label">Bottom line</div>
+        <div class="bl-text">今天聚焦最裡面兩層：<b>深度學習（會看片）</b>與<b>生成式 AI（會寫字）</b>。</div>
+      </div>
+      <p class="cite-line">圖：本演講自製。骨科例子為教學示意，非特定產品。</p>
+    </div>
+    <footer class="footer-ribbon">
+    <div class="fl-left">
+      <img class="ncku-logo" src="wtmh-design-kit/assets/brand/logo-ncku-h-small.png" alt="NCKU" />
+      <img class="wtmh-logo" src="wtmh-design-kit/assets/brand/logo-wtmh-new-small.png" alt="WTMH Lab" />
+    </div>
+    <div class="ribbon-bar">
+      <span class="lab-name">NCKU BME WTMH Lab</span>
+      <span class="pageno">5</span>
+    </div>
+  </footer>
+  </section>
+
+  <!-- ============ 傳統程式 vs 機器學習 ============ -->
+  <section class="slide content-chrome" id="s6">
+    <header class="page-head">
+      <h2>傳統程式 vs 機器學習<span class="page-subtitle">Who Writes the Rules?</span></h2>
+    </header>
+    <div class="content-body">
+      <p class="concept-lead">
+        關鍵差別只有一個：<span class="accent">規則是人寫的，還是從資料學出來的</span>。
+      </p>
+      <div class="compare-grid" style="flex:1;min-height:0">
+        <div class="compare-card classical">
+          <div class="tag"><span class="ico">&#9998;</span><span>傳統程式</span></div>
+          <div class="flow"><span class="chip">規則</span><span class="op">+</span><span class="chip">資料</span><span class="op">&rarr;</span><span class="chip">答案</span></div>
+          <ul>
+            <li>人先寫好規則：「皮質線中斷超過 X mm → 骨折」</li>
+            <li>問題：骨折型態太多，<b>規則寫不完</b>；影像品質一變就失靈</li>
+          </ul>
+          <div class="footnote">像背一本「判讀規則手冊」。</div>
+        </div>
+        <div class="compare-card vrmt">
+          <div class="tag"><span class="ico">&#9881;</span><span>機器學習</span></div>
+          <div class="flow"><span class="chip">資料</span><span class="op">+</span><span class="chip">答案（標註）</span><span class="op">&rarr;</span><span class="chip hot">規則</span></div>
+          <ul>
+            <li>給電腦十幾萬張<b>醫師已標註</b>的 X 光（骨折 / 無骨折）</li>
+            <li>電腦自己找出區分兩者的規則，再用在<b>沒看過的新影像</b></li>
+          </ul>
+          <div class="footnote">像住院醫師看了上萬張片，被主治一張張糾正。</div>
+        </div>
+      </div>
+      <div class="bottomline-strip">
+        <div class="bl-label">Bottom line</div>
+        <div class="bl-text">答案從標註來，所以<b>標註的品質決定模型的上限</b>——Lindsey 2018 找了 18 位資深骨科醫師來標註，就是這個原因。</div>
+      </div>
+      <p class="cite-line">資料來源：<b>Lindsey R</b> et al., PNAS 2018;115(45):11591–6。流程圖本演講自製。</p>
+    </div>
+    <footer class="footer-ribbon">
+    <div class="fl-left">
+      <img class="ncku-logo" src="wtmh-design-kit/assets/brand/logo-ncku-h-small.png" alt="NCKU" />
+      <img class="wtmh-logo" src="wtmh-design-kit/assets/brand/logo-wtmh-new-small.png" alt="WTMH Lab" />
+    </div>
+    <div class="ribbon-bar">
+      <span class="lab-name">NCKU BME WTMH Lab</span>
+      <span class="pageno">6</span>
+    </div>
+  </footer>
+  </section>
+
+  <!-- ============ 訓練迴圈 ============ -->
+  <section class="slide content-chrome" id="s7">
+    <header class="page-head">
+      <h2>神經網路怎麼「學」？<span class="page-subtitle">The Training Loop</span></h2>
+    </header>
+    <div class="content-body">
+      <p class="concept-lead">
+        訓練就是一個迴圈：<span class="accent">猜 &rarr; 對答案 &rarr; 修正</span>，重複幾十萬次，直到<span class="outcome">猜得夠準</span>。
+      </p>
+      <div class="pipeline">
+        <div class="step">
+          <div class="step-no">01 &middot; 預測</div>
+          <div class="step-icon"><svg viewBox="0 0 50 50" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="7" y="9" width="36" height="32" rx="4"/><path d="M17 33 L22 17 M28 33 L31 17" stroke-width="2"/><circle cx="38" cy="12" r="7" fill="#fff"/><text x="38" y="16" font-size="10" text-anchor="middle" fill="currentColor" stroke="none" font-family="Inter" font-weight="700">?</text></svg></div>
+          <h3>輸入一張 X 光，網路先猜</h3>
+          <p>剛開始幾乎亂猜：「骨折機率 <span class="hw">0.30</span>」</p>
+        </div>
+        <div class="step-arrow"><svg viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 13 H19 M13 7 L20 13 L13 19"/></svg></div>
+        <div class="step">
+          <div class="step-no">02 &middot; 對答案</div>
+          <div class="step-icon"><svg viewBox="0 0 50 50" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10 26 L20 36 L40 14"/></svg></div>
+          <h3>和醫師標註比對</h3>
+          <p>標註是「骨折」(= 1)，差了 0.70——這個差距叫<span class="hw">誤差（loss）</span></p>
+        </div>
+        <div class="step-arrow"><svg viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 13 H19 M13 7 L20 13 L13 19"/></svg></div>
+        <div class="step">
+          <div class="step-no">03 &middot; 修正</div>
+          <div class="step-icon"><svg viewBox="0 0 50 50" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M38 18 A15 15 0 1 0 40 30"/><path d="M38 8 L38 18 L28 18"/></svg></div>
+          <h3>微調數百萬個權重</h3>
+          <p>每個權重往「誤差變小」的方向挪一點點，然後換下一張</p>
+        </div>
+      </div>
+      <div class="why-strip">
+        <div class="why-label">你已經<br/>懂的類比</div>
+        <div class="why-item"><b>訓練集 = 練習題</b>拿來學、可以反覆看</div>
+        <div class="why-item"><b>測試集 = 期末考</b>完全沒看過的新影像，才算真本事</div>
+        <div class="why-item"><b>過擬合 = 背考古題</b>練習題全對，換一間醫院就不會</div>
+      </div>
+      <div class="bottomline-strip" style="margin-top:14px">
+        <div class="bl-label">Bottom line</div>
+        <div class="bl-text">模型沒有「理解」骨折，只是把誤差壓到最小——<b>資料裡有什麼偏差，它就學到什麼偏差</b>（Part 4 再談）。</div>
+      </div>
+      <p class="cite-line">圖解本演講自製；為教學簡化，省略反向傳播（backpropagation）的數學。</p>
+    </div>
+    <footer class="footer-ribbon">
+    <div class="fl-left">
+      <img class="ncku-logo" src="wtmh-design-kit/assets/brand/logo-ncku-h-small.png" alt="NCKU" />
+      <img class="wtmh-logo" src="wtmh-design-kit/assets/brand/logo-wtmh-new-small.png" alt="WTMH Lab" />
+    </div>
+    <div class="ribbon-bar">
+      <span class="lab-name">NCKU BME WTMH Lab</span>
+      <span class="pageno">7</span>
+    </div>
+  </footer>
+  </section>
+
+  <!-- ============ CNN 邊緣→紋理→形狀 ============ -->
+  <section class="slide content-chrome" id="s8">
+    <header class="page-head">
+      <h2>卷積神經網路怎麼「看」影像？<span class="page-subtitle"><span style="color:var(--teal)">CNN</span> &middot; Edges &rarr; Textures &rarr; Shapes</span></h2>
+    </header>
+    <div class="content-body">
+      <p class="concept-lead">
+        和你生理學學過的視覺路徑很像：<span class="accent">淺層看邊緣，深層看形狀</span>，最後組合成判斷。
+      </p>
+      <div class="svg-panel" style="flex:0 0 232px">
+        <svg viewBox="0 0 1160 232" preserveAspectRatio="xMidYMid meet">
+          <defs><marker id="ar8" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#9AA1B2"/></marker></defs>
+          <!-- input -->
+          <rect x="30" y="30" width="150" height="150" rx="6" fill="#14171C"/>
+          <path d="M70 180 L84 60 L118 56 L132 180 Z" fill="#D8DCE2" fill-opacity=".8"/>
+          <path d="M74 120 L90 116 L102 122 L128 115" stroke="#14171C" stroke-width="3" fill="none"/>
+          <!-- stage 1 edges -->
+          <g transform="translate(250,30)">
+            <rect width="150" height="150" rx="6" fill="#FAFBFC" stroke="#E2E5EC"/>
+            <g stroke="#3C4253" stroke-width="3" stroke-linecap="round">
+              <rect x="12" y="12" width="36" height="36" rx="4" fill="#fff" stroke="#E2E5EC" stroke-width="1"/><path d="M30 18 L30 42"/>
+              <rect x="57" y="12" width="36" height="36" rx="4" fill="#fff" stroke="#E2E5EC" stroke-width="1"/><path d="M63 30 L87 30"/>
+              <rect x="102" y="12" width="36" height="36" rx="4" fill="#fff" stroke="#E2E5EC" stroke-width="1"/><path d="M108 42 L132 18"/>
+              <rect x="12" y="57" width="36" height="36" rx="4" fill="#fff" stroke="#E2E5EC" stroke-width="1"/><path d="M18 63 L42 87"/>
+              <rect x="57" y="57" width="36" height="36" rx="4" fill="#fff" stroke="#E2E5EC" stroke-width="1"/><path d="M68 63 L68 87 M82 63 L82 87"/>
+              <rect x="102" y="57" width="36" height="36" rx="4" fill="#fff" stroke="#E2E5EC" stroke-width="1"/><path d="M108 70 L132 70 M108 80 L132 80"/>
+              <rect x="12" y="102" width="36" height="36" rx="4" fill="#fff" stroke="#E2E5EC" stroke-width="1"/><path d="M18 120 L42 120"/>
+              <rect x="57" y="102" width="36" height="36" rx="4" fill="#fff" stroke="#E2E5EC" stroke-width="1"/><path d="M75 108 L75 132"/>
+              <rect x="102" y="102" width="36" height="36" rx="4" fill="#fff" stroke="#E2E5EC" stroke-width="1"/><path d="M108 108 L132 132"/>
+            </g>
+          </g>
+          <!-- stage 2 textures -->
+          <g transform="translate(470,30)">
+            <rect width="150" height="150" rx="6" fill="#FAFBFC" stroke="#E2E5EC"/>
+            <g stroke="#8E1A20" stroke-width="1.6" fill="none">
+              <rect x="12" y="12" width="58" height="58" rx="4" fill="#fff" stroke="#E2E5EC"/><path d="M18 24 Q30 18 40 28 T64 24 M18 40 Q30 34 40 44 T64 40 M18 56 Q30 50 40 60 T64 56"/>
+              <rect x="80" y="12" width="58" height="58" rx="4" fill="#fff" stroke="#E2E5EC"/><path d="M86 18 L132 64 M98 18 L132 52 M86 30 L120 64 M132 18 L86 64 M120 18 L86 52"/>
+              <rect x="12" y="80" width="58" height="58" rx="4" fill="#fff" stroke="#E2E5EC"/><circle cx="30" cy="98" r="6"/><circle cx="52" cy="104" r="5"/><circle cx="34" cy="122" r="5"/><circle cx="56" cy="126" r="6"/>
+              <rect x="80" y="80" width="58" height="58" rx="4" fill="#fff" stroke="#E2E5EC"/><path d="M86 92 L132 92 M86 104 L132 104 M86 116 L132 116 M86 128 L132 128" stroke-dasharray="6 4"/>
+            </g>
+          </g>
+          <!-- stage 3 shapes -->
+          <g transform="translate(690,30)">
+            <rect width="150" height="150" rx="6" fill="#FAFBFC" stroke="#E2E5EC"/>
+            <g fill="none" stroke-width="2.6" stroke-linecap="round">
+              <rect x="12" y="12" width="58" height="58" rx="4" fill="#fff" stroke="#E2E5EC" stroke-width="1"/><path d="M26 64 L30 22 Q41 14 52 22 L56 64" stroke="#3C4253"/>
+              <rect x="80" y="12" width="58" height="58" rx="4" fill="#fff" stroke="#E2E5EC" stroke-width="1"/><path d="M88 42 L98 38 L106 46 L118 36 L130 42" stroke="#B7282E"/>
+              <rect x="12" y="80" width="58" height="58" rx="4" fill="#fff" stroke="#E2E5EC" stroke-width="1"/><ellipse cx="41" cy="109" rx="18" ry="13" stroke="#3C4253"/>
+              <rect x="80" y="80" width="58" height="58" rx="4" fill="#fff" stroke="#E2E5EC" stroke-width="1"/><path d="M92 128 L100 90 L106 110 L114 92 L122 128" stroke="#3C4253"/>
+            </g>
+          </g>
+          <!-- output -->
+          <g transform="translate(910,48)">
+            <rect width="220" height="114" rx="8" fill="#fff" stroke="#B7282E" stroke-width="2"/>
+            <text x="20" y="34" font-family="Inter,Noto Sans TC,sans-serif" font-size="15" font-weight="700" fill="#1B2030">骨折機率</text>
+            <rect x="20" y="50" width="180" height="16" rx="8" fill="#F1F2F5"/>
+            <rect x="20" y="50" width="164" height="16" rx="8" fill="#B7282E"/>
+            <text x="20" y="96" font-family="Crimson Pro,serif" font-size="30" font-weight="700" fill="#B7282E">0.91</text>
+            <text x="200" y="96" text-anchor="end" font-family="Inter,sans-serif" font-size="12" fill="#6B7388">（示意值）</text>
+          </g>
+          <g stroke="#9AA1B2" stroke-width="2.5" marker-end="url(#ar8)">
+            <path d="M188 105 L240 105"/><path d="M408 105 L460 105"/><path d="M628 105 L680 105"/><path d="M848 105 L900 105"/>
+          </g>
+          <g font-family="Inter,Noto Sans TC,sans-serif" font-size="15" font-weight="700" fill="#1B2030" text-anchor="middle">
+            <text x="105" y="212">輸入影像</text><text x="325" y="212">淺層：邊緣、線條</text><text x="545" y="212">中層：紋理（骨小樑）</text><text x="765" y="212">深層：形狀、斷裂線</text><text x="1020" y="212">輸出：一個機率</text>
+          </g>
+        </svg>
+      </div>
+      <div class="why-strip" style="margin-top:14px">
+        <div class="why-label">三句話<br/>記住</div>
+        <div class="why-item"><b>卷積 = 拿小模板滑過整張圖</b>每個模板專找一種花樣（邊、角、紋路）</div>
+        <div class="why-item"><b>特徵是學出來的</b>沒有人告訴它「骨小樑長什麼樣」</div>
+        <div class="why-item"><b>類比視覺皮質</b>V1 偵測邊緣 → 高階皮質辨識物體</div>
+      </div>
+      <div class="bottomline-strip" style="margin-top:14px">
+        <div class="bl-label">Bottom line</div>
+        <div class="bl-text">你學會看片要好幾年；CNN 用<b>十幾萬張已標註影像</b>壓縮這個過程——但它只會它看過的東西。</div>
+      </div>
+      <p class="cite-line">圖：CNN 階層特徵概念示意（本演講自製），非實際網路的視覺化結果。</p>
+    </div>
+    <footer class="footer-ribbon">
+    <div class="fl-left">
+      <img class="ncku-logo" src="wtmh-design-kit/assets/brand/logo-ncku-h-small.png" alt="NCKU" />
+      <img class="wtmh-logo" src="wtmh-design-kit/assets/brand/logo-wtmh-new-small.png" alt="WTMH Lab" />
+    </div>
+    <div class="ribbon-bar">
+      <span class="lab-name">NCKU BME WTMH Lab</span>
+      <span class="pageno">8</span>
+    </div>
+  </footer>
+  </section>
+
+  <!-- ============ 分類 / 偵測 / 分割 ============ -->
+  <section class="slide content-chrome" id="s9">
+    <header class="page-head">
+      <h2>影像 AI 的三種任務<span class="page-subtitle">Classification &middot; Detection &middot; Segmentation</span></h2>
+    </header>
+    <div class="content-body">
+      <p class="concept-lead">
+        先問清楚 AI <span class="accent">輸出的是什麼</span>：一個標籤、一個框，還是一張逐像素的輪廓？
+      </p>
+      <div class="gen-grid">
+        <div class="gen-card">
+          <div class="gen-tag">01 &middot; 分類<span class="gen-tag-sub">Classification</span></div>
+          <div class="gen-icon-row">
+            <div class="gen-icon"><svg viewBox="0 0 38 38" fill="none" stroke="currentColor" stroke-width="2.4"><rect x="4" y="6" width="22" height="26" rx="3"/><path d="M28 14 L34 14 M28 20 L34 20 M28 26 L32 26"/></svg></div>
+            <h3>這張片「是什麼」？</h3>
+          </div>
+          <div class="gen-specs" style="font-size:13.5px">輸出：標籤＋機率</div>
+          <div class="gen-method" style="font-size:16.5px;line-height:1.55">有無骨折；膝關節 OA 嚴重度 <b>Kellgren–Lawrence 0–4 級</b>（Tiulpin 2018）</div>
+          <div class="gen-refs" style="font-size:13px"><b>對應臨床</b>：篩檢、分流、分級</div>
+        </div>
+        <div class="gen-card amber">
+          <div class="gen-tag">02 &middot; 偵測<span class="gen-tag-sub">Detection</span></div>
+          <div class="gen-icon-row">
+            <div class="gen-icon"><svg viewBox="0 0 38 38" fill="none" stroke="currentColor" stroke-width="2.4"><rect x="4" y="4" width="30" height="30" rx="3" stroke-opacity=".35"/><rect x="12" y="13" width="14" height="11" rx="1" stroke-dasharray="3 2"/></svg></div>
+            <h3>問題「在哪裡」？</h3>
+          </div>
+          <div class="gen-specs" style="font-size:13.5px">輸出：位置框＋機率</div>
+          <div class="gen-method" style="font-size:16.5px;line-height:1.55">在 X 光上<b>框出骨折位置</b>，提醒醫師回頭看那一區</div>
+          <div class="gen-refs" style="font-size:13px"><b>對應臨床</b>：急診判讀輔助（第二雙眼）</div>
+        </div>
+        <div class="gen-card teal">
+          <div class="gen-tag">03 &middot; 分割<span class="gen-tag-sub">Segmentation</span></div>
+          <div class="gen-icon-row">
+            <div class="gen-icon"><svg viewBox="0 0 38 38" fill="currentColor" fill-opacity=".35" stroke="currentColor" stroke-width="2"><path d="M12 6 Q19 3 26 6 L27 13 Q19 16 11 13 Z"/><path d="M11 17 Q19 20 27 17 L27 24 Q19 27 11 24 Z"/><path d="M11 28 Q19 31 27 28 L26 34 Q19 36 12 34 Z"/></svg></div>
+            <h3>精確「輪廓」在哪？</h3>
+          </div>
+          <div class="gen-specs" style="font-size:13.5px">輸出：逐像素遮罩（mask）</div>
+          <div class="gen-method" style="font-size:16.5px;line-height:1.55">描出<b>椎體、骨骼輪廓</b> → 3D 規劃與導航的基礎；MedSAM 以超過一百萬組影像–遮罩對訓練</div>
+          <div class="gen-refs" style="font-size:13px"><b>對應臨床</b>：術前規劃、量測、導航</div>
+        </div>
+      </div>
+      <div class="bottomline-strip" style="margin-top:14px">
+        <div class="bl-label">Bottom line</div>
+        <div class="bl-text">後面幾週的<b>脊椎生物力學、導航手術</b>，第一步幾乎都是「分割」。</div>
+      </div>
+      <p class="cite-line">資料來源：<b>Tiulpin A</b> et al., Sci Rep 2018;8:1727；<b>Ma J</b> et al., Nat Commun 2024;15:654（MedSAM）。圖示本演講自製。</p>
+    </div>
+    <footer class="footer-ribbon">
+    <div class="fl-left">
+      <img class="ncku-logo" src="wtmh-design-kit/assets/brand/logo-ncku-h-small.png" alt="NCKU" />
+      <img class="wtmh-logo" src="wtmh-design-kit/assets/brand/logo-wtmh-new-small.png" alt="WTMH Lab" />
+    </div>
+    <div class="ribbon-bar">
+      <span class="lab-name">NCKU BME WTMH Lab</span>
+      <span class="pageno">9</span>
+    </div>
+  </footer>
+  </section>
+
+  <!-- ============ 閾值 = cut-off ============ -->
+  <section class="slide content-chrome" id="s10">
+    <header class="page-head">
+      <h2>模型輸出是機率，閾值是你決定的<span class="page-subtitle">Threshold = Screening Cut-off</span></h2>
+    </header>
+    <div class="content-body">
+      <p class="concept-lead">
+        AI 給的是 0 到 1 的分數；<span class="accent">切在哪裡</span>才決定陽性 / 陰性——和篩檢試驗的 cut-off 完全相同。
+      </p>
+      <div style="display:grid;grid-template-columns:1.2fr 1fr;gap:22px;flex:1;min-height:0">
+        <div class="svg-panel">
+          <div class="sp-label"><span>AI 分數分布（示意）</span><span class="r">閾值 0.5</span></div>
+          <svg viewBox="0 0 560 268" preserveAspectRatio="xMidYMid meet">
+            <path d="M40,224 L50,221 L59,216 L69,210 L78,201 L88,191 L98,178 L107,163 L117,147 L126,131 L136,115 L146,101 L155,90 L165,82 L174,80 L184,82 L194,90 L203,101 L213,115 L222,131 L232,147 L242,163 L251,178 L261,191 L270,201 L280,210 L290,216 L299,221 L309,224 L318,226 L328,228 L338,229 L347,229 L357,230 L520,230 L40,230 Z" fill="rgba(60,66,83,.16)" stroke="#3C4253" stroke-width="2"/>
+            <path d="M40,230 L174,230 L184,229 L203,229 L213,228 L222,226 L232,224 L242,221 L251,218 L261,212 L270,206 L280,198 L290,188 L299,177 L309,164 L318,151 L328,138 L338,126 L347,115 L357,107 L366,102 L376,100 L386,102 L395,107 L405,115 L414,126 L424,138 L434,151 L443,164 L453,177 L462,188 L472,198 L482,206 L491,212 L501,218 L510,221 L520,224 L520,230 Z" fill="rgba(183,40,46,.18)" stroke="#B7282E" stroke-width="2"/>
+            <line x1="40" y1="230" x2="520" y2="230" stroke="#1B2030" stroke-width="1.5"/>
+            <g font-family="Inter,sans-serif" font-size="12" fill="#6B7388" text-anchor="middle"><text x="40" y="248">0</text><text x="280" y="248">0.5</text><text x="520" y="248">1.0</text></g>
+            <text x="280" y="264" text-anchor="middle" font-family="Inter,Noto Sans TC,sans-serif" font-size="12.5" fill="#6B7388">AI 輸出的骨折機率</text>
+            <line x1="280" y1="40" x2="280" y2="230" stroke="#1B2030" stroke-width="2" stroke-dasharray="6 4"/>
+            <text x="286" y="52" font-family="Inter,Noto Sans TC,sans-serif" font-size="13" font-weight="700" fill="#1B2030">閾值 cut-off</text>
+            <line x1="232" y1="60" x2="232" y2="230" stroke="#0E9FBA" stroke-width="2" stroke-dasharray="3 4"/>
+            <path d="M270 70 L240 70" stroke="#0E9FBA" stroke-width="2" marker-end="url(#ar10)"/>
+            <defs><marker id="ar10" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 Z" fill="#0E9FBA"/></marker></defs>
+            <text x="226" y="74" text-anchor="end" font-family="Inter,Noto Sans TC,sans-serif" font-size="12.5" font-weight="700" fill="#0E9FBA">調低？</text>
+            <text x="150" y="70" text-anchor="middle" font-family="Inter,Noto Sans TC,sans-serif" font-size="14" font-weight="700" fill="#3C4253">無骨折</text>
+            <text x="420" y="88" text-anchor="middle" font-family="Inter,Noto Sans TC,sans-serif" font-size="14" font-weight="700" fill="#B7282E">有骨折</text>
+          </svg>
+        </div>
+        <div class="card" style="padding:20px 24px 18px;gap:12px">
+          <div class="tag"><span class="ico">?</span><span>互動題</span></div>
+          <h3 style="font-size:23px">把閾值從 0.5 調低到 0.4，敏感度和特異度會怎麼變？</h3>
+          <ul>
+            <li><b>A</b>　敏感度 &uarr;、特異度 &uarr;</li>
+            <li><b>B</b>　敏感度 &uarr;、特異度 &darr;</li>
+            <li><b>C</b>　敏感度 &darr;、特異度 &uarr;</li>
+          </ul>
+          <div class="footnote">提示：閾值往左移，紅色區塊漏掉的變少，灰色區塊被誤判的變多&hellip;</div>
+        </div>
+      </div>
+      <div class="bottomline-strip" style="margin-top:14px">
+        <div class="bl-label">Bottom line</div>
+        <div class="bl-text">把每個閾值的（1 − 特異度, 敏感度）連起來就是 <b>ROC 曲線</b>；曲線下面積 <b>AUC</b> 越接近 1，代表兩群分得越開。</div>
+      </div>
+      <p class="cite-line">圖：分數分布示意（本演講自製，非真實資料）。</p>
+    </div>
+    <footer class="footer-ribbon">
+    <div class="fl-left">
+      <img class="ncku-logo" src="wtmh-design-kit/assets/brand/logo-ncku-h-small.png" alt="NCKU" />
+      <img class="wtmh-logo" src="wtmh-design-kit/assets/brand/logo-wtmh-new-small.png" alt="WTMH Lab" />
+    </div>
+    <div class="ribbon-bar">
+      <span class="lab-name">NCKU BME WTMH Lab</span>
+      <span class="pageno">10</span>
+    </div>
+  </footer>
+  </section>
+
+  <style>
+    .tl-big .journey-content .j-title{ font-size:17px; }
+    .tl-big .journey-content .j-sub{ font-size:14px; }
+    .tl-big .journey-row{ padding:3px 0; }
+    .tl-big .journey-year{ font-size:24px; }
+    .case-col{ display:flex; flex-direction:column; gap:10px; min-height:0; }
+    .case-num{ font-family:'Crimson Pro','Noto Serif TC',Georgia,serif; font-weight:700; font-size:44px; line-height:1; color:var(--ink); letter-spacing:-.5px; }
+    .case-num small{ font-size:20px; color:var(--ink-soft); font-weight:600; margin-left:4px; }
+    .case-num.teal{ color:var(--teal); }
+    .case-one{ font-size:17px; line-height:1.5; color:var(--ink-soft); }
+    .case-one b{ color:var(--ink); font-weight:600; }
+    .case-meta{ font-size:13.5px; color:var(--muted); line-height:1.5; }
+    .q-list{ list-style:none; display:flex; flex-direction:column; gap:13px; counter-reset:q; }
+    .q-list li{ counter-increment:q; position:relative; padding-left:30px; font-size:17px; line-height:1.45; color:var(--ink-soft); }
+    .q-list li::before{ content:counter(q); position:absolute; left:0; top:1px; width:20px; height:20px; border-radius:50%; background:rgba(217,106,24,.14); color:var(--amber); font-size:12px; font-weight:700; display:flex; align-items:center; justify-content:center; }
+    .q-list li b{ color:var(--ink); font-weight:600; }
+  </style>
+
+  <!-- ============ Part 2 章節 ============ -->
+  <section class="slide chapter-break" id="s11">
+    <div class="ch-bg-art" aria-hidden="true">02</div>
+    <div class="ch-rule"></div>
+    <div class="ch-content">
+      <div class="ch-eyebrow">Part 2 &middot; Evidence in Orthopaedic Imaging</div>
+      <h2 class="ch-title">骨科影像 AI 的證據</h2>
+      <p class="ch-lead">重點不是 AI 對決醫師，而是「醫師 + AI」有沒有比醫師單獨判讀更好。</p>
+      <div class="ch-range">Slides 12 &mdash; 15</div>
+    </div>
+    <footer class="footer-ribbon">
+    <div class="fl-left">
+      <img class="ncku-logo" src="wtmh-design-kit/assets/brand/logo-ncku-h-small.png" alt="NCKU" />
+      <img class="wtmh-logo" src="wtmh-design-kit/assets/brand/logo-wtmh-new-small.png" alt="WTMH Lab" />
+    </div>
+    <div class="ribbon-bar">
+      <span class="lab-name">NCKU BME WTMH Lab</span>
+      <span class="pageno">11</span>
+    </div>
+  </footer>
+  </section>
+
+  <!-- ============ 里程碑 2017–2022 ============ -->
+  <section class="slide content-chrome" id="s12">
+    <header class="page-head">
+      <h2>骨折 AI 的六個里程碑<span class="page-subtitle">Milestones 2017 &ndash; 2022</span></h2>
+    </header>
+    <div class="content-body">
+      <p class="concept-lead">
+        五年之內，從<span class="accent">「AI 能不能看片」</span>走到<span class="outcome">「醫師用了 AI 會不會更準」</span>。
+      </p>
+      <div class="journey-wrap tl-big" style="padding:0 20px">
+        <div class="journey-list">
+          <div class="journey-row">
+            <div class="journey-year">2017</div><div class="journey-dot-cell"><span class="journey-dot"></span></div>
+            <div class="journey-content"><span class="j-title">Olczak 等 &middot; Acta Orthop</span><span class="j-sub">256,000 張手、腕、踝 X 光；最佳網路骨折判讀準確率 <b>83%</b>，與兩位資深骨科醫師相當</span></div>
+          </div>
+          <div class="journey-row">
+            <div class="journey-year">2018</div><div class="journey-dot-cell"><span class="journey-dot"></span></div>
+            <div class="journey-content"><span class="j-title">Lindsey 等 &middot; PNAS</span><span class="j-sub">臨床醫師在 AI 輔助下，敏感度 <b>80.8% → 91.5%</b>、特異度 <b>87.5% → 93.9%</b></span></div>
+          </div>
+          <div class="journey-row">
+            <div class="journey-year">2018</div><div class="journey-dot-cell"><span class="journey-dot amber"></span></div>
+            <div class="journey-content"><span class="j-title"><b>FDA</b> 以 De Novo 核准 OsteoDetect</span><span class="j-sub">第一個獲 FDA 上市許可的骨折偵測 AI——限<b>成人手腕遠端橈骨骨折</b></span></div>
+          </div>
+          <div class="journey-row">
+            <div class="journey-year">2019</div><div class="journey-dot-cell"><span class="journey-dot"></span></div>
+            <div class="journey-content"><span class="j-title">Cheng 等（林口長庚）&middot; Eur Radiol</span><span class="j-sub">骨盆 X 光偵測髖部骨折：敏感度 <b>98%</b>、AUC <b>0.98</b>；Grad-CAM 熱圖定位</span></div>
+          </div>
+          <div class="journey-row">
+            <div class="journey-year">2019</div><div class="journey-dot-cell"><span class="journey-dot"></span></div>
+            <div class="journey-content"><span class="j-title">RSNA 兒童骨齡挑戰賽 &middot; Radiology</span><span class="j-sub">14,236 張手部 X 光；最佳模型平均絕對誤差 <b>4.2 個月</b></span></div>
+          </div>
+          <div class="journey-row now">
+            <div class="journey-year">2022</div><div class="journey-dot-cell"><span class="journey-dot now"></span></div>
+            <div class="journey-content"><span class="j-title">Guermazi 等 &middot; Radiology（多讀者研究）</span><span class="j-sub">480 例、多部位；AI 輔助下每位病人敏感度 <b>64.8% → 75.2%</b>，判讀還更快</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="bottomline-strip">
+        <div class="bl-label">Bottom line</div>
+        <div class="bl-text">早期研究問「AI 準不準」；後來的研究問的是：<b>醫師 + AI，有沒有比醫師單獨更好</b>。</div>
+      </div>
+      <p class="cite-line">資料來源：<b>Olczak J</b> 2017；<b>Lindsey R</b> 2018；<b>FDA</b> DEN180005；<b>Cheng CT</b> 2019；<b>Halabi SS</b> 2019；<b>Guermazi A</b> 2022（完整書目見文獻頁）。</p>
+    </div>
+    <footer class="footer-ribbon">
+    <div class="fl-left">
+      <img class="ncku-logo" src="wtmh-design-kit/assets/brand/logo-ncku-h-small.png" alt="NCKU" />
+      <img class="wtmh-logo" src="wtmh-design-kit/assets/brand/logo-wtmh-new-small.png" alt="WTMH Lab" />
+    </div>
+    <div class="ribbon-bar">
+      <span class="lab-name">NCKU BME WTMH Lab</span>
+      <span class="pageno">12</span>
+    </div>
+  </footer>
+  </section>
+
+  <!-- ============ Lindsey 2018 ============ -->
+  <section class="slide content-chrome" id="s13">
+    <header class="page-head">
+      <h2>醫師 + AI，比醫師單獨更準<span class="page-subtitle">Lindsey et al. &middot; PNAS 2018</span></h2>
+    </header>
+    <div class="content-body">
+      <p class="concept-lead">
+        比的不是 AI 對決醫師，而是<span class="accent">同一群醫師，有沒有 AI 輔助</span>——這才是臨床真正的用法。
+      </p>
+      <div style="display:grid;grid-template-columns:1.45fr 1fr;gap:22px;flex:1;min-height:0">
+        <div class="svg-panel">
+          <div class="sp-label"><span>臨床醫師判讀表現</span><span class="r">0 – 100% 全尺度</span></div>
+          <svg viewBox="0 0 600 250" preserveAspectRatio="xMidYMid meet">
+            <g font-family="Inter,Noto Sans TC,sans-serif">
+              <text x="20" y="44" font-size="16" font-weight="700" fill="#1B2030">敏感度</text>
+              <rect x="110" y="22" width="420" height="24" rx="4" fill="#F1F2F5"/>
+              <rect x="110" y="22" width="339" height="24" rx="4" fill="#9AA1B2"/>
+              <text x="456" y="40" font-size="15" font-weight="700" fill="#3C4253">80.8%</text>
+              <rect x="110" y="52" width="420" height="24" rx="4" fill="#F1F2F5"/>
+              <rect x="110" y="52" width="384" height="24" rx="4" fill="#B7282E"/>
+              <text x="500" y="70" font-size="15" font-weight="700" fill="#B7282E">91.5%</text>
+
+              <text x="20" y="144" font-size="16" font-weight="700" fill="#1B2030">特異度</text>
+              <rect x="110" y="122" width="420" height="24" rx="4" fill="#F1F2F5"/>
+              <rect x="110" y="122" width="368" height="24" rx="4" fill="#9AA1B2"/>
+              <text x="484" y="140" font-size="15" font-weight="700" fill="#3C4253">87.5%</text>
+              <rect x="110" y="152" width="420" height="24" rx="4" fill="#F1F2F5"/>
+              <rect x="110" y="152" width="394" height="24" rx="4" fill="#B7282E"/>
+              <text x="510" y="170" font-size="15" font-weight="700" fill="#B7282E">93.9%</text>
+
+              <rect x="110" y="212" width="16" height="16" rx="3" fill="#9AA1B2"/><text x="134" y="225" font-size="14" fill="#3C4253">醫師單獨判讀</text>
+              <rect x="260" y="212" width="16" height="16" rx="3" fill="#B7282E"/><text x="284" y="225" font-size="14" fill="#3C4253">醫師 + AI 輔助</text>
+            </g>
+          </svg>
+        </div>
+        <div class="case-col">
+          <div class="stat-card" style="min-height:0;padding:16px 22px">
+            <div class="stat-num">47<span class="unit">%</span></div>
+            <div class="stat-label">誤判率相對降低</div>
+            <div class="stat-sub">AI 輔助 vs 未輔助（相對下降，非絕對百分點）</div>
+          </div>
+          <div class="mt-block" style="flex:1">
+            <div class="mt-block-tag">研究設計</div>
+            <ul>
+              <li>訓練資料：<b>135,409 張</b> X 光</li>
+              <li>標註者：<b>18 位</b>資深骨科醫師</li>
+              <li>評估：臨床醫師有 / 無 AI 輔助各讀一次</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="bottomline-strip" style="margin-top:14px">
+        <div class="bl-label">Bottom line</div>
+        <div class="bl-text">敏感度與特異度<b>同時上升</b>——不是靠「多喊陽性」換來的。這就是「第二雙眼」的意思。</div>
+      </div>
+      <p class="cite-line">資料來源：<b>Lindsey R</b>, Daluiski A, Chopra S, et al. PNAS 2018;115(45):11591–6。圖：依原文數據重繪（本演講自製）。</p>
+    </div>
+    <footer class="footer-ribbon">
+    <div class="fl-left">
+      <img class="ncku-logo" src="wtmh-design-kit/assets/brand/logo-ncku-h-small.png" alt="NCKU" />
+      <img class="wtmh-logo" src="wtmh-design-kit/assets/brand/logo-wtmh-new-small.png" alt="WTMH Lab" />
+    </div>
+    <div class="ribbon-bar">
+      <span class="lab-name">NCKU BME WTMH Lab</span>
+      <span class="pageno">13</span>
+    </div>
+  </footer>
+  </section>
+
+  <!-- ============ Guermazi 2022 ============ -->
+  <section class="slide content-chrome" id="s14">
+    <header class="page-head">
+      <h2>多讀者研究：更準，也更快<span class="page-subtitle">Guermazi et al. &middot; Radiology 2022</span></h2>
+    </header>
+    <div class="content-body">
+      <p class="concept-lead">
+        480 例、多個部位、多位讀者：AI 輔助下每位病人的<span class="accent">敏感度與特異度都上升</span>，判讀時間<span class="outcome">還縮短</span>。
+      </p>
+      <div style="display:grid;grid-template-columns:1.25fr 1fr;gap:22px;flex:1;min-height:0">
+        <div class="case-col">
+          <div class="svg-panel" style="flex:1">
+            <div class="sp-label"><span>每位病人層級（per-patient）</span><span class="r">0 – 100% 全尺度</span></div>
+            <svg viewBox="0 0 560 196" preserveAspectRatio="xMidYMid meet">
+              <g font-family="Inter,Noto Sans TC,sans-serif">
+                <text x="16" y="36" font-size="16" font-weight="700" fill="#1B2030">敏感度</text>
+                <rect x="100" y="16" width="380" height="22" rx="4" fill="#F1F2F5"/><rect x="100" y="16" width="246" height="22" rx="4" fill="#9AA1B2"/>
+                <text x="352" y="33" font-size="14.5" font-weight="700" fill="#3C4253">64.8%</text>
+                <rect x="100" y="43" width="380" height="22" rx="4" fill="#F1F2F5"/><rect x="100" y="43" width="286" height="22" rx="4" fill="#B7282E"/>
+                <text x="392" y="60" font-size="14.5" font-weight="700" fill="#B7282E">75.2%</text>
+                <text x="16" y="120" font-size="16" font-weight="700" fill="#1B2030">特異度</text>
+                <rect x="100" y="100" width="380" height="22" rx="4" fill="#F1F2F5"/><rect x="100" y="100" width="344" height="22" rx="4" fill="#9AA1B2"/>
+                <text x="450" y="117" font-size="14.5" font-weight="700" fill="#3C4253">90.6%</text>
+                <rect x="100" y="127" width="380" height="22" rx="4" fill="#F1F2F5"/><rect x="100" y="127" width="363" height="22" rx="4" fill="#B7282E"/>
+                <text x="469" y="144" font-size="14.5" font-weight="700" fill="#B7282E">95.6%</text>
+                <rect x="100" y="172" width="14" height="14" rx="3" fill="#9AA1B2"/><text x="120" y="184" font-size="13" fill="#3C4253">未輔助</text>
+                <rect x="200" y="172" width="14" height="14" rx="3" fill="#B7282E"/><text x="220" y="184" font-size="13" fill="#3C4253">AI 輔助</text>
+                <text x="330" y="184" font-size="13" fill="#3C4253">每例判讀時間：<tspan font-weight="700" fill="#0E9FBA">55.5 → 49.2 秒</tspan></text>
+              </g>
+            </svg>
+          </div>
+        </div>
+        <div class="mt-block" style="border-left-color:var(--amber);display:flex;flex-direction:column;gap:6px">
+          <div class="mt-block-tag good">批判提問 &middot; 讀論文四問</div>
+          <div style="font-size:16px;font-weight:600;color:var(--ink);line-height:1.45">這篇研究由廠商資助（原文有揭露）。這會影響你怎麼讀結果嗎？</div>
+          <ol class="q-list">
+            <li><b>比較對象</b>是誰？醫師單獨，還是 AI 單獨？</li>
+            <li><b>資料</b>從哪來？單一醫院還是多中心？</li>
+            <li>有沒有<b>外部驗證</b>（換醫院、換機器）？</li>
+            <li><b>誰出的錢</b>？利益衝突有沒有揭露？</li>
+          </ol>
+        </div>
+      </div>
+      <div class="bottomline-strip" style="margin-top:14px">
+        <div class="bl-label">Bottom line</div>
+        <div class="bl-text">廠商資助不代表結果是假的，而是提醒你：<b>先看研究設計，再看數字</b>。</div>
+      </div>
+      <p class="cite-line">資料來源：<b>Guermazi A</b>, Tannoury C, Kompel AJ, et al. Radiology 2022;302(3):627–36。圖：依原文數據重繪（本演講自製）。</p>
+    </div>
+    <footer class="footer-ribbon">
+    <div class="fl-left">
+      <img class="ncku-logo" src="wtmh-design-kit/assets/brand/logo-ncku-h-small.png" alt="NCKU" />
+      <img class="wtmh-logo" src="wtmh-design-kit/assets/brand/logo-wtmh-new-small.png" alt="WTMH Lab" />
+    </div>
+    <div class="ribbon-bar">
+      <span class="lab-name">NCKU BME WTMH Lab</span>
+      <span class="pageno">14</span>
+    </div>
+  </footer>
+  </section>
+
+  <!-- ============ 長庚髖部骨折 + 骨齡 ============ -->
+  <section class="slide content-chrome" id="s15">
+    <header class="page-head">
+      <h2>台灣例子與兒童骨齡<span class="page-subtitle">Hip Fracture &middot; Grad-CAM &middot; Bone Age</span></h2>
+    </header>
+    <div class="content-body">
+      <p class="concept-lead">
+        AI 不只要答對，還要<span class="accent">讓醫師看見它在看哪裡</span>——可解釋性是建立信任的第一步。
+      </p>
+      <div class="vrmt-grid" style="height:auto;flex:1;min-height:0;gap:22px">
+        <div class="card" style="padding:16px 22px;gap:10px;flex-direction:row;align-items:stretch">
+          <svg viewBox="0 0 200 200" style="width:200px;height:200px;flex-shrink:0;align-self:center;border-radius:8px;background:#0F1115">
+            <defs>
+              <radialGradient id="hm" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#FFD23F" stop-opacity=".95"/><stop offset=".45" stop-color="#E8562A" stop-opacity=".75"/><stop offset="1" stop-color="#B7282E" stop-opacity="0"/></radialGradient>
+              <filter id="pb"><feGaussianBlur stdDeviation="1"/></filter>
+            </defs>
+            <g fill="#D8DCE2" fill-opacity=".78" filter="url(#pb)">
+              <path d="M20 40 Q40 22 74 34 L88 78 Q70 96 46 104 Q24 86 20 40 Z"/>
+              <path d="M180 40 Q160 22 126 34 L112 78 Q130 96 154 104 Q176 86 180 40 Z"/>
+              <path d="M86 36 L114 36 L110 92 L90 92 Z"/>
+              <path d="M58 116 Q74 98 96 110 L104 136 L80 140 Z"/>
+              <path d="M142 116 Q126 98 104 110 L96 136 L120 140 Z"/>
+              <circle cx="46" cy="124" r="15"/><circle cx="154" cy="124" r="15"/>
+              <path d="M52 132 L70 148 L66 196 L44 196 L42 150 Z"/>
+              <path d="M148 132 L130 148 L134 196 L156 196 L158 150 Z"/>
+            </g>
+            <path d="M56 140 L62 135 L66 143 L71 138" stroke="#0F1115" stroke-width="2.4" fill="none"/>
+            <ellipse cx="62" cy="140" rx="26" ry="22" fill="url(#hm)"/>
+            <text x="100" y="12" text-anchor="middle" font-size="9" fill="#8A93A6" font-family="Inter,sans-serif">schematic heat map</text>
+          </svg>
+          <div class="case-col">
+            <div class="tag" style="font-size:14px"><span class="ico" style="width:30px;height:30px;font-size:15px">TW</span><span>林口長庚 &middot; 髖部骨折</span></div>
+            <div class="case-one">骨盆 X 光找髖部骨折，並用 <b>Grad-CAM 熱圖</b>標出模型「在看哪裡」。</div>
+            <div class="case-num">0.98<small>AUC</small></div>
+            <div class="case-meta">準確率 91%、敏感度 98%；熱圖定位正確率 95.9%</div>
+          </div>
+        </div>
+        <div class="card teal" style="padding:16px 22px;gap:10px">
+          <div class="tag" style="font-size:14px"><span class="ico" style="width:30px;height:30px;font-size:15px">&#9995;</span><span>RSNA 兒童骨齡挑戰賽</span></div>
+          <div class="case-one">14,236 張兒童手部 X 光，各隊比誰估骨齡最準；<b>前段班幾乎都用 CNN</b>。</div>
+          <div class="case-num teal">4.2<small>個月</small></div>
+          <div class="case-meta">最佳模型的平均絕對誤差（MAE）</div>
+          <div class="footnote">11/26「小兒骨科診斷與治療」會再用到骨齡評估。</div>
+        </div>
+      </div>
+      <div class="bottomline-strip" style="margin-top:14px">
+        <div class="bl-label">Bottom line</div>
+        <div class="bl-text">熱圖讓醫師能<b>檢查 AI 的理由</b>：如果它看的是影像角落的標記而不是骨頭，就該起疑（Part 4「捷徑學習」）。</div>
+      </div>
+      <p class="cite-line">資料來源：<b>Cheng CT</b> et al., Eur Radiol 2019;29(10):5469–77；<b>Halabi SS</b> et al., Radiology 2019;290(2):498–503。左圖為熱圖概念示意（本演講自製）。</p>
+    </div>
+    <footer class="footer-ribbon">
+    <div class="fl-left">
+      <img class="ncku-logo" src="wtmh-design-kit/assets/brand/logo-ncku-h-small.png" alt="NCKU" />
+      <img class="wtmh-logo" src="wtmh-design-kit/assets/brand/logo-wtmh-new-small.png" alt="WTMH Lab" />
+    </div>
+    <div class="ribbon-bar">
+      <span class="lab-name">NCKU BME WTMH Lab</span>
+      <span class="pageno">15</span>
+    </div>
+  </footer>
+  </section>
+
+  <!-- ============ 中場休息 ============ -->
+  <section class="slide chapter-break" id="s16">
+    <div class="ch-bg-art" aria-hidden="true">10&prime;</div>
+    <div class="ch-rule"></div>
+    <div class="ch-content">
+      <div class="ch-eyebrow">Break &middot; 中場休息</div>
+      <h2 class="ch-title">休息 10 分鐘</h2>
+      <p class="ch-lead">回來之後：生成式 AI——它很會寫、很會考試，但也會一本正經地捏造。</p>
+      <div class="ch-range">回來時間 &middot; 約 14:05</div>
+    </div>
+    <footer class="footer-ribbon">
+    <div class="fl-left">
+      <img class="ncku-logo" src="wtmh-design-kit/assets/brand/logo-ncku-h-small.png" alt="NCKU" />
+      <img class="wtmh-logo" src="wtmh-design-kit/assets/brand/logo-wtmh-new-small.png" alt="WTMH Lab" />
+    </div>
+    <div class="ribbon-bar">
+      <span class="lab-name">NCKU BME WTMH Lab</span>
+      <span class="pageno">16</span>
+    </div>
+  </footer>
+  </section>
+
+  <!-- ============ Part 3 章節 ============ -->
+  <section class="slide chapter-break" id="s17">
+    <div class="ch-bg-art" aria-hidden="true">03</div>
+    <div class="ch-rule"></div>
+    <div class="ch-content">
+      <div class="ch-eyebrow">Part 3 &middot; Generative AI</div>
+      <h2 class="ch-title">生成式 AI</h2>
+      <p class="ch-lead">判別式模型回答「是不是」；生成式模型「產生新內容」——很會寫、很會考，但會捏造。</p>
+      <div class="ch-range">Slides 18 &mdash; 23</div>
+    </div>
+    <footer class="footer-ribbon">
+    <div class="fl-left">
+      <img class="ncku-logo" src="wtmh-design-kit/assets/brand/logo-ncku-h-small.png" alt="NCKU" />
+      <img class="wtmh-logo" src="wtmh-design-kit/assets/brand/logo-wtmh-new-small.png" alt="WTMH Lab" />
+    </div>
+    <div class="ribbon-bar">
+      <span class="lab-name">NCKU BME WTMH Lab</span>
+      <span class="pageno">17</span>
+    </div>
+  </footer>
+  </section>
+
+  <!-- ============ 判別式 vs 生成式 ============ -->
+  <section class="slide content-chrome" id="s18">
+    <header class="page-head">
+      <h2>判別式 vs 生成式<span class="page-subtitle">Discriminative vs Generative</span></h2>
+    </header>
+    <div class="content-body">
+      <p class="concept-lead">
+        Part 2 的骨折 AI 都是<span class="accent">判別式</span>：輸入影像，回答「是不是」。生成式則是<span class="outcome">產生原本不存在的內容</span>。
+      </p>
+      <div class="compare-grid" style="flex:1;min-height:0">
+        <div class="compare-card classical">
+          <div class="tag"><span class="ico">&#10003;</span><span>判別式 &middot; 回答「是不是」</span></div>
+          <div class="flow"><span class="chip">X 光</span><span class="op">&rarr;</span><span class="chip">模型</span><span class="op">&rarr;</span><span class="chip">骨折 0.91</span></div>
+          <ul>
+            <li>骨折偵測、OA 分級、骨齡估計</li>
+            <li>答案空間<b>有限</b>：可以算敏感度、特異度、AUC</li>
+          </ul>
+          <div class="footnote">答錯時：機率不準，但你知道它在回答哪個問題。</div>
+        </div>
+        <div class="compare-card vrmt">
+          <div class="tag"><span class="ico">&#10022;</span><span>生成式 &middot; 產生新內容</span></div>
+          <div class="flow"><span class="chip">「請寫術後衛教」</span><span class="op">&rarr;</span><span class="chip">LLM</span><span class="op">&rarr;</span><span class="chip cool">一段新文字</span></div>
+          <ul>
+            <li>衛教文字、病歷摘要、報告草稿、合成影像</li>
+            <li>答案空間<b>無限</b>：很難用單一數字評估「對不對」</li>
+          </ul>
+          <div class="footnote">答錯時：說得流暢又有自信，看起來很像真的。</div>
+        </div>
+      </div>
+      <div class="bottomline-strip">
+        <div class="bl-label">Bottom line</div>
+        <div class="bl-text">評估方式不同，風險也不同：生成式 AI 最大的問題不是「不準」，而是<b>錯得很有說服力</b>。</div>
+      </div>
+      <p class="cite-line">圖解本演講自製。</p>
+    </div>
+    <footer class="footer-ribbon">
+    <div class="fl-left">
+      <img class="ncku-logo" src="wtmh-design-kit/assets/brand/logo-ncku-h-small.png" alt="NCKU" />
+      <img class="wtmh-logo" src="wtmh-design-kit/assets/brand/logo-wtmh-new-small.png" alt="WTMH Lab" />
+    </div>
+    <div class="ribbon-bar">
+      <span class="lab-name">NCKU BME WTMH Lab</span>
+      <span class="pageno">18</span>
+    </div>
+  </footer>
+  </section>
+
+  <!-- ============ LLM = 預測下一個 token ============ -->
+  <section class="slide content-chrome" id="s19">
+    <header class="page-head">
+      <h2><span class="ab">LLM</span> 其實只做一件事<span class="page-subtitle">Predict the Next Token &middot; Transformer</span></h2>
+    </header>
+    <div class="content-body">
+      <p class="concept-lead">
+        大型語言模型依照前文，<span class="accent">預測下一個字（token）最可能是什麼</span>，一個接一個寫下去。
+      </p>
+      <div class="svg-panel" style="flex:0 0 176px">
+        <svg viewBox="0 0 1160 176" preserveAspectRatio="xMidYMid meet">
+          <g font-family="Inter,Noto Sans TC,sans-serif">
+            <rect x="24" y="22" width="500" height="54" rx="8" fill="#FAFBFC" stroke="#E2E5EC"/>
+            <text x="44" y="56" font-size="20" fill="#1B2030">遠端橈骨骨折常見的受傷機轉是跌倒時</text>
+            <rect x="436" y="34" width="72" height="30" rx="5" fill="#fff" stroke="#B7282E" stroke-width="2" stroke-dasharray="5 4"/>
+            <text x="472" y="55" text-anchor="middle" font-size="18" font-weight="700" fill="#B7282E">？</text>
+            <text x="44" y="110" font-size="14" fill="#6B7388">前文（prompt）</text>
+            <path d="M540 49 L600 49" stroke="#9AA1B2" stroke-width="2.5"/><path d="M596 42 L606 49 L596 56" fill="none" stroke="#9AA1B2" stroke-width="2.5"/>
+            <text x="640" y="30" font-size="13" font-weight="700" fill="#6B7388" letter-spacing="1.5">下一個 TOKEN 的機率（示意）</text>
+            <text x="640" y="62" font-size="16" fill="#1B2030">手撐地</text><rect x="730" y="48" width="290" height="18" rx="4" fill="#B7282E"/><text x="1030" y="62" font-size="14" font-weight="700" fill="#B7282E">0.58</text>
+            <text x="640" y="92" font-size="16" fill="#1B2030">伸手</text><rect x="730" y="78" width="110" height="18" rx="4" fill="#C9787C"/><text x="850" y="92" font-size="14" fill="#3C4253">0.22</text>
+            <text x="640" y="122" font-size="16" fill="#1B2030">滑倒</text><rect x="730" y="108" width="45" height="18" rx="4" fill="#DDB3B5"/><text x="785" y="122" font-size="14" fill="#3C4253">0.09</text>
+            <text x="640" y="152" font-size="16" fill="#1B2030">&hellip;</text><rect x="730" y="138" width="20" height="18" rx="4" fill="#EEDADB"/><text x="760" y="152" font-size="14" fill="#3C4253">其他</text>
+            <text x="44" y="150" font-size="14" fill="#3C4253">選中一個 → 接到句尾 → 再預測下一個，直到寫完</text>
+          </g>
+        </svg>
+      </div>
+      <div class="pipeline" style="margin-top:14px;margin-bottom:0">
+        <div class="step" style="padding:12px 18px;gap:4px">
+          <div class="step-no">01 &middot; 預訓練</div>
+          <p>讀進海量文字，練習「文字接龍」</p>
+        </div>
+        <div class="step-arrow"><svg viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 13 H19 M13 7 L20 13 L13 19"/></svg></div>
+        <div class="step" style="padding:12px 18px;gap:4px">
+          <div class="step-no">02 &middot; 微調</div>
+          <p>用「問題—好答案」範例，學會<span class="hw">回答指令</span></p>
+        </div>
+        <div class="step-arrow"><svg viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 13 H19 M13 7 L20 13 L13 19"/></svg></div>
+        <div class="step" style="padding:12px 18px;gap:4px">
+          <div class="step-no">03 &middot; 人類回饋對齊</div>
+          <p>人類替回答評分，讓它更有幫助、更安全</p>
+        </div>
+      </div>
+      <div class="bottomline-strip" style="margin-top:14px">
+        <div class="bl-label">Bottom line</div>
+        <div class="bl-text">核心架構是 <b>Transformer</b>（2017）。它學的是「<b>像</b>正確答案的文字」，不一定是正確答案——這就是幻覺的來源。</div>
+      </div>
+      <p class="cite-line">資料來源：<b>Vaswani A</b> et al., Attention Is All You Need, NeurIPS 2017。機率數值為教學示意（本演講自製）。</p>
+    </div>
+    <footer class="footer-ribbon">
+    <div class="fl-left">
+      <img class="ncku-logo" src="wtmh-design-kit/assets/brand/logo-ncku-h-small.png" alt="NCKU" />
+      <img class="wtmh-logo" src="wtmh-design-kit/assets/brand/logo-wtmh-new-small.png" alt="WTMH Lab" />
+    </div>
+    <div class="ribbon-bar">
+      <span class="lab-name">NCKU BME WTMH Lab</span>
+      <span class="pageno">19</span>
+    </div>
+  </footer>
+  </section>
+
+  <!-- ============ LLM 考 OITE ============ -->
+  <section class="slide content-chrome" id="s20">
+    <header class="page-head">
+      <h2><span class="ab">LLM</span> 考骨科住院醫師年度考試<span class="page-subtitle">Orthopaedic In-Training Examination &middot; <span style="color:var(--teal)">OITE</span></span></h2>
+    </header>
+    <div class="content-body">
+      <p class="concept-lead">
+        GPT-4 的分數已接近資深住院醫師——但<span class="accent">請先看它考的是哪些題目</span>。
+      </p>
+      <div class="stat-grid">
+        <div class="stat-card" style="border-top-color:var(--muted)">
+          <div class="stat-num">47<span class="unit">%</span></div>
+          <div class="stat-label">GPT-3.5 答對率</div>
+          <div class="stat-sub">約 PGY-1 第 40 百分位<br/>Lum, CORR 2023</div>
+        </div>
+        <div class="stat-card" style="border-top-color:var(--muted)">
+          <div class="stat-num">54.3<span class="unit">%</span></div>
+          <div class="stat-label">GPT-3.5 答對率</div>
+          <div class="stat-sub">約 PGY-1 水準<br/>Kung, JBJS OA 2023</div>
+        </div>
+        <div class="stat-card red">
+          <div class="stat-num">73.6<span class="unit">%</span></div>
+          <div class="stat-label">GPT-4 答對率</div>
+          <div class="stat-sub">約 PGY-5 平均；高於 ABOS Part I 67% 通過線<br/>Kung, JBJS OA 2023</div>
+        </div>
+        <div class="stat-card amber">
+          <div class="stat-num">48<span class="unit">%</span></div>
+          <div class="stat-label">題目因含影像被排除</div>
+          <div class="stat-sub">Lum 研究 400 題中；兩篇研究都只用純文字題</div>
+        </div>
+      </div>
+      <div class="bottomline-strip">
+        <div class="bl-label">Bottom line</div>
+        <div class="bl-text"><b>會考試 ≠ 會看片 ≠ 會照顧病人。</b>骨科大量依賴影像，而這些研究剛好把影像題排除了。</div>
+      </div>
+      <div class="why-strip" style="grid-template-columns:auto 1fr">
+        <div class="why-label">想一想</div>
+        <div class="why-item">如果把那 48% 的影像題放回去，你覺得分數會怎麼變？這告訴你該怎麼讀「AI 通過考試」的新聞？</div>
+      </div>
+      <p class="cite-line">資料來源：<b>Lum ZC</b>. Clin Orthop Relat Res 2023;481(8):1623–30；<b>Kung JE</b> et al. JBJS Open Access 2023;8(3):e23.00056。</p>
+    </div>
+    <footer class="footer-ribbon">
+    <div class="fl-left">
+      <img class="ncku-logo" src="wtmh-design-kit/assets/brand/logo-ncku-h-small.png" alt="NCKU" />
+      <img class="wtmh-logo" src="wtmh-design-kit/assets/brand/logo-wtmh-new-small.png" alt="WTMH Lab" />
+    </div>
+    <div class="ribbon-bar">
+      <span class="lab-name">NCKU BME WTMH Lab</span>
+      <span class="pageno">20</span>
+    </div>
+  </footer>
+  </section>
+
+  <!-- ============ 幻覺：假文獻 ============ -->
+  <section class="slide content-chrome" id="s21">
+    <header class="page-head">
+      <h2>幻覺：一本正經地捏造文獻<span class="page-subtitle">Hallucination &middot; Fabricated Citations</span></h2>
+    </header>
+    <div class="content-body">
+      <div class="hero-stat-grid" style="height:auto;flex:1;gap:10px">
+        <div class="stat-eyebrow">請 ChatGPT 寫學術短文時，引用文獻中「捏造」的比例</div>
+        <div class="stat-numbers">
+          <div class="stat-col primary">
+            <div class="stat-num" style="color:var(--red);font-size:150px">55<span class="pct">%</span></div>
+            <div class="stat-label" style="color:var(--red)">GPT-3.5</div>
+            <div class="stat-detail">超過一半的引用不存在</div>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-col secondary">
+            <div class="stat-num" style="font-size:110px">18<span class="pct">%</span></div>
+            <div class="stat-label">GPT-4</div>
+            <div class="stat-detail">進步了，但不是零</div>
+          </div>
+        </div>
+        <p class="stat-context">捏造的文獻有作者、有期刊、有年份，<b>格式完美</b>——所以只能靠<span class="hl-teal">逐篇查證</span>：到 PubMed 或用 DOI 核對作者、期刊、年份是否一致。</p>
+      </div>
+      <div class="bottomline-strip" style="margin-top:8px">
+        <div class="bl-label">Bottom line</div>
+        <div class="bl-text">LLM 寫的參考文獻，<b>沒查過就等於沒有</b>。報告、作業、病歷都一樣。</div>
+      </div>
+      <p class="cite-line">資料來源：<b>Walters WH, Wilder EI</b>. Fabrication and errors in the bibliographic citations generated by ChatGPT. Sci Rep 2023;13:14045。</p>
+    </div>
+    <footer class="footer-ribbon">
+    <div class="fl-left">
+      <img class="ncku-logo" src="wtmh-design-kit/assets/brand/logo-ncku-h-small.png" alt="NCKU" />
+      <img class="wtmh-logo" src="wtmh-design-kit/assets/brand/logo-wtmh-new-small.png" alt="WTMH Lab" />
+    </div>
+    <div class="ribbon-bar">
+      <span class="lab-name">NCKU BME WTMH Lab</span>
+      <span class="pageno">21</span>
+    </div>
+  </footer>
+  </section>
+
+  <!-- ============ 現場展示 ============ -->
+  <section class="slide content-chrome" id="s22">
+    <header class="page-head">
+      <h2>現場展示：問它，然後查它<span class="page-subtitle">Live Demo &middot; ~5 min</span></h2>
+    </header>
+    <div class="content-body">
+      <p class="concept-lead">
+        兩個問題，一個考<span class="accent">文獻查證</span>，一個考<span class="accent">臨床判斷</span>。你的任務是當審稿人。
+      </p>
+      <div class="adv-grid">
+        <div class="adv-card">
+          <div class="adv-ico" style="font-family:'Crimson Pro',serif;font-size:26px;font-weight:700">1</div>
+          <div class="adv-body">
+            <h3 style="font-size:19px">問：列出文獻</h3>
+            <p class="eng-badge" style="margin-top:6px;font-size:16px">請列出 3 篇關於深度學習偵測髖部骨折的論文，附 DOI。</p>
+          </div>
+        </div>
+        <div class="adv-card">
+          <div class="adv-ico" style="font-family:'Crimson Pro',serif;font-size:26px;font-weight:700">2</div>
+          <div class="adv-body">
+            <h3 style="font-size:19px">查：現場到 PubMed 核對 1–2 篇</h3>
+            <p style="font-size:17px;line-height:1.5">作者、期刊、年份、DOI——四項<b>是否全部一致</b>？DOI 點得開嗎？</p>
+          </div>
+        </div>
+        <div class="adv-card amber">
+          <div class="adv-ico" style="font-family:'Crimson Pro',serif;font-size:26px;font-weight:700">3</div>
+          <div class="adv-body">
+            <h3 style="font-size:19px">問：一個臨床情境</h3>
+            <p class="eng-badge" style="margin-top:6px;font-size:16px">80 歲跌倒的病人，骨盆 X 光看不出骨折但無法負重，下一步？</p>
+          </div>
+        </div>
+        <div class="adv-card amber">
+          <div class="adv-ico" style="font-family:'Crimson Pro',serif;font-size:26px;font-weight:700">4</div>
+          <div class="adv-body">
+            <h3 style="font-size:19px">評：你來當審稿人</h3>
+            <p style="font-size:17px;line-height:1.5">哪裡合理？它<b>缺了哪些病人資訊</b>才能下判斷？它有沒有說「不確定」？</p>
+          </div>
+        </div>
+      </div>
+      <div class="bottomline-strip">
+        <div class="bl-label">Bottom line</div>
+        <div class="bl-text">LLM 適合<b>起草與整理</b>；事實與臨床決策，<b>必須查證</b>。</div>
+      </div>
+      <p class="cite-line">展示腳本本演講自製；LLM 回應每次不同，課堂結果僅供討論。</p>
+    </div>
+    <footer class="footer-ribbon">
+    <div class="fl-left">
+      <img class="ncku-logo" src="wtmh-design-kit/assets/brand/logo-ncku-h-small.png" alt="NCKU" />
+      <img class="wtmh-logo" src="wtmh-design-kit/assets/brand/logo-wtmh-new-small.png" alt="WTMH Lab" />
+    </div>
+    <div class="ribbon-bar">
+      <span class="lab-name">NCKU BME WTMH Lab</span>
+      <span class="pageno">22</span>
+    </div>
+  </footer>
+  </section>
+
+  <!-- ============ 骨科生成式 AI 應用 + 誠實邊界 ============ -->
+  <section class="slide content-chrome" id="s23">
+    <header class="page-head">
+      <h2>骨科生成式 AI 可以做什麼？<span class="page-subtitle">Possible Uses &middot; and Honest Limits</span></h2>
+    </header>
+    <div class="content-body">
+      <p class="concept-lead">
+        可能的應用很多，但<span class="accent">多數仍在研究或試行階段</span>——講應用，一定要同時講邊界。
+      </p>
+      <div class="mt-grid" style="grid-template-columns:1.1fr 1fr">
+        <div class="mt-block" style="border-left-color:var(--teal)">
+          <div class="mt-block-tag teal">可能的應用<span class="status">多數仍在研究或試行</span></div>
+          <ul style="gap:9px">
+            <li style="font-size:16.5px"><b>衛教與手術說明文字</b>：改寫成病人看得懂的版本</li>
+            <li style="font-size:16.5px"><b>病歷及手術紀錄摘要</b></li>
+            <li style="font-size:16.5px"><b>影像報告草稿</b></li>
+            <li style="font-size:16.5px"><b>合成影像</b>：擴增罕見骨折的訓練資料</li>
+            <li style="font-size:16.5px"><b>復健衛教與追蹤</b>：提醒、問答</li>
+          </ul>
+        </div>
+        <div class="mt-block">
+          <div class="mt-block-tag warn">誠實邊界</div>
+          <ul style="gap:9px">
+            <li style="font-size:16.5px"><b>會捏造</b>：GPT-4 引用仍有 18% 是假的</li>
+            <li style="font-size:16.5px"><b>看片能力未被充分驗證</b>：考試研究排除了影像題</li>
+            <li style="font-size:16.5px"><b>隱私</b>：病人資料不能貼到公開的聊天機器人</li>
+            <li style="font-size:16.5px"><b>責任</b>：病歷上簽名的是醫師，不是 AI</li>
+          </ul>
+        </div>
+      </div>
+      <div class="bottomline-strip" style="margin-top:14px">
+        <div class="bl-label">Bottom line</div>
+        <div class="bl-text"><b>起草可以交給 AI，判斷與簽名不行。</b></div>
+      </div>
+      <p class="cite-line">應用清單為概念整理，非特定產品；幻覺數據見 <b>Walters WH, Wilder EI</b>, Sci Rep 2023。</p>
+    </div>
+    <footer class="footer-ribbon">
+    <div class="fl-left">
+      <img class="ncku-logo" src="wtmh-design-kit/assets/brand/logo-ncku-h-small.png" alt="NCKU" />
+      <img class="wtmh-logo" src="wtmh-design-kit/assets/brand/logo-wtmh-new-small.png" alt="WTMH Lab" />
+    </div>
+    <div class="ribbon-bar">
+      <span class="lab-name">NCKU BME WTMH Lab</span>
+      <span class="pageno">23</span>
+    </div>
+  </footer>
+  </section>
+
+  <!-- ============ Part 4 章節 ============ -->
+  <section class="slide chapter-break" id="s24">
+    <div class="ch-bg-art" aria-hidden="true">04</div>
+    <div class="ch-rule"></div>
+    <div class="ch-content">
+      <div class="ch-eyebrow">Part 4 &middot; From Paper to Bedside</div>
+      <h2 class="ch-title">從論文到病床</h2>
+      <p class="ch-lead">AI 要上病床，得先過三關：證據、法規許可，以及人工覆核與責任。</p>
+      <div class="ch-range">Slides 25 &mdash; 27</div>
+    </div>
+    <footer class="footer-ribbon">
+    <div class="fl-left">
+      <img class="ncku-logo" src="wtmh-design-kit/assets/brand/logo-ncku-h-small.png" alt="NCKU" />
+      <img class="wtmh-logo" src="wtmh-design-kit/assets/brand/logo-wtmh-new-small.png" alt="WTMH Lab" />
+    </div>
+    <div class="ribbon-bar">
+      <span class="lab-name">NCKU BME WTMH Lab</span>
+      <span class="pageno">24</span>
+    </div>
+  </footer>
+  </section>
+
+  <!-- ============ 法規 ============ -->
+  <section class="slide content-chrome" id="s25">
+    <header class="page-head">
+      <h2>AI 就是醫療器材<span class="page-subtitle">Regulation &middot; <span style="color:var(--teal)">SaMD</span> &middot; FDA / TFDA</span></h2>
+    </header>
+    <div class="content-body">
+      <p class="concept-lead">
+        AI 判讀軟體屬於<span class="accent">軟體醫療器材（SaMD）</span>：要經查驗登記，而且<span class="outcome">只能用在許可範圍內</span>。
+      </p>
+      <div class="sys-grid">
+        <div class="sys-card">
+          <div class="sys-tag">美國 FDA</div>
+          <div class="case-num" style="font-family:'Crimson Pro',serif;font-weight:700;font-size:46px;line-height:1;color:var(--ink)">&gt; 1,600<span style="font-size:20px;color:var(--ink-soft);margin-left:6px">項</span></div>
+          <div class="sys-body" style="font-size:17px">已核准的 AI 醫療器材（截至 2026 年 9 月）</div>
+          <ul class="sys-list">
+            <li style="font-size:17px;line-height:1.5"><b>2018 OsteoDetect</b>：以 De Novo 核准，第一個骨折偵測 AI</li>
+            <li style="font-size:17px;line-height:1.5">許可範圍：<b>成人、手腕遠端橈骨骨折</b></li>
+          </ul>
+        </div>
+        <div class="sys-card teal">
+          <div class="sys-tag">台灣 TFDA</div>
+          <h3 style="font-size:23px">已發布 AI/ML 醫療器材軟體專屬指引</h3>
+          <ul class="sys-list">
+            <li style="font-size:17px;line-height:1.5">人工智慧 / 機器學習技術之醫療器材軟體<b>查驗登記技術指引</b></li>
+            <li style="font-size:17px;line-height:1.5">電腦輔助偵測（<b>CADe</b>）專屬指引：幫醫師「找」病灶</li>
+            <li style="font-size:17px;line-height:1.5">電腦輔助分流（<b>CADt</b>）專屬指引：幫醫院「排」優先順序</li>
+          </ul>
+        </div>
+        <div class="sys-results">
+          <div class="res-label">許可範圍</div>
+          <div class="res-body" style="font-size:16px">把核准用於<b>成人手腕</b>的 AI 拿去判讀<b>兒童</b>或<b>髖部</b>，就是超出適應症——AI 沒驗證過，責任也落回使用者。</div>
+        </div>
+      </div>
+      <p class="cite-line">資料來源：<b>U.S. FDA</b>, AI-Enabled Medical Devices（頁面更新 2026-09-22）；FDA DEN180005；<b>TFDA</b> AI/ML 醫療器材軟體查驗登記技術指引、CADe 與 CADt 指引。</p>
+    </div>
+    <footer class="footer-ribbon">
+    <div class="fl-left">
+      <img class="ncku-logo" src="wtmh-design-kit/assets/brand/logo-ncku-h-small.png" alt="NCKU" />
+      <img class="wtmh-logo" src="wtmh-design-kit/assets/brand/logo-wtmh-new-small.png" alt="WTMH Lab" />
+    </div>
+    <div class="ribbon-bar">
+      <span class="lab-name">NCKU BME WTMH Lab</span>
+      <span class="pageno">25</span>
+    </div>
+  </footer>
+  </section>
+
+  <!-- ============ 風險 ============ -->
+  <section class="slide content-chrome" id="s26">
+    <header class="page-head">
+      <h2>論文裡很好，到你的醫院就一樣好嗎？<span class="page-subtitle">Bias &middot; Shift &middot; Shortcuts &middot; Over-trust</span></h2>
+    </header>
+    <div class="content-body">
+      <p class="concept-lead">
+        五個常見風險，<span class="accent">每一個都不會寫在 AUC 裡</span>。
+      </p>
+      <div class="foa-grid" style="grid-template-rows:1fr 1fr">
+        <div class="foa-card">
+          <div class="foa-tag">01 &middot; 資料偏差</div>
+          <h3 style="font-size:22px">訓練資料不像你的病人</h3>
+          <div class="foa-body" style="font-size:17px;line-height:1.5">單一醫院、單一機型、族群組成不同 → 對某些病人表現較差</div>
+        </div>
+        <div class="foa-card">
+          <div class="foa-tag">02 &middot; 分布偏移</div>
+          <h3 style="font-size:22px">換醫院、換設備就退步</h3>
+          <div class="foa-body" style="font-size:17px;line-height:1.5">影像參數、擺位、病人組成一變，表現就可能下降</div>
+        </div>
+        <div class="foa-card">
+          <div class="foa-tag">03 &middot; 捷徑學習</div>
+          <h3 style="font-size:22px">學到線索，不是病灶</h3>
+          <div class="foa-body" style="font-size:17px;line-height:1.5">例如影像上的標記或文字，剛好和「有骨折」有關</div>
+        </div>
+        <div class="foa-card">
+          <div class="foa-tag">04 &middot; 自動化偏誤</div>
+          <h3 style="font-size:22px">太相信 AI 的「無骨折」</h3>
+          <div class="foa-body" style="font-size:17px;line-height:1.5">AI 說陰性，醫師就少看一眼——第二雙眼變成唯一一雙眼</div>
+        </div>
+        <div class="foa-card">
+          <div class="foa-tag">05 &middot; 隱私與責任</div>
+          <h3 style="font-size:22px">資料誰保護？出錯誰負責？</h3>
+          <div class="foa-body" style="font-size:17px;line-height:1.5">去識別化、資料外流；最終判斷與簽名仍在醫師</div>
+        </div>
+        <div class="foa-card teal" style="background:#FAFCFD">
+          <div class="foa-tag">對策</div>
+          <h3 style="font-size:22px">驗證、監測、覆核</h3>
+          <div class="foa-body" style="font-size:17px;line-height:1.5"><b>外部驗證</b>、<b>上線後持續監測</b>、<b>保留人工覆核</b>並記錄</div>
+        </div>
+      </div>
+      <p class="cite-line">風險分類為概念整理（本演講自製）。</p>
+    </div>
+    <footer class="footer-ribbon">
+    <div class="fl-left">
+      <img class="ncku-logo" src="wtmh-design-kit/assets/brand/logo-ncku-h-small.png" alt="NCKU" />
+      <img class="wtmh-logo" src="wtmh-design-kit/assets/brand/logo-wtmh-new-small.png" alt="WTMH Lab" />
+    </div>
+    <div class="ribbon-bar">
+      <span class="lab-name">NCKU BME WTMH Lab</span>
+      <span class="pageno">26</span>
+    </div>
+  </footer>
+  </section>
+
+  <!-- ============ 分組討論 ============ -->
+  <section class="slide content-chrome" id="s27">
+    <header class="page-head">
+      <h2>分組討論：換你做決定<span class="page-subtitle">3 per group &middot; 10 min discuss + 6 min share</span></h2>
+    </header>
+    <div class="content-body">
+      <p class="concept-lead">
+        三人一組，<span class="accent">選一個情境</span>：寫下你會怎麼做，以及為什麼。
+      </p>
+      <div class="gen-grid">
+        <div class="gen-card">
+          <div class="gen-tag">情境 A<span class="gen-tag-sub">急診夜班</span></div>
+          <h3 style="font-size:21px">AI 說「無骨折」，但&hellip;</h3>
+          <div class="gen-method" style="font-size:19px;line-height:1.6">AI 標示「無骨折」，但你摸到<b>鼻菸窩壓痛</b>。你怎麼做？<b>怎麼記錄</b>？</div>
+        </div>
+        <div class="gen-card amber">
+          <div class="gen-tag">情境 B<span class="gen-tag-sub">門診</span></div>
+          <h3 style="font-size:21px">病人帶著 ChatGPT 來</h3>
+          <div class="gen-method" style="font-size:19px;line-height:1.6">病人拿著 ChatGPT 的建議問：「我是不是<b>一定要開刀</b>？」你怎麼回應？</div>
+        </div>
+        <div class="gen-card teal">
+          <div class="gen-tag">情境 C<span class="gen-tag-sub">醫院採購</span></div>
+          <h3 style="font-size:21px">問廠商的 5 個問題</h3>
+          <div class="gen-method" style="font-size:19px;line-height:1.6">醫院要買骨折偵測 AI，列出你會問的 5 個問題。</div>
+          <div class="gen-refs" style="font-size:15px"><b>提示</b>：訓練資料來源、外部驗證、TFDA 許可範圍、錯誤案例、上線後監測</div>
+        </div>
+      </div>
+      <div class="why-strip" style="margin-top:14px">
+        <div class="why-label">評分<br/>參考</div>
+        <div class="why-item"><b>+1 指出覆核或查證步驟</b>人工覆核、查證來源</div>
+        <div class="why-item"><b>+1 提到資料或驗證限制</b>偏差、外部驗證、許可範圍</div>
+        <div class="why-item"><b>+1 提出具體行動</b>做什麼、怎麼記錄、問什麼</div>
+      </div>
+      <p class="cite-line">情境卡本演講自製。</p>
+    </div>
+    <footer class="footer-ribbon">
+    <div class="fl-left">
+      <img class="ncku-logo" src="wtmh-design-kit/assets/brand/logo-ncku-h-small.png" alt="NCKU" />
+      <img class="wtmh-logo" src="wtmh-design-kit/assets/brand/logo-wtmh-new-small.png" alt="WTMH Lab" />
+    </div>
+    <div class="ribbon-bar">
+      <span class="lab-name">NCKU BME WTMH Lab</span>
+      <span class="pageno">27</span>
+    </div>
+  </footer>
+  </section>
+
+  <!-- ============ 總結 ============ -->
+  <section class="slide content-chrome" id="s28">
+    <header class="page-head">
+      <h2>帶走三件事<span class="page-subtitle">Take-home Messages</span></h2>
+    </header>
+    <div class="content-body">
+      <div class="gen-grid" style="flex:0 0 auto">
+        <div class="gen-card">
+          <div class="gen-tag">01 &middot; 深度學習</div>
+          <h3 style="font-size:23px">骨科影像的證據最成熟</h3>
+          <div class="gen-method" style="font-size:18px;line-height:1.6">主要角色是<b>提升醫師判讀的敏感度與效率</b>——醫師 + AI，而不是 AI 取代醫師。</div>
+        </div>
+        <div class="gen-card amber">
+          <div class="gen-tag">02 &middot; 生成式 AI</div>
+          <h3 style="font-size:23px">很會寫、會考試，但會捏造</h3>
+          <div class="gen-method" style="font-size:18px;line-height:1.6">看片能力<b>還沒被充分驗證</b>；它寫的事實與文獻，都要查過才能用。</div>
+        </div>
+        <div class="gen-card teal">
+          <div class="gen-tag">03 &middot; 臨床使用</div>
+          <h3 style="font-size:23px">證據、許可、覆核</h3>
+          <div class="gen-method" style="font-size:18px;line-height:1.6">看證據、確認<b>法規許可範圍</b>，並<b>保留人工覆核</b>與紀錄。</div>
+        </div>
+      </div>
+      <div class="pullquote-wrap" style="height:auto;flex:1;padding:10px 60px">
+        <p class="pullquote-text" style="font-size:32px">AI 是骨科的<b>第二雙眼</b>，不是取代醫師。<br/><span class="q-teal">會用之前，要先會驗證。</span></p>
+      </div>
+      <p class="cite-line">本演講整理。</p>
+    </div>
+    <footer class="footer-ribbon">
+    <div class="fl-left">
+      <img class="ncku-logo" src="wtmh-design-kit/assets/brand/logo-ncku-h-small.png" alt="NCKU" />
+      <img class="wtmh-logo" src="wtmh-design-kit/assets/brand/logo-wtmh-new-small.png" alt="WTMH Lab" />
+    </div>
+    <div class="ribbon-bar">
+      <span class="lab-name">NCKU BME WTMH Lab</span>
+      <span class="pageno">28</span>
+    </div>
+  </footer>
+  </section>
+
+  <!-- ============ 後續週次 ============ -->
+  <section class="slide content-chrome" id="s29">
+    <header class="page-head">
+      <h2>這學期接下來，AI 會再出現在哪？<span class="page-subtitle">Links to Upcoming Weeks</span></h2>
+    </header>
+    <div class="content-body">
+      <p class="concept-lead">
+        今天的三個任務——<span class="accent">分類、偵測、分割</span>——會在後面的課一再出現。
+      </p>
+      <div class="wk-table">
+        <div class="h">日期</div><div class="h">主題</div><div class="h">AI 連結</div>
+        <div class="d">10/08</div><div class="t">兒童骨科步態分析</div><div>影像姿態估計、穿戴式感測分析</div>
+        <div class="d">10/29</div><div class="t">生醫材料在骨科的應用</div><div>材料設計與性質預測</div>
+        <div class="d">11/19</div><div class="t">脊椎生物力學</div><div>影像分割 → 建模與模擬</div>
+        <div class="d">11/26</div><div class="t">小兒骨科診斷與治療</div><div>骨齡評估、脊椎側彎角度量測</div>
+        <div class="d">12/03</div><div class="t">骨科導航手術</div><div>術中影像配準、分割、機器人</div>
+        <div class="d last">12/10</div><div class="t last">骨科微創手術</div><div class="last">術中影像與內視鏡影像辨識</div>
+      </div>
+      <p class="cite-line">依本學期「醫學工程概論」課程表整理。</p>
+    </div>
+    <footer class="footer-ribbon">
+    <div class="fl-left">
+      <img class="ncku-logo" src="wtmh-design-kit/assets/brand/logo-ncku-h-small.png" alt="NCKU" />
+      <img class="wtmh-logo" src="wtmh-design-kit/assets/brand/logo-wtmh-new-small.png" alt="WTMH Lab" />
+    </div>
+    <div class="ribbon-bar">
+      <span class="lab-name">NCKU BME WTMH Lab</span>
+      <span class="pageno">29</span>
+    </div>
+  </footer>
+  </section>
+
+  <!-- ============ 評量 + Q&A ============ -->
+  <section class="slide content-chrome" id="s30">
+    <header class="page-head">
+      <h2>課後 5 題 &amp; Q&amp;A<span class="page-subtitle">Quick Check &middot; ~5 min</span></h2>
+    </header>
+    <div class="content-body">
+      <div style="display:grid;grid-template-columns:1.6fr 1fr;gap:22px;flex:1;min-height:0">
+        <div class="card" style="padding:18px 24px;gap:12px">
+          <div class="tag"><span class="ico">&#10003;</span><span>課後評量</span></div>
+          <ol class="goal-list" style="gap:22px">
+            <li style="font-size:19px">某骨折 AI <b>敏感度很高、特異度偏低</b>，臨床上最可能出現什麼問題？</li>
+            <li style="font-size:19px">「<b>分割</b>」任務在骨科可以用在哪裡？舉一例。</li>
+            <li style="font-size:19px">為什麼 LLM 在 <b>OITE</b> 的高分不能直接推論到臨床看片？</li>
+            <li style="font-size:19px">列出一種<b>查證 LLM 引用文獻</b>的方法。</li>
+            <li style="font-size:19px">AI 標示「無骨折」但<b>臨床懷疑骨折</b>時，你的處置原則是？</li>
+          </ol>
+        </div>
+        <div class="card teal" style="padding:18px 24px;gap:12px">
+          <div class="tag"><span class="ico">?</span><span>Q &amp; A</span></div>
+          <p class="big-quote" style="font-size:24px">謝謝大家。<br/>有問題，現在問。</p>
+          <div class="qr-ph" style="flex:1">1 分鐘課後回饋<br/>【Slido / Mentimeter QR code 課前貼上】</div>
+        </div>
+      </div>
+      <p class="cite-line">評量題對應本課五個學習目標。</p>
+    </div>
+    <footer class="footer-ribbon">
+    <div class="fl-left">
+      <img class="ncku-logo" src="wtmh-design-kit/assets/brand/logo-ncku-h-small.png" alt="NCKU" />
+      <img class="wtmh-logo" src="wtmh-design-kit/assets/brand/logo-wtmh-new-small.png" alt="WTMH Lab" />
+    </div>
+    <div class="ribbon-bar">
+      <span class="lab-name">NCKU BME WTMH Lab</span>
+      <span class="pageno">30</span>
+    </div>
+  </footer>
+  </section>
+
+  <!-- ============ References ============ -->
+  <section class="slide content-chrome" id="s31">
+    <header class="page-head">
+      <h2>參考文獻<span class="page-subtitle">References</span></h2>
+    </header>
+    <div class="content-body">
+      <div class="ref-cols">
+        <ol>
+          <li><b>Olczak J</b>, Fahlberg N, Maki A, et al. Artificial intelligence for analyzing orthopedic trauma radiographs. <i>Acta Orthop</i>. 2017;88(6):581–6. doi:10.1080/17453674.2017.1344459</li>
+          <li><b>Lindsey R</b>, Daluiski A, Chopra S, et al. Deep neural network improves fracture detection by clinicians. <i>PNAS</i>. 2018;115(45):11591–6. doi:10.1073/pnas.1806905115</li>
+          <li><b>U.S. FDA</b>. De Novo classification request for OsteoDetect (DEN180005). 2018.</li>
+          <li><b>Cheng CT</b>, Ho TY, Lee TY, et al. Application of a deep learning algorithm for detection and visualization of hip fractures on plain pelvic radiographs. <i>Eur Radiol</i>. 2019;29(10):5469–77.</li>
+          <li><b>Halabi SS</b>, Prevedello LM, Kalpathy-Cramer J, et al. The RSNA Pediatric Bone Age Machine Learning Challenge. <i>Radiology</i>. 2019;290(2):498–503. doi:10.1148/radiol.2018180736</li>
+          <li><b>Guermazi A</b>, Tannoury C, Kompel AJ, et al. Improving radiographic fracture recognition performance and efficiency using artificial intelligence. <i>Radiology</i>. 2022;302(3):627–36. doi:10.1148/radiol.210937</li>
+          <li><b>Tiulpin A</b>, Thevenot J, Rahtu E, et al. Automatic knee osteoarthritis diagnosis from plain radiographs: a deep learning-based approach. <i>Sci Rep</i>. 2018;8:1727.</li>
+          <li><b>Ma J</b>, He Y, Li F, et al. Segment anything in medical images. <i>Nat Commun</i>. 2024;15:654.</li>
+          <li><b>Vaswani A</b>, Shazeer N, Parmar N, et al. Attention is all you need. <i>NeurIPS</i> 2017. arXiv:1706.03762</li>
+          <li><b>Lum ZC</b>. Can artificial intelligence pass the American Board of Orthopaedic Surgery examination? Orthopaedic residents versus ChatGPT. <i>Clin Orthop Relat Res</i>. 2023;481(8):1623–30. doi:10.1097/CORR.0000000000002704</li>
+          <li><b>Kung JE</b>, Marshall C, Gauthier C, et al. Evaluating ChatGPT performance on the Orthopaedic In-Training Examination. <i>JBJS Open Access</i>. 2023;8(3):e23.00056.</li>
+          <li><b>Walters WH</b>, Wilder EI. Fabrication and errors in the bibliographic citations generated by ChatGPT. <i>Sci Rep</i>. 2023;13:14045.</li>
+          <li><b>U.S. FDA</b>. Artificial Intelligence-Enabled Medical Devices（頁面更新 2026-09-22）.</li>
+          <li><b>衛福部食品藥物管理署</b>. 人工智慧/機器學習技術之醫療器材軟體查驗登記技術指引.</li>
+          <li><b>衛福部食品藥物管理署</b>. 人工智慧/機器學習技術之電腦輔助分流（CADt）醫療器材軟體查驗登記技術指引.</li>
+          <li><b>IRPMA</b>. TFDA 公告「人工智慧/機器學習技術之電腦輔助偵測（CADe）醫療器材軟體查驗登記技術指引」.</li>
+        </ol>
+      </div>
+      <p class="cite-line">完整連結見講義。</p>
+    </div>
+    <footer class="footer-ribbon">
+    <div class="fl-left">
+      <img class="ncku-logo" src="wtmh-design-kit/assets/brand/logo-ncku-h-small.png" alt="NCKU" />
+      <img class="wtmh-logo" src="wtmh-design-kit/assets/brand/logo-wtmh-new-small.png" alt="WTMH Lab" />
+    </div>
+    <div class="ribbon-bar">
+      <span class="lab-name">NCKU BME WTMH Lab</span>
+      <span class="pageno">31</span>
+    </div>
+  </footer>
+  </section>
+
+</div>
+
+<!--PRESENTER-START-->
+<style>
+body.present{padding:0;background:#111;overflow:hidden}
+body.present .slide{display:none;position:fixed;top:50%;left:50%;margin:0;border-radius:0;box-shadow:none}
+body.present .slide.pactive{display:block}
+#phud{position:fixed;right:14px;bottom:10px;z-index:99;font:600 12px Inter,sans-serif;color:#fff;background:rgba(0,0,0,.45);padding:4px 10px;border-radius:12px;display:none}
+body.present #phud{display:block}
+#phint{position:fixed;left:50%;bottom:16px;transform:translateX(-50%);z-index:99;font:500 12.5px Inter,'Noto Sans TC',sans-serif;color:#fff;background:rgba(0,0,0,.6);padding:6px 16px;border-radius:14px;display:none;white-space:nowrap}
+</style>
+<div id="phud"></div><div id="phint">&larr; &rarr; 換頁 &middot; F 全螢幕 &middot; Esc 捲動總覽 &middot; P 回播放</div>
+<script>
+(function(){
+  var slides=[].slice.call(document.querySelectorAll('.slide'));
+  var n=slides.length, i=0, present=!/[?&]scroll/.test(location.search);
+  function fit(){var s=Math.min(innerWidth/1280,innerHeight/720);slides.forEach(function(el){el.style.transform='translate(-50%,-50%) scale('+s+')';});}
+  function show(k){i=Math.max(0,Math.min(n-1,k));slides.forEach(function(el,j){el.classList.toggle('pactive',j===i);});var h=document.getElementById('phud');if(h)h.textContent=(i+1)+' / '+n;try{history.replaceState(null,'','#'+(i+1));}catch(e){}}
+  function enter(){document.body.classList.add('present');fit();show(i);hint();}
+  function exit(){document.body.classList.remove('present');slides.forEach(function(el){el.classList.remove('pactive');el.style.transform='';});slides[i].scrollIntoView({block:'start'});}
+  var ht;function hint(){var h=document.getElementById('phint');if(!h)return;h.style.display='block';clearTimeout(ht);ht=setTimeout(function(){h.style.display='none';},4500);}
+  addEventListener('resize',function(){if(document.body.classList.contains('present'))fit();});
+  addEventListener('keydown',function(e){
+    var p=document.body.classList.contains('present');
+    if(e.key==='Escape'&&p){exit();return;}
+    if((e.key==='p'||e.key==='P')&&!p){enter();return;}
+    if(!p)return;
+    if(e.key==='ArrowRight'||e.key==='ArrowDown'||e.key===' '||e.key==='PageDown'){e.preventDefault();show(i+1);}
+    else if(e.key==='ArrowLeft'||e.key==='ArrowUp'||e.key==='PageUp'){e.preventDefault();show(i-1);}
+    else if(e.key==='Home'){show(0);}
+    else if(e.key==='End'){show(n-1);}
+    else if(e.key==='f'||e.key==='F'){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen();}
+  });
+  addEventListener('click',function(e){
+    if(!document.body.classList.contains('present'))return;
+    if(e.target.closest('a'))return;
+    show(e.clientX<innerWidth*0.25? i-1 : i+1);
+  });
+  var m=location.hash.match(/^#(\d+)$/); if(m)i=Math.min(n-1,Math.max(0,parseInt(m[1],10)-1));
+  if(present)enter();
+})();
+</script>
+<!--PRESENTER-END-->
+</body>
+</html>
