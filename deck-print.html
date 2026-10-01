@@ -2199,7 +2199,7 @@
   </section>
 
   <!-- ============ 開場：你怎麼找骨折？ ============ -->
-  <section class="slide content-chrome" id="s2">
+  <section class="slide content-chrome" id="s2" data-hook="">
     <header class="page-head">
       <h2>你怎麼找骨折？AI 又怎麼找？<span class="page-subtitle">Opening &middot; Same X-ray, Two Readers</span></h2>
     </header>
@@ -2237,6 +2237,11 @@
             <!-- fracture line -->
             <path d="M92 199 L104 197 L112 202 L122 196 L133 201 L143 197 L151 200" stroke="#0F1115" stroke-width="3" fill="none"/>
             <text x="292" y="14" text-anchor="end" font-size="9" fill="#8A93A6" font-family="Inter,sans-serif">schematic · not a patient image</text>
+            <g class="bstep" data-step="1">
+              <rect x="82" y="184" width="78" height="32" rx="3" fill="none" stroke="#B7282E" stroke-width="2.5" stroke-dasharray="6 3"/>
+              <rect x="82" y="162" width="118" height="18" rx="3" fill="#B7282E"/>
+              <text x="88" y="175" font-size="11" font-weight="700" fill="#fff" font-family="Inter,Noto Sans TC,sans-serif">AI：骨折 0.87（示意）</text>
+            </g>
           </svg>
         </div>
         <div class="mt-text">
@@ -2254,7 +2259,7 @@
               <li>結合病史與理學檢查（壓痛點、能否負重）</li>
             </ul>
           </div>
-          <div class="mt-block">
+          <div class="mt-block bstep" data-step="1">
             <div class="mt-block-tag teal">AI 怎麼看</div>
             <ul>
               <li>從<b>十幾萬張</b>已標註 X 光中，自己學會「骨折長什麼樣」</li>
@@ -2660,7 +2665,7 @@
   </section>
 
   <!-- ============ 閾值 = cut-off ============ -->
-  <section class="slide content-chrome" id="s10">
+  <section class="slide content-chrome" id="s10" data-hook="thr">
     <header class="page-head">
       <h2>模型輸出是機率，閾值是你決定的<span class="page-subtitle">Threshold = Screening Cut-off</span></h2>
     </header>
@@ -2670,22 +2675,31 @@
       </p>
       <div style="display:grid;grid-template-columns:1.2fr 1fr;gap:22px;flex:1;min-height:0">
         <div class="svg-panel">
-          <div class="sp-label"><span>AI 分數分布（示意）</span><span class="r">閾值 0.5</span></div>
+          <div class="sp-label"><span>AI 分數分布（示意）</span><span class="r" id="thr-chip">閾值 0.50</span></div>
           <svg viewBox="0 0 560 268" preserveAspectRatio="xMidYMid meet">
             <path d="M40,224 L50,221 L59,216 L69,210 L78,201 L88,191 L98,178 L107,163 L117,147 L126,131 L136,115 L146,101 L155,90 L165,82 L174,80 L184,82 L194,90 L203,101 L213,115 L222,131 L232,147 L242,163 L251,178 L261,191 L270,201 L280,210 L290,216 L299,221 L309,224 L318,226 L328,228 L338,229 L347,229 L357,230 L520,230 L40,230 Z" fill="rgba(60,66,83,.16)" stroke="#3C4253" stroke-width="2"/>
             <path d="M40,230 L174,230 L184,229 L203,229 L213,228 L222,226 L232,224 L242,221 L251,218 L261,212 L270,206 L280,198 L290,188 L299,177 L309,164 L318,151 L328,138 L338,126 L347,115 L357,107 L366,102 L376,100 L386,102 L395,107 L405,115 L414,126 L424,138 L434,151 L443,164 L453,177 L462,188 L472,198 L482,206 L491,212 L501,218 L510,221 L520,224 L520,230 Z" fill="rgba(183,40,46,.18)" stroke="#B7282E" stroke-width="2"/>
             <line x1="40" y1="230" x2="520" y2="230" stroke="#1B2030" stroke-width="1.5"/>
             <g font-family="Inter,sans-serif" font-size="12" fill="#6B7388" text-anchor="middle"><text x="40" y="248">0</text><text x="280" y="248">0.5</text><text x="520" y="248">1.0</text></g>
             <text x="280" y="264" text-anchor="middle" font-family="Inter,Noto Sans TC,sans-serif" font-size="12.5" fill="#6B7388">AI 輸出的骨折機率</text>
-            <line x1="280" y1="40" x2="280" y2="230" stroke="#1B2030" stroke-width="2" stroke-dasharray="6 4"/>
-            <text x="286" y="52" font-family="Inter,Noto Sans TC,sans-serif" font-size="13" font-weight="700" fill="#1B2030">閾值 cut-off</text>
-            <line x1="232" y1="60" x2="232" y2="230" stroke="#0E9FBA" stroke-width="2" stroke-dasharray="3 4"/>
-            <path d="M270 70 L240 70" stroke="#0E9FBA" stroke-width="2" marker-end="url(#ar10)"/>
-            <defs><marker id="ar10" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 Z" fill="#0E9FBA"/></marker></defs>
-            <text x="226" y="74" text-anchor="end" font-family="Inter,Noto Sans TC,sans-serif" font-size="12.5" font-weight="700" fill="#0E9FBA">調低？</text>
+            <defs>
+              <clipPath id="cfn"><rect id="thr-fn" x="40" y="0" width="240" height="268"/></clipPath>
+              <clipPath id="cfp"><rect id="thr-fp" x="280" y="0" width="240" height="268"/></clipPath>
+            </defs>
+            <path d="M40,230 L174,230 L184,229 L203,229 L213,228 L222,226 L232,224 L242,221 L251,218 L261,212 L270,206 L280,198 L290,188 L299,177 L309,164 L318,151 L328,138 L338,126 L347,115 L357,107 L366,102 L376,100 L386,102 L395,107 L405,115 L414,126 L424,138 L434,151 L443,164 L453,177 L462,188 L472,198 L482,206 L491,212 L501,218 L510,221 L520,224 L520,230 Z" fill="rgba(183,40,46,.45)" clip-path="url(#cfn)"/>
+            <path d="M40,224 L50,221 L59,216 L69,210 L78,201 L88,191 L98,178 L107,163 L117,147 L126,131 L136,115 L146,101 L155,90 L165,82 L174,80 L184,82 L194,90 L203,101 L213,115 L222,131 L232,147 L242,163 L251,178 L261,191 L270,201 L280,210 L290,216 L299,221 L309,224 L318,226 L328,228 L338,229 L347,229 L357,230 L520,230 L40,230 Z" fill="rgba(60,66,83,.42)" clip-path="url(#cfp)"/>
+            <line id="thr-line" x1="280" y1="40" x2="280" y2="230" stroke="#1B2030" stroke-width="2" stroke-dasharray="6 4"/>
+            <text id="thr-lab" x="286" y="52" font-family="Inter,Noto Sans TC,sans-serif" font-size="13" font-weight="700" fill="#1B2030">閾值 cut-off</text>
+            <text x="46" y="24" font-family="Inter,Noto Sans TC,sans-serif" font-size="11.5" fill="#6B7388">深紅 = 漏掉的骨折（偽陰性）　深灰 = 誤判的正常（偽陽性）</text>
             <text x="150" y="70" text-anchor="middle" font-family="Inter,Noto Sans TC,sans-serif" font-size="14" font-weight="700" fill="#3C4253">無骨折</text>
             <text x="420" y="88" text-anchor="middle" font-family="Inter,Noto Sans TC,sans-serif" font-size="14" font-weight="700" fill="#B7282E">有骨折</text>
           </svg>
+          <div class="thr-row" data-ui>
+            <span class="lbl">拉拉看</span>
+            <input type="range" min="10" max="90" value="50" step="1" />
+            <span class="thr-out"></span>
+            <span class="hint">鍵盤 [ ]</span>
+          </div>
         </div>
         <div class="card" style="padding:20px 24px 18px;gap:12px">
           <div class="tag"><span class="ico">?</span><span>互動題</span></div>
@@ -3096,7 +3110,7 @@
   </section>
 
   <!-- ============ LLM = 預測下一個 token ============ -->
-  <section class="slide content-chrome" id="s19">
+  <section class="slide content-chrome" id="s19" data-hook="llm" data-steps="3">
     <header class="page-head">
       <h2><span class="ab">LLM</span> 其實只做一件事<span class="page-subtitle">Predict the Next Token &middot; Transformer</span></h2>
     </header>
@@ -3107,18 +3121,18 @@
       <div class="svg-panel" style="flex:0 0 176px">
         <svg viewBox="0 0 1160 176" preserveAspectRatio="xMidYMid meet">
           <g font-family="Inter,Noto Sans TC,sans-serif">
-            <rect x="24" y="22" width="500" height="54" rx="8" fill="#FAFBFC" stroke="#E2E5EC"/>
-            <text x="44" y="56" font-size="20" fill="#1B2030">遠端橈骨骨折常見的受傷機轉是跌倒時</text>
-            <rect x="436" y="34" width="72" height="30" rx="5" fill="#fff" stroke="#B7282E" stroke-width="2" stroke-dasharray="5 4"/>
-            <text x="472" y="55" text-anchor="middle" font-size="18" font-weight="700" fill="#B7282E">？</text>
-            <text x="44" y="110" font-size="14" fill="#6B7388">前文（prompt）</text>
-            <path d="M540 49 L600 49" stroke="#9AA1B2" stroke-width="2.5"/><path d="M596 42 L606 49 L596 56" fill="none" stroke="#9AA1B2" stroke-width="2.5"/>
+            <rect x="24" y="22" width="530" height="54" rx="8" fill="#FAFBFC" stroke="#E2E5EC"/>
+            <text id="llm-ctx" x="40" y="55" font-size="17" fill="#1B2030">遠端橈骨骨折常見的受傷機轉是跌倒時</text>
+            <g id="llm-box"><rect x="436" y="34" width="64" height="30" rx="5" fill="#fff" stroke="#B7282E" stroke-width="2" stroke-dasharray="5 4"/>
+            <text x="468" y="55" text-anchor="middle" font-size="18" font-weight="700" fill="#B7282E">？</text></g>
+            <text x="44" y="110" font-size="14" fill="#6B7388">前文（prompt）——每選中一個詞，就接到句尾，再預測下一個</text>
+            <text id="llm-step" x="44" y="150" font-size="14" font-weight="700" fill="#B7282E">第 1 步 / 4（按 → 接下一個）</text>
+            <path d="M566 49 L600 49" stroke="#9AA1B2" stroke-width="2.5"/><path d="M596 42 L606 49 L596 56" fill="none" stroke="#9AA1B2" stroke-width="2.5"/>
             <text x="640" y="30" font-size="13" font-weight="700" fill="#6B7388" letter-spacing="1.5">下一個 TOKEN 的機率（示意）</text>
-            <text x="640" y="62" font-size="16" fill="#1B2030">手撐地</text><rect x="730" y="48" width="290" height="18" rx="4" fill="#B7282E"/><text x="1030" y="62" font-size="14" font-weight="700" fill="#B7282E">0.58</text>
-            <text x="640" y="92" font-size="16" fill="#1B2030">伸手</text><rect x="730" y="78" width="110" height="18" rx="4" fill="#C9787C"/><text x="850" y="92" font-size="14" fill="#3C4253">0.22</text>
-            <text x="640" y="122" font-size="16" fill="#1B2030">滑倒</text><rect x="730" y="108" width="45" height="18" rx="4" fill="#DDB3B5"/><text x="785" y="122" font-size="14" fill="#3C4253">0.09</text>
+            <text id="llm-n0" x="640" y="62" font-size="16" fill="#1B2030">手撐地</text><rect id="llm-b0" x="730" y="48" width="290" height="18" rx="4" fill="#B7282E"/><text id="llm-v0" x="1030" y="62" font-size="14" font-weight="700" fill="#B7282E">0.58</text>
+            <text id="llm-n1" x="640" y="92" font-size="16" fill="#1B2030">伸手</text><rect id="llm-b1" x="730" y="78" width="110" height="18" rx="4" fill="#C9787C"/><text id="llm-v1" x="850" y="92" font-size="14" fill="#3C4253">0.22</text>
+            <text id="llm-n2" x="640" y="122" font-size="16" fill="#1B2030">滑倒</text><rect id="llm-b2" x="730" y="108" width="45" height="18" rx="4" fill="#DDB3B5"/><text id="llm-v2" x="785" y="122" font-size="14" fill="#3C4253">0.09</text>
             <text x="640" y="152" font-size="16" fill="#1B2030">&hellip;</text><rect x="730" y="138" width="20" height="18" rx="4" fill="#EEDADB"/><text x="760" y="152" font-size="14" fill="#3C4253">其他</text>
-            <text x="44" y="150" font-size="14" fill="#3C4253">選中一個 → 接到句尾 → 再預測下一個，直到寫完</text>
           </g>
         </svg>
       </div>
@@ -3191,9 +3205,9 @@
         <div class="bl-label">Bottom line</div>
         <div class="bl-text"><b>會考試 ≠ 會看片 ≠ 會照顧病人。</b>骨科大量依賴影像，而這些研究剛好把影像題排除了。</div>
       </div>
-      <div class="why-strip" style="grid-template-columns:auto 1fr">
-        <div class="why-label">想一想</div>
-        <div class="why-item">如果把那 48% 的影像題放回去，你覺得分數會怎麼變？這告訴你該怎麼讀「AI 通過考試」的新聞？</div>
+      <div class="why-strip poll-strip" style="grid-template-columns:auto 1fr">
+        <div class="why-label">投票</div>
+        <div class="why-item"><b>把那 48% 的影像題放回去，GPT-4 的分數會？</b>A 上升　B 下降　C 差不多 ——這告訴你該怎麼讀「AI 通過考試」的新聞？</div>
       </div>
       <p class="cite-line">資料來源：<b>Lum ZC</b>. Clin Orthop Relat Res 2023;481(8):1623–30；<b>Kung JE</b> et al. JBJS Open Access 2023;8(3):e23.00056。</p>
     </div>
@@ -3468,6 +3482,10 @@
           <div class="foa-body" style="font-size:17px;line-height:1.5"><b>外部驗證</b>、<b>上線後持續監測</b>、<b>保留人工覆核</b>並記錄</div>
         </div>
       </div>
+      <div class="why-strip poll-strip" style="grid-template-columns:auto 1fr;margin-top:14px">
+        <div class="why-label">投票</div>
+        <div class="why-item"><b>五個風險，你最擔心哪一個？</b>A 資料偏差　B 分布偏移　C 捷徑學習　D 自動化偏誤　E 隱私與責任（分組分享時對照）</div>
+      </div>
       <p class="cite-line">風險分類為概念整理（本演講自製）。</p>
     </div>
     <footer class="footer-ribbon">
@@ -3486,6 +3504,7 @@
   <section class="slide content-chrome" id="s27">
     <header class="page-head">
       <h2>分組討論：換你做決定<span class="page-subtitle">3 per group &middot; 10 min discuss + 6 min share</span></h2>
+      <div class="timer" data-ui data-phases="600,360" data-labels="討論,分享"><span class="tl"></span><span class="tv">10:00</span></div>
     </header>
     <div class="content-body">
       <p class="concept-lead">
@@ -3552,7 +3571,11 @@
           <div class="gen-method" style="font-size:18px;line-height:1.6">看證據、確認<b>法規許可範圍</b>，並<b>保留人工覆核</b>與紀錄。</div>
         </div>
       </div>
-      <div class="pullquote-wrap" style="height:auto;flex:1;padding:10px 60px">
+      <div class="why-strip poll-strip" style="grid-template-columns:auto 1fr;margin-top:14px">
+        <div class="why-label">投票</div>
+        <div class="why-item"><b>上完課，你會讓 AI 幫你看片嗎？</b>A 會　B 看情況　C 不會 ——和開場那一票比比看</div>
+      </div>
+      <div class="pullquote-wrap" style="height:auto;flex:1;padding:6px 60px">
         <p class="pullquote-text" style="font-size:32px">AI 是骨科的<b>第二雙眼</b>，不是取代醫師。<br/><span class="q-teal">會用之前，要先會驗證。</span></p>
       </div>
       <p class="cite-line">本演講整理。</p>
@@ -3621,6 +3644,7 @@
         <div class="card teal" style="padding:18px 24px;gap:12px">
           <div class="tag"><span class="ico">?</span><span>Q &amp; A</span></div>
           <p class="big-quote" style="font-size:24px">謝謝大家。<br/>有問題，現在問。</p>
+          <div class="timer" data-ui data-phases="60" data-labels="課後回饋" style="align-self:flex-start"><span class="tl"></span><span class="tv">1:00</span></div>
           <div class="qr-ph" style="flex:1">請掃描 QR code<br/>填寫 1 分鐘課後回饋</div>
         </div>
       </div>
@@ -3679,6 +3703,94 @@
   </section>
 
 </div>
+<!--WIDGETS-START-->
+<style>
+  /* threshold slider (s10) — design-system tokens only */
+  .thr-row{ display:flex; align-items:center; gap:14px; padding:8px 16px 10px; border-top:1px solid var(--line); background:#FAFBFC; font-size:13px; color:var(--ink-soft); }
+  .thr-row .lbl{ font-size:11px; font-weight:700; letter-spacing:.18em; text-transform:uppercase; color:var(--red); white-space:nowrap; }
+  .thr-row input[type=range]{ flex:1; -webkit-appearance:none; appearance:none; height:4px; border-radius:2px; background:var(--line); outline:none; cursor:pointer; }
+  .thr-row input[type=range]::-webkit-slider-thumb{ -webkit-appearance:none; width:22px; height:22px; border-radius:50%; background:#fff; border:3px solid var(--red); box-shadow:0 2px 6px rgba(0,0,0,.2); cursor:grab; }
+  .thr-row .thr-out{ font-family:'Consolas','JetBrains Mono',monospace; font-size:13px; color:var(--ink); white-space:nowrap; }
+  .thr-row .thr-out b{ color:var(--red); }
+  .thr-row .thr-out .t{ color:var(--teal); font-weight:700; }
+  .thr-row .hint{ font-size:11px; color:var(--muted); white-space:nowrap; }
+  /* countdown timer chip (s27, s30) */
+  .timer{ display:inline-flex; align-items:center; gap:10px; font-family:'Consolas','JetBrains Mono',monospace; font-size:26px; font-weight:700; color:var(--ink); background:#fff; border:1.5px solid var(--line); border-radius:8px; padding:6px 16px; cursor:pointer; user-select:none; letter-spacing:.04em; }
+  .timer .tl{ font-family:'Inter','Noto Sans TC',sans-serif; font-size:11px; font-weight:700; letter-spacing:.18em; text-transform:uppercase; color:var(--muted); }
+  .timer.run{ border-color:var(--red); color:var(--red); }
+  .timer.done{ background:var(--red); color:#fff; border-color:var(--red); }
+  .timer.done .tl{ color:rgba(255,255,255,.8); }
+  /* poll strip */
+  .poll-strip .why-label{ color:var(--teal); }
+  .poll-strip .why-item b{ display:inline; margin-right:10px; }
+</style>
+<script>
+(function(){
+  window.slideHooks = window.slideHooks || {};
+
+  /* ---------- s10 threshold slider ---------- */
+  function Phi(z){ var t=1/(1+0.2316419*Math.abs(z)), d=0.3989423*Math.exp(-z*z/2);
+    var p=d*t*(0.3193815+t*(-0.3565638+t*(1.781478+t*(-1.821256+t*1.330274)))); return z>0?1-p:p; }
+  function initThr(){
+    var sec=document.querySelector('[data-hook="thr"]'); if(!sec) return;
+    var rng=sec.querySelector('input[type=range]'), out=sec.querySelector('.thr-out');
+    var line=sec.querySelector('#thr-line'), lab=sec.querySelector('#thr-lab'), fn=sec.querySelector('#thr-fn'), fp=sec.querySelector('#thr-fp'), chip=sec.querySelector('#thr-chip');
+    function upd(){
+      var t=+rng.value/100, x=40+480*t;
+      var sens=1-Phi((t-0.70)/0.12), spec=Phi((t-0.28)/0.11);
+      line.setAttribute('x1',x); line.setAttribute('x2',x); lab.setAttribute('x',x+6);
+      fn.setAttribute('width',Math.max(0,x-40)); fp.setAttribute('x',x); fp.setAttribute('width',Math.max(0,520-x));
+      out.innerHTML='閾值 <b>'+t.toFixed(2)+'</b> &nbsp;敏感度 <span class="t">'+(sens*100).toFixed(0)+'%</span> &nbsp;特異度 <span class="t">'+(spec*100).toFixed(0)+'%</span>';
+      if(chip) chip.textContent='閾值 '+t.toFixed(2);
+    }
+    rng.addEventListener('input',upd); upd();
+    addEventListener('keydown',function(e){ if(!sec.classList.contains('pactive')) return;
+      if(e.key==='['){rng.value=Math.max(0,+rng.value-2);upd();} else if(e.key===']'){rng.value=Math.min(100,+rng.value+2);upd();} });
+  }
+
+  /* ---------- s19 LLM next-token chain ---------- */
+  var CHAIN=[
+    {ctx:'遠端橈骨骨折常見的受傷機轉是跌倒時', cand:[['手撐地',.58],['伸手',.22],['滑倒',.09]]},
+    {ctx:'遠端橈骨骨折常見的受傷機轉是跌倒時手撐地', cand:[['，',.61],['造成',.20],['導致',.12]]},
+    {ctx:'遠端橈骨骨折常見的受傷機轉是跌倒時手撐地，', cand:[['手腕',.55],['橈骨',.30],['前臂',.08]]},
+    {ctx:'遠端橈骨骨折常見的受傷機轉是跌倒時手撐地，手腕', cand:[['背屈',.64],['受力',.21],['著地',.10]]}
+  ];
+  window.slideHooks.llm=function(step,sec){
+    var s=CHAIN[Math.min(step,CHAIN.length-1)];
+    var ctx=sec.querySelector('#llm-ctx'), box=sec.querySelector('#llm-box');
+    ctx.textContent=s.ctx;
+    // move the "?" box to the end of the text
+    try{ var w=ctx.getComputedTextLength(); box.setAttribute('transform','translate('+(40+w+8-436)+',0)'); }catch(e){}
+    for(var k=0;k<3;k++){
+      var n=sec.querySelector('#llm-n'+k), b=sec.querySelector('#llm-b'+k), v=sec.querySelector('#llm-v'+k);
+      n.textContent=s.cand[k][0]; var p=s.cand[k][1]; b.setAttribute('width',Math.round(p*500)); v.setAttribute('x',730+Math.round(p*500)+10); v.textContent=p.toFixed(2);
+    }
+    var st=sec.querySelector('#llm-step'); if(st) st.textContent='第 '+(Math.min(step,CHAIN.length-1)+1)+' 步 / '+CHAIN.length+'（按 → 接下一個）';
+  };
+
+  /* ---------- countdown timers ---------- */
+  function initTimers(){
+    document.querySelectorAll('.timer').forEach(function(el){
+      var phases=(el.dataset.phases||'60').split(',').map(Number), labels=(el.dataset.labels||'').split(','), ph=0, left=phases[0], iv=null;
+      var tl=el.querySelector('.tl'), tv=el.querySelector('.tv');
+      function fmt(s){ return Math.floor(s/60)+':'+('0'+s%60).slice(-2); }
+      function draw(){ tv.textContent=fmt(left); if(tl) tl.textContent=(labels[ph]||'')+(iv?' · 進行中':left===phases[ph]?' · 點擊開始':' · 暫停'); }
+      function stop(){ clearInterval(iv); iv=null; }
+      el.addEventListener('click',function(){
+        if(el.classList.contains('done')){ el.classList.remove('done'); ph=(ph+1)%phases.length; left=phases[ph]; draw(); return; }
+        if(iv){ stop(); el.classList.remove('run'); draw(); return; }
+        el.classList.add('run');
+        iv=setInterval(function(){ left--; if(left<=0){ left=0; stop(); el.classList.remove('run'); el.classList.add('done'); if(tl) tl.textContent=(labels[ph]||'')+' · 時間到（點擊切換）'; tv.textContent='0:00'; return; } draw(); },1000);
+        draw();
+      });
+      draw();
+    });
+  }
+
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',function(){initThr();initTimers();}); else {initThr();initTimers();}
+})();
+</script>
+<!--WIDGETS-END-->
 
 
 </body>

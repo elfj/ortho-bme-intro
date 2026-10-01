@@ -50,7 +50,7 @@
   </section>
 
   <!-- ============ LLM = 預測下一個 token ============ -->
-  <section class="slide content-chrome" id="s19">
+  <section class="slide content-chrome" id="s19" data-hook="llm" data-steps="3">
     <header class="page-head">
       <h2><span class="ab">LLM</span> 其實只做一件事<span class="page-subtitle">Predict the Next Token &middot; Transformer</span></h2>
     </header>
@@ -61,18 +61,18 @@
       <div class="svg-panel" style="flex:0 0 176px">
         <svg viewBox="0 0 1160 176" preserveAspectRatio="xMidYMid meet">
           <g font-family="Inter,Noto Sans TC,sans-serif">
-            <rect x="24" y="22" width="500" height="54" rx="8" fill="#FAFBFC" stroke="#E2E5EC"/>
-            <text x="44" y="56" font-size="20" fill="#1B2030">遠端橈骨骨折常見的受傷機轉是跌倒時</text>
-            <rect x="436" y="34" width="72" height="30" rx="5" fill="#fff" stroke="#B7282E" stroke-width="2" stroke-dasharray="5 4"/>
-            <text x="472" y="55" text-anchor="middle" font-size="18" font-weight="700" fill="#B7282E">？</text>
-            <text x="44" y="110" font-size="14" fill="#6B7388">前文（prompt）</text>
-            <path d="M540 49 L600 49" stroke="#9AA1B2" stroke-width="2.5"/><path d="M596 42 L606 49 L596 56" fill="none" stroke="#9AA1B2" stroke-width="2.5"/>
+            <rect x="24" y="22" width="530" height="54" rx="8" fill="#FAFBFC" stroke="#E2E5EC"/>
+            <text id="llm-ctx" x="40" y="55" font-size="17" fill="#1B2030">遠端橈骨骨折常見的受傷機轉是跌倒時</text>
+            <g id="llm-box"><rect x="436" y="34" width="64" height="30" rx="5" fill="#fff" stroke="#B7282E" stroke-width="2" stroke-dasharray="5 4"/>
+            <text x="468" y="55" text-anchor="middle" font-size="18" font-weight="700" fill="#B7282E">？</text></g>
+            <text x="44" y="110" font-size="14" fill="#6B7388">前文（prompt）——每選中一個詞，就接到句尾，再預測下一個</text>
+            <text id="llm-step" x="44" y="150" font-size="14" font-weight="700" fill="#B7282E">第 1 步 / 4（按 → 接下一個）</text>
+            <path d="M566 49 L600 49" stroke="#9AA1B2" stroke-width="2.5"/><path d="M596 42 L606 49 L596 56" fill="none" stroke="#9AA1B2" stroke-width="2.5"/>
             <text x="640" y="30" font-size="13" font-weight="700" fill="#6B7388" letter-spacing="1.5">下一個 TOKEN 的機率（示意）</text>
-            <text x="640" y="62" font-size="16" fill="#1B2030">手撐地</text><rect x="730" y="48" width="290" height="18" rx="4" fill="#B7282E"/><text x="1030" y="62" font-size="14" font-weight="700" fill="#B7282E">0.58</text>
-            <text x="640" y="92" font-size="16" fill="#1B2030">伸手</text><rect x="730" y="78" width="110" height="18" rx="4" fill="#C9787C"/><text x="850" y="92" font-size="14" fill="#3C4253">0.22</text>
-            <text x="640" y="122" font-size="16" fill="#1B2030">滑倒</text><rect x="730" y="108" width="45" height="18" rx="4" fill="#DDB3B5"/><text x="785" y="122" font-size="14" fill="#3C4253">0.09</text>
+            <text id="llm-n0" x="640" y="62" font-size="16" fill="#1B2030">手撐地</text><rect id="llm-b0" x="730" y="48" width="290" height="18" rx="4" fill="#B7282E"/><text id="llm-v0" x="1030" y="62" font-size="14" font-weight="700" fill="#B7282E">0.58</text>
+            <text id="llm-n1" x="640" y="92" font-size="16" fill="#1B2030">伸手</text><rect id="llm-b1" x="730" y="78" width="110" height="18" rx="4" fill="#C9787C"/><text id="llm-v1" x="850" y="92" font-size="14" fill="#3C4253">0.22</text>
+            <text id="llm-n2" x="640" y="122" font-size="16" fill="#1B2030">滑倒</text><rect id="llm-b2" x="730" y="108" width="45" height="18" rx="4" fill="#DDB3B5"/><text id="llm-v2" x="785" y="122" font-size="14" fill="#3C4253">0.09</text>
             <text x="640" y="152" font-size="16" fill="#1B2030">&hellip;</text><rect x="730" y="138" width="20" height="18" rx="4" fill="#EEDADB"/><text x="760" y="152" font-size="14" fill="#3C4253">其他</text>
-            <text x="44" y="150" font-size="14" fill="#3C4253">選中一個 → 接到句尾 → 再預測下一個，直到寫完</text>
           </g>
         </svg>
       </div>
@@ -136,9 +136,9 @@
         <div class="bl-label">Bottom line</div>
         <div class="bl-text"><b>會考試 ≠ 會看片 ≠ 會照顧病人。</b>骨科大量依賴影像，而這些研究剛好把影像題排除了。</div>
       </div>
-      <div class="why-strip" style="grid-template-columns:auto 1fr">
-        <div class="why-label">想一想</div>
-        <div class="why-item">如果把那 48% 的影像題放回去，你覺得分數會怎麼變？這告訴你該怎麼讀「AI 通過考試」的新聞？</div>
+      <div class="why-strip poll-strip" style="grid-template-columns:auto 1fr">
+        <div class="why-label">投票</div>
+        <div class="why-item"><b>把那 48% 的影像題放回去，GPT-4 的分數會？</b>A 上升　B 下降　C 差不多 ——這告訴你該怎麼讀「AI 通過考試」的新聞？</div>
       </div>
       <p class="cite-line">資料來源：<b>Lum ZC</b>. Clin Orthop Relat Res 2023;481(8):1623–30；<b>Kung JE</b> et al. JBJS Open Access 2023;8(3):e23.00056。</p>
     </div>

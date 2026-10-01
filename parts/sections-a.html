@@ -69,7 +69,7 @@
   </section>
 
   <!-- ============ 開場：你怎麼找骨折？ ============ -->
-  <section class="slide content-chrome" id="s2">
+  <section class="slide content-chrome" id="s2" data-hook="">
     <header class="page-head">
       <h2>你怎麼找骨折？AI 又怎麼找？<span class="page-subtitle">Opening &middot; Same X-ray, Two Readers</span></h2>
     </header>
@@ -107,6 +107,11 @@
             <!-- fracture line -->
             <path d="M92 199 L104 197 L112 202 L122 196 L133 201 L143 197 L151 200" stroke="#0F1115" stroke-width="3" fill="none"/>
             <text x="292" y="14" text-anchor="end" font-size="9" fill="#8A93A6" font-family="Inter,sans-serif">schematic · not a patient image</text>
+            <g class="bstep" data-step="1">
+              <rect x="82" y="184" width="78" height="32" rx="3" fill="none" stroke="#B7282E" stroke-width="2.5" stroke-dasharray="6 3"/>
+              <rect x="82" y="162" width="118" height="18" rx="3" fill="#B7282E"/>
+              <text x="88" y="175" font-size="11" font-weight="700" fill="#fff" font-family="Inter,Noto Sans TC,sans-serif">AI：骨折 0.87（示意）</text>
+            </g>
           </svg>
         </div>
         <div class="mt-text">
@@ -124,7 +129,7 @@
               <li>結合病史與理學檢查（壓痛點、能否負重）</li>
             </ul>
           </div>
-          <div class="mt-block">
+          <div class="mt-block bstep" data-step="1">
             <div class="mt-block-tag teal">AI 怎麼看</div>
             <ul>
               <li>從<b>十幾萬張</b>已標註 X 光中，自己學會「骨折長什麼樣」</li>
@@ -458,7 +463,7 @@
   </section>
 
   <!-- ============ 閾值 = cut-off ============ -->
-  <section class="slide content-chrome" id="s10">
+  <section class="slide content-chrome" id="s10" data-hook="thr">
     <header class="page-head">
       <h2>模型輸出是機率，閾值是你決定的<span class="page-subtitle">Threshold = Screening Cut-off</span></h2>
     </header>
@@ -468,22 +473,31 @@
       </p>
       <div style="display:grid;grid-template-columns:1.2fr 1fr;gap:22px;flex:1;min-height:0">
         <div class="svg-panel">
-          <div class="sp-label"><span>AI 分數分布（示意）</span><span class="r">閾值 0.5</span></div>
+          <div class="sp-label"><span>AI 分數分布（示意）</span><span class="r" id="thr-chip">閾值 0.50</span></div>
           <svg viewBox="0 0 560 268" preserveAspectRatio="xMidYMid meet">
             <path d="M40,224 L50,221 L59,216 L69,210 L78,201 L88,191 L98,178 L107,163 L117,147 L126,131 L136,115 L146,101 L155,90 L165,82 L174,80 L184,82 L194,90 L203,101 L213,115 L222,131 L232,147 L242,163 L251,178 L261,191 L270,201 L280,210 L290,216 L299,221 L309,224 L318,226 L328,228 L338,229 L347,229 L357,230 L520,230 L40,230 Z" fill="rgba(60,66,83,.16)" stroke="#3C4253" stroke-width="2"/>
             <path d="M40,230 L174,230 L184,229 L203,229 L213,228 L222,226 L232,224 L242,221 L251,218 L261,212 L270,206 L280,198 L290,188 L299,177 L309,164 L318,151 L328,138 L338,126 L347,115 L357,107 L366,102 L376,100 L386,102 L395,107 L405,115 L414,126 L424,138 L434,151 L443,164 L453,177 L462,188 L472,198 L482,206 L491,212 L501,218 L510,221 L520,224 L520,230 Z" fill="rgba(183,40,46,.18)" stroke="#B7282E" stroke-width="2"/>
             <line x1="40" y1="230" x2="520" y2="230" stroke="#1B2030" stroke-width="1.5"/>
             <g font-family="Inter,sans-serif" font-size="12" fill="#6B7388" text-anchor="middle"><text x="40" y="248">0</text><text x="280" y="248">0.5</text><text x="520" y="248">1.0</text></g>
             <text x="280" y="264" text-anchor="middle" font-family="Inter,Noto Sans TC,sans-serif" font-size="12.5" fill="#6B7388">AI 輸出的骨折機率</text>
-            <line x1="280" y1="40" x2="280" y2="230" stroke="#1B2030" stroke-width="2" stroke-dasharray="6 4"/>
-            <text x="286" y="52" font-family="Inter,Noto Sans TC,sans-serif" font-size="13" font-weight="700" fill="#1B2030">閾值 cut-off</text>
-            <line x1="232" y1="60" x2="232" y2="230" stroke="#0E9FBA" stroke-width="2" stroke-dasharray="3 4"/>
-            <path d="M270 70 L240 70" stroke="#0E9FBA" stroke-width="2" marker-end="url(#ar10)"/>
-            <defs><marker id="ar10" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 Z" fill="#0E9FBA"/></marker></defs>
-            <text x="226" y="74" text-anchor="end" font-family="Inter,Noto Sans TC,sans-serif" font-size="12.5" font-weight="700" fill="#0E9FBA">調低？</text>
+            <defs>
+              <clipPath id="cfn"><rect id="thr-fn" x="40" y="0" width="240" height="268"/></clipPath>
+              <clipPath id="cfp"><rect id="thr-fp" x="280" y="0" width="240" height="268"/></clipPath>
+            </defs>
+            <path d="M40,230 L174,230 L184,229 L203,229 L213,228 L222,226 L232,224 L242,221 L251,218 L261,212 L270,206 L280,198 L290,188 L299,177 L309,164 L318,151 L328,138 L338,126 L347,115 L357,107 L366,102 L376,100 L386,102 L395,107 L405,115 L414,126 L424,138 L434,151 L443,164 L453,177 L462,188 L472,198 L482,206 L491,212 L501,218 L510,221 L520,224 L520,230 Z" fill="rgba(183,40,46,.45)" clip-path="url(#cfn)"/>
+            <path d="M40,224 L50,221 L59,216 L69,210 L78,201 L88,191 L98,178 L107,163 L117,147 L126,131 L136,115 L146,101 L155,90 L165,82 L174,80 L184,82 L194,90 L203,101 L213,115 L222,131 L232,147 L242,163 L251,178 L261,191 L270,201 L280,210 L290,216 L299,221 L309,224 L318,226 L328,228 L338,229 L347,229 L357,230 L520,230 L40,230 Z" fill="rgba(60,66,83,.42)" clip-path="url(#cfp)"/>
+            <line id="thr-line" x1="280" y1="40" x2="280" y2="230" stroke="#1B2030" stroke-width="2" stroke-dasharray="6 4"/>
+            <text id="thr-lab" x="286" y="52" font-family="Inter,Noto Sans TC,sans-serif" font-size="13" font-weight="700" fill="#1B2030">閾值 cut-off</text>
+            <text x="46" y="24" font-family="Inter,Noto Sans TC,sans-serif" font-size="11.5" fill="#6B7388">深紅 = 漏掉的骨折（偽陰性）　深灰 = 誤判的正常（偽陽性）</text>
             <text x="150" y="70" text-anchor="middle" font-family="Inter,Noto Sans TC,sans-serif" font-size="14" font-weight="700" fill="#3C4253">無骨折</text>
             <text x="420" y="88" text-anchor="middle" font-family="Inter,Noto Sans TC,sans-serif" font-size="14" font-weight="700" fill="#B7282E">有骨折</text>
           </svg>
+          <div class="thr-row" data-ui>
+            <span class="lbl">拉拉看</span>
+            <input type="range" min="10" max="90" value="50" step="1" />
+            <span class="thr-out"></span>
+            <span class="hint">鍵盤 [ ]</span>
+          </div>
         </div>
         <div class="card" style="padding:20px 24px 18px;gap:12px">
           <div class="tag"><span class="ico">?</span><span>互動題</span></div>

@@ -1,0 +1,88 @@
+<!--WIDGETS-START-->
+<style>
+  /* threshold slider (s10) — design-system tokens only */
+  .thr-row{ display:flex; align-items:center; gap:14px; padding:8px 16px 10px; border-top:1px solid var(--line); background:#FAFBFC; font-size:13px; color:var(--ink-soft); }
+  .thr-row .lbl{ font-size:11px; font-weight:700; letter-spacing:.18em; text-transform:uppercase; color:var(--red); white-space:nowrap; }
+  .thr-row input[type=range]{ flex:1; -webkit-appearance:none; appearance:none; height:4px; border-radius:2px; background:var(--line); outline:none; cursor:pointer; }
+  .thr-row input[type=range]::-webkit-slider-thumb{ -webkit-appearance:none; width:22px; height:22px; border-radius:50%; background:#fff; border:3px solid var(--red); box-shadow:0 2px 6px rgba(0,0,0,.2); cursor:grab; }
+  .thr-row .thr-out{ font-family:'Consolas','JetBrains Mono',monospace; font-size:13px; color:var(--ink); white-space:nowrap; }
+  .thr-row .thr-out b{ color:var(--red); }
+  .thr-row .thr-out .t{ color:var(--teal); font-weight:700; }
+  .thr-row .hint{ font-size:11px; color:var(--muted); white-space:nowrap; }
+  /* countdown timer chip (s27, s30) */
+  .timer{ display:inline-flex; align-items:center; gap:10px; font-family:'Consolas','JetBrains Mono',monospace; font-size:26px; font-weight:700; color:var(--ink); background:#fff; border:1.5px solid var(--line); border-radius:8px; padding:6px 16px; cursor:pointer; user-select:none; letter-spacing:.04em; }
+  .timer .tl{ font-family:'Inter','Noto Sans TC',sans-serif; font-size:11px; font-weight:700; letter-spacing:.18em; text-transform:uppercase; color:var(--muted); }
+  .timer.run{ border-color:var(--red); color:var(--red); }
+  .timer.done{ background:var(--red); color:#fff; border-color:var(--red); }
+  .timer.done .tl{ color:rgba(255,255,255,.8); }
+  /* poll strip */
+  .poll-strip .why-label{ color:var(--teal); }
+  .poll-strip .why-item b{ display:inline; margin-right:10px; }
+</style>
+<script>
+(function(){
+  window.slideHooks = window.slideHooks || {};
+
+  /* ---------- s10 threshold slider ---------- */
+  function Phi(z){ var t=1/(1+0.2316419*Math.abs(z)), d=0.3989423*Math.exp(-z*z/2);
+    var p=d*t*(0.3193815+t*(-0.3565638+t*(1.781478+t*(-1.821256+t*1.330274)))); return z>0?1-p:p; }
+  function initThr(){
+    var sec=document.querySelector('[data-hook="thr"]'); if(!sec) return;
+    var rng=sec.querySelector('input[type=range]'), out=sec.querySelector('.thr-out');
+    var line=sec.querySelector('#thr-line'), lab=sec.querySelector('#thr-lab'), fn=sec.querySelector('#thr-fn'), fp=sec.querySelector('#thr-fp'), chip=sec.querySelector('#thr-chip');
+    function upd(){
+      var t=+rng.value/100, x=40+480*t;
+      var sens=1-Phi((t-0.70)/0.12), spec=Phi((t-0.28)/0.11);
+      line.setAttribute('x1',x); line.setAttribute('x2',x); lab.setAttribute('x',x+6);
+      fn.setAttribute('width',Math.max(0,x-40)); fp.setAttribute('x',x); fp.setAttribute('width',Math.max(0,520-x));
+      out.innerHTML='閾值 <b>'+t.toFixed(2)+'</b> &nbsp;敏感度 <span class="t">'+(sens*100).toFixed(0)+'%</span> &nbsp;特異度 <span class="t">'+(spec*100).toFixed(0)+'%</span>';
+      if(chip) chip.textContent='閾值 '+t.toFixed(2);
+    }
+    rng.addEventListener('input',upd); upd();
+    addEventListener('keydown',function(e){ if(!sec.classList.contains('pactive')) return;
+      if(e.key==='['){rng.value=Math.max(0,+rng.value-2);upd();} else if(e.key===']'){rng.value=Math.min(100,+rng.value+2);upd();} });
+  }
+
+  /* ---------- s19 LLM next-token chain ---------- */
+  var CHAIN=[
+    {ctx:'遠端橈骨骨折常見的受傷機轉是跌倒時', cand:[['手撐地',.58],['伸手',.22],['滑倒',.09]]},
+    {ctx:'遠端橈骨骨折常見的受傷機轉是跌倒時手撐地', cand:[['，',.61],['造成',.20],['導致',.12]]},
+    {ctx:'遠端橈骨骨折常見的受傷機轉是跌倒時手撐地，', cand:[['手腕',.55],['橈骨',.30],['前臂',.08]]},
+    {ctx:'遠端橈骨骨折常見的受傷機轉是跌倒時手撐地，手腕', cand:[['背屈',.64],['受力',.21],['著地',.10]]}
+  ];
+  window.slideHooks.llm=function(step,sec){
+    var s=CHAIN[Math.min(step,CHAIN.length-1)];
+    var ctx=sec.querySelector('#llm-ctx'), box=sec.querySelector('#llm-box');
+    ctx.textContent=s.ctx;
+    // move the "?" box to the end of the text
+    try{ var w=ctx.getComputedTextLength(); box.setAttribute('transform','translate('+(40+w+8-436)+',0)'); }catch(e){}
+    for(var k=0;k<3;k++){
+      var n=sec.querySelector('#llm-n'+k), b=sec.querySelector('#llm-b'+k), v=sec.querySelector('#llm-v'+k);
+      n.textContent=s.cand[k][0]; var p=s.cand[k][1]; b.setAttribute('width',Math.round(p*500)); v.setAttribute('x',730+Math.round(p*500)+10); v.textContent=p.toFixed(2);
+    }
+    var st=sec.querySelector('#llm-step'); if(st) st.textContent='第 '+(Math.min(step,CHAIN.length-1)+1)+' 步 / '+CHAIN.length+'（按 → 接下一個）';
+  };
+
+  /* ---------- countdown timers ---------- */
+  function initTimers(){
+    document.querySelectorAll('.timer').forEach(function(el){
+      var phases=(el.dataset.phases||'60').split(',').map(Number), labels=(el.dataset.labels||'').split(','), ph=0, left=phases[0], iv=null;
+      var tl=el.querySelector('.tl'), tv=el.querySelector('.tv');
+      function fmt(s){ return Math.floor(s/60)+':'+('0'+s%60).slice(-2); }
+      function draw(){ tv.textContent=fmt(left); if(tl) tl.textContent=(labels[ph]||'')+(iv?' · 進行中':left===phases[ph]?' · 點擊開始':' · 暫停'); }
+      function stop(){ clearInterval(iv); iv=null; }
+      el.addEventListener('click',function(){
+        if(el.classList.contains('done')){ el.classList.remove('done'); ph=(ph+1)%phases.length; left=phases[ph]; draw(); return; }
+        if(iv){ stop(); el.classList.remove('run'); draw(); return; }
+        el.classList.add('run');
+        iv=setInterval(function(){ left--; if(left<=0){ left=0; stop(); el.classList.remove('run'); el.classList.add('done'); if(tl) tl.textContent=(labels[ph]||'')+' · 時間到（點擊切換）'; tv.textContent='0:00'; return; } draw(); },1000);
+        draw();
+      });
+      draw();
+    });
+  }
+
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',function(){initThr();initTimers();}); else {initThr();initTimers();}
+})();
+</script>
+<!--WIDGETS-END-->

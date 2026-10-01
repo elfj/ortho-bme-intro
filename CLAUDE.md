@@ -41,3 +41,11 @@ vercel deploy --prod --yes       # 部署（vercel link --yes --project <name> �
 ## 起手式
 
 新演講開工時：先跟用戶確認講題、場合日期、聽眾組成、頁數與 demo 安排，然後改 `sections-a.html` 的封面【】佔位，逐頁往下寫。素材放 `deck-assets/`。
+
+## 本演講加的互動機制（骨科 AI 2026-10-01）
+
+- **分段顯示**：元素加 `class="bstep" data-step="n"`，播放模式下 → 鍵先走完本頁分段再換頁（←反向）；捲動模式與 PDF 全部顯示。`<section>` 可帶額外屬性（`data-hook`、`data-steps`），build_deck.py 的重編號已容許
+- **互動掛鉤**：`<section data-hook="名稱" data-steps="N">`，在 `parts/widgets.html` 的 `window.slideHooks.名稱(step, section)` 實作；目前有 `thr`（第 10 頁閾值滑桿，鍵盤 `[` `]`）、`llm`（第 19 頁 token 接龍）
+- **計時器**：`<div class="timer" data-ui data-phases="600,360" data-labels="討論,分享">`，點擊開始／暫停，時間到再點切下一段
+- 帶 `data-ui` 的元素與 `input` 不會觸發點擊換頁。`parts/widgets.html` 會注入到播放器之前，`make_print.py` 只剝播放器，widgets 以預設狀態留在 PDF
+- 截圖／PDF 腳本支援 `CHROME_PATH` 環境變數（雲端環境 Playwright 版本對不上時用）；`parts/make_standalone.py` 產出圖片內嵌的單檔 `deck-standalone.html`
